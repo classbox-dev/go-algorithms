@@ -10,4 +10,5 @@
 
 # Binary files: should not be modified
 # (uncomment if necessary)
-# *.exe binary
+*.gif binary
+*.png binary
