@@ -1,0 +1,4 @@
+tests:
+  - id: "primes"
+    name: "Nth Prime"
+    topic: "introduction"

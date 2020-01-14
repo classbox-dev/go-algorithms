@@ -1,7 +1,7 @@
-package primes_test
+package primes
 
 import (
-	"hsecode.com/algorithms/lib/primes"
+	"hsecode.com/algorithms/stdlib/primes"
 	"math/big"
 	"testing"
 )
