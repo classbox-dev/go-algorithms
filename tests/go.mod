@@ -1,7 +1,7 @@
-module hsecode.com/algorithms/tests
+module hsecode.com/stdlib-tests
 
 go 1.13
 
-require hsecode.com/algorithms/stdlib v0.0.0
+require hsecode.com/stdlib v0.0.0
 
-replace hsecode.com/algorithms/stdlib => ../stdlib
+replace hsecode.com/stdlib => ../stdlib

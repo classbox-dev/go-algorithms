@@ -1,3 +1,3 @@
-module hsecode.com/algorithms/stdlib
+module hsecode.com/stdlib
 
 go 1.13
