@@ -99,16 +99,6 @@
 		</div>
 		{{end}}
 
-		{{with .Filenames}}
-			<h3>Package files</h3>
-			<p>
-			<span style="font-size:90%">
-			{{range .}}
-				<a href="{{.|srcLink|html}}">{{.|filename|html}}</a>
-			{{end}}
-			</span>
-			</p>
-		{{end}}
 		</div><!-- .expanded -->
 		</div><!-- #pkg-index -->
 
@@ -168,7 +158,7 @@
 		{{range .Funcs}}
 			{{/* Name is a string - no need for FSet */}}
 			{{$name_html := html .Name}}
-			<h2 id="{{$name_html}}">func <a href="{{posLink_url $ .Decl}}">{{$name_html}}</a>
+			<h2 id="{{$name_html}}">func {{$name_html}}
 				<a class="permalink" href="#{{$name_html}}">&#xb6;</a>
 				{{$since := since "func" "" .Name $.PDoc.ImportPath}}
 				{{if $since}}<span title="Added in Go {{$since}}">{{$since}}</span>{{end}}
@@ -182,7 +172,7 @@
 		{{range .Types}}
 			{{$tname := .Name}}
 			{{$tname_html := html .Name}}
-			<h2 id="{{$tname_html}}">type <a href="{{posLink_url $ .Decl}}">{{$tname_html}}</a>
+			<h2 id="{{$tname_html}}">type {{$tname_html}}
 				<a class="permalink" href="#{{$tname_html}}">&#xb6;</a>
 				{{$since := since "type" "" .Name $.PDoc.ImportPath}}
 				{{if $since}}<span title="Added in Go {{$since}}">{{$since}}</span>{{end}}
@@ -206,7 +196,7 @@
 
 			{{range .Funcs}}
 				{{$name_html := html .Name}}
-				<h3 id="{{$name_html}}">func <a href="{{posLink_url $ .Decl}}">{{$name_html}}</a>
+				<h3 id="{{$name_html}}">func {{$name_html}}
 					<a class="permalink" href="#{{$name_html}}">&#xb6;</a>
 					{{$since := since "func" "" .Name $.PDoc.ImportPath}}
 					{{if $since}}<span title="Added in Go {{$since}}">{{$since}}</span>{{end}}
@@ -219,7 +209,7 @@
 
 			{{range .Methods}}
 				{{$name_html := html .Name}}
-				<h3 id="{{$tname_html}}.{{$name_html}}">func ({{html .Recv}}) <a href="{{posLink_url $ .Decl}}">{{$name_html}}</a>
+				<h3 id="{{$tname_html}}.{{$name_html}}">func ({{html .Recv}}) {{$name_html}}
 					<a class="permalink" href="#{{$tname_html}}.{{$name_html}}">&#xb6;</a>
 					{{$since := since "method" .Recv .Name $.PDoc.ImportPath}}
 					{{if $since}}<span title="Added in Go {{$since}}">{{$since}}</span>{{end}}
@@ -262,13 +252,6 @@
 				<th class="pkg-name">Name</th>
 				<th class="pkg-synopsis">Synopsis</th>
 			</tr>
-
-			{{if not (or (eq $.Dirname "/src/cmd") $.DirFlat)}}
-			<tr>
-				<td colspan="2"><a href="..">..</a></td>
-			</tr>
-			{{end}}
-
 			{{range .List}}
 				<tr>
 				{{if $.DirFlat}}
