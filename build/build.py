@@ -10,6 +10,7 @@ import pathlib
 import subprocess
 import sys
 import time
+import shutil
 import typing
 import urllib.request
 
@@ -97,7 +98,7 @@ def submission(args) -> int:
 def make_doc(args):
     subprocess.Popen(
         ['godoc', '-http=:6060', '-links=false', '-templates=/opt/static'],
-        cwd=str(args.course_path / 'stdlib')
+        cwd=str(args.input_path)
     )
 
     deadline = time.monotonic() + 3
@@ -111,11 +112,12 @@ def make_doc(args):
         raise RuntimeError('could not start documentation server')
 
     docs_path = args.output_path / 'docs'
+    shutil.rmtree(str(docs_path), ignore_errors=True)
     docs_path.mkdir()
     r = run_cmd([
         'wget', '-r', '-np', '-N', '-nH', '--cut-dirs=3',
         '-E', '-p', '-k', '-e', 'robots=off',
-        'http://127.0.0.1:6060/pkg/hsecode.com/algorithms/stdlib'
+        'http://127.0.0.1:6060/pkg/hsecode.com/stdlib'
     ], cwd=str(docs_path))
 
     if r.returncode:
@@ -141,16 +143,12 @@ def arg_path(x, write=False):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument(
-        '-i', dest='input_path', default='/data/in',
+        '-i', dest='input_path', default='/in',
         type=arg_path
     )
     parser.add_argument(
-        '-o', dest='output_path', default='/data/out',
+        '-o', dest='output_path', default='/out',
         type=ft.partial(arg_path, write=True)
-    )
-    parser.add_argument(
-        '-c', dest='course_path', default='/data/course',
-        type=arg_path
     )
 
     subparsers = parser.add_subparsers(dest='command', required=True)

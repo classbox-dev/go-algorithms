@@ -15,6 +15,7 @@ RUN \
     mkdir -p /home/$USER_NAME && \
     adduser -s /bin/sh -D -u ${USER_ID} -g ${GROUP_ID} $USER_NAME && \
     mkdir -p /in /out /opt/bin && \
+    chown -R $USER_NAME:$USER_NAME /in /out && \
     go get golang.org/x/tools/cmd/godoc@v0.0.0-20200110142700-428f1ab0ca03 && \
     rm -rf /var/cache/apk/*
 WORKDIR /
