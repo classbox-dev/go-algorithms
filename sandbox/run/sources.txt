@@ -1,0 +1,4 @@
+deb mirror://mirrors.ubuntu.com/mirrors.txt bionic main universe
+deb-src mirror://mirrors.ubuntu.com/mirrors.txt bionic main universe
+deb mirror://mirrors.ubuntu.com/mirrors.txt bionic-updates main universe
+deb-src mirror://mirrors.ubuntu.com/mirrors.txt bionic-updates main universe
