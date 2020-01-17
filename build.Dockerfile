@@ -11,17 +11,16 @@ ENV \
 RUN \
     : "${USER_ID:?UID of the local unprivileged user must be passed via --build-arg}" && \
     : "${GROUP_ID:?GID of the local unprivileged group must be passed via --build-arg}" && \
-    apk add --no-cache --update su-exec curl ca-certificates python3 wget git && \
+    apk add --no-cache --update su-exec curl ca-certificates python3 py3-yaml wget git && \
     mkdir -p /home/$USER_NAME && \
     adduser -s /bin/sh -D -u ${USER_ID} -g ${GROUP_ID} $USER_NAME && \
     mkdir -p /in /out /opt/bin && \
     chown -R $USER_NAME:$USER_NAME /in /out && \
-    go get golang.org/x/tools/cmd/godoc@v0.0.0-20200110142700-428f1ab0ca03 && \
-    rm -rf /var/cache/apk/*
+    go get golang.org/x/tools/cmd/godoc@v0.0.0-20200110142700-428f1ab0ca03
 WORKDIR /
 
 COPY godocs /opt
-COPY build /opt/bin
+COPY sandbox/build /opt/bin
 RUN \
     patch -N $(go env GOROOT)/src/fmt/print.go /opt/noprint.patch && \
     chmod -R +x /opt/bin && \
@@ -32,4 +31,5 @@ COPY stdlib-linter /stdlib-linter
 RUN cd /stdlib-linter && go install
 
 COPY stdlib-tests /stdlib-tests
+COPY stdlib /stdlib
 USER ${USER_ID}:${GROUP_ID}
