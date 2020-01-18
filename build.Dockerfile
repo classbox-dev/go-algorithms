@@ -15,8 +15,10 @@ RUN \
     mkdir -p /home/$USER_NAME && \
     adduser -s /bin/sh -D -u ${USER_ID} -g ${GROUP_ID} $USER_NAME && \
     mkdir -p /in /out /opt/bin && \
-    chown -R $USER_NAME:$USER_NAME /in /out && \
-    go get golang.org/x/tools/cmd/godoc@v0.0.0-20200110142700-428f1ab0ca03
+    chown -R $USER_NAME:$USER_NAME /in /out
+RUN \
+    go get golang.org/x/tools/cmd/godoc@v0.0.0-20200110142700-428f1ab0ca03 && \
+    go get github.com/mkuznets/stdlib-linter@v0.1.0
 WORKDIR /
 
 COPY godocs /opt
@@ -26,9 +28,6 @@ RUN \
     chmod -R +x /opt/bin && \
     ln -s /opt/bin/build.py /opt/bin/build
 ENTRYPOINT ["/opt/bin/init.sh"]
-
-COPY stdlib-linter /stdlib-linter
-RUN cd /stdlib-linter && go install
 
 COPY stdlib-tests /stdlib-tests
 COPY stdlib /stdlib
