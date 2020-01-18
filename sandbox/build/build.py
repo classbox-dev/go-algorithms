@@ -107,8 +107,6 @@ def _all_tests() -> typing.List[str]:
 
 
 def _compile(tests: typing.List[str], output_path: pathlib.Path):
-    results: typing.List[Stage] = []
-
     stager = Stager()
 
     with tempfile.TemporaryDirectory() as tmp_dir:
@@ -245,6 +243,7 @@ def main():
 
     parser = argparse.ArgumentParser()
     parser.add_argument('-i', dest='input_path', default='/in', type=arg_path)
+    # noinspection PyTypeChecker
     parser.add_argument(
         '-o', dest='output_path', default='/out',
         type=ft.partial(arg_path, write=True)
