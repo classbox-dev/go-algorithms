@@ -22,7 +22,7 @@ import yaml
 
 
 class Status(enum.Enum):
-    OK = 'ok'
+    SUCCESS = 'success'
     FAILURE = 'failure'
 
 
@@ -76,11 +76,14 @@ class Stager:
             self.fail(f"Unexpected error:\n{traceback.format_tb(exc_tb)}")
         return True
 
-    def ok(self):
-        self.stages.append(Stage(Status.OK, self.__name))
+    def success(self, output=""):
+        self.stages.append(Stage(Status.SUCCESS, self.__name, output=output))
 
     def fail(self, output):
         self.stages.append(Stage(Status.FAILURE, self.__name, output=output))
+
+    def is_success(self):
+        return all(s.status == Status.SUCCESS for s in self.stages)
 
 
 # ------------------------------------------------------------------------------
@@ -126,7 +129,7 @@ def _compile(tests: typing.List[str], output_path: pathlib.Path):
                     ],
                     cwd=str(tests_dir)
                 )
-                st.ok()
+                st.success()
 
     return stager.stages
 
@@ -135,52 +138,45 @@ def _compile(tests: typing.List[str], output_path: pathlib.Path):
 
 @command
 def build_tests(args: argparse.Namespace) -> typing.List[Stage]:
-    stages: typing.List[Stage] = []
+    stager = Stager()
 
-    # Format
-    name = 'format'
+    with stager("format") as st:
+        r = _run(['gofmt', '-l', '.'], cwd=str(args.input_path))
+        output = r.stdout.strip()
+        if output:
+            errfmt_files = ', '.join(output.split('\n'))
+            st.fail(f'Formatting error: {errfmt_files}.\nUse `gofmt` to format these files')
+            return stager.stages
+        else:
+            st.success()
 
-    c = _run(['gofmt', '-l', str(args.input_path)])
-    output = c.stdout.strip()
-    if output:
-        errfmt_files = ', '.join(output.split('\n'))
-        msg = (
-            f'Formatting error: {errfmt_files}. '
-            f'Use `gofmt` to format these files'
-        )
-        result = Stage(Status.FAILURE, name, output=msg)
-    else:
-        result = Stage(Status.OK, name)
+    with stager("lint") as st:
+        _run(['stdlib-linter', '.'], cwd=str(args.input_path))
+        st.success()
 
-    stages.append(result)
+    if not stager.is_success():
+        return stager.stages
 
-    # Lint
+    with stager("config") as st:
+        with (args.input_path / '.tests.yaml').open() as f:
+            tests = yaml.safe_load(f)
 
-    #
-    #
-    # name = 'build'
-    # env = os.environ.copy()
-    # env['GO111MODULE'] = 'off'
-    # c = run_cmd(
-    #     ['go', 'test', '-c', '-o', str(args.output_path / 'tests')],
-    #     env=env, cwd=str(args.input_path)
-    # )
-    # if c.returncode != 0:
-    #     output = c.stdout.strip()
-    #     result = Stage(
-    #         status=Status.FAILURE,
-    #         name=name, message='Build error', output=output
-    #     )
-    # else:
-    #     result = Stage(status=Status.OK, name=name)
-    #
-    # stages.append(result)
-    #
-    # json_result = [x.json() for x in stages]
-    # with (args.output_path / 'result.json').open('w') as f:
-    #     json.dump(json_result, f)
+        if type(tests) is not list or any(type(x) is not str for x in tests):
+            st.fail(
+                f"`.tests.yaml` is invalid: "
+                f"it must contain a list of test names only"
+            )
+            return stager.stages
 
-    return []
+        tests = sorted(set(_all_tests()) & set(tests))
+        if tests:
+            st.success()
+        else:
+            st.success("No tests selected")
+            return stager.stages
+
+    stager.stages.extend(_compile(tests, args.output_path))
+    return stager.stages
 
 
 @command
@@ -225,7 +221,7 @@ def build_docs(args: argparse.Namespace) -> typing.List[Stage]:
     # Postprocess
     (docs_path / 'stdlib.html').rename(docs_path / 'index.html')
 
-    return [Stage(Status.OK, "docs")]
+    return [Stage(Status.SUCCESS, "docs")]
 
 
 # ------------------------------------------------------------------------------
