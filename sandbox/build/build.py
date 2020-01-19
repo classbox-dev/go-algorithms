@@ -138,6 +138,8 @@ def _compile(tests: typing.List[str], output_path: pathlib.Path):
 
 @command
 def build_tests(args: argparse.Namespace) -> typing.List[Stage]:
+    os.chdir(str(args.input_path))
+
     stager = Stager()
 
     with stager("format") as st:
@@ -145,7 +147,10 @@ def build_tests(args: argparse.Namespace) -> typing.List[Stage]:
         output = r.stdout.strip()
         if output:
             errfmt_files = ', '.join(output.split('\n'))
-            st.fail(f'Formatting error: {errfmt_files}.\nUse `gofmt` to format these files')
+            st.fail(
+                f'Formatting error: {errfmt_files}.\n'
+                f'Use `gofmt` to format these files'
+            )
             return stager.stages
         else:
             st.success()
@@ -157,14 +162,32 @@ def build_tests(args: argparse.Namespace) -> typing.List[Stage]:
     if not stager.is_success():
         return stager.stages
 
-    with stager("config") as st:
-        with (args.input_path / '.tests.yaml').open() as f:
-            tests = yaml.safe_load(f)
+    with stager("configure") as st:
+        config_file = pathlib.Path('./.tests.yaml')
+        try:
+            with config_file.open() as f:
+                try:
+                    tests = yaml.safe_load(f)
+                except yaml.YAMLError as exc:
+                    st.fail(f'Could not parse `{config_file.name}`\n{exc}')
+                    return stager.stages
+        except Exception as exc:
+            st.fail(f'Could not read `{config_file.name}`\n{exc}')
+            return stager.stages
 
         if type(tests) is not list or any(type(x) is not str for x in tests):
             st.fail(
-                f"`.tests.yaml` is invalid: "
-                f"it must contain a list of test names only"
+                f'`{config_file.name}` is invalid: '
+                f'it must contain a list of test names only'
+            )
+            return stager.stages
+
+        all_tests = set(_all_tests())
+        invalid_tests = sorted(set(tests) - all_tests)
+        if invalid_tests:
+            st.fail(
+                f'`{config_file.name}` contains invalid test names: '
+                f'{", ".join(invalid_tests)}'
             )
             return stager.stages
 
