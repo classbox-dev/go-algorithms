@@ -24,6 +24,7 @@ import yaml
 class Status(enum.Enum):
     SUCCESS = 'success'
     FAILURE = 'failure'
+    EXCEPTION = 'exception'
 
 
 @dataclasses.dataclass
@@ -45,7 +46,7 @@ def command(func: typing.Callable[..., typing.List[Stage]]):
             data = func(*args, **kwargs)
         except Exception:
             data = [Stage(
-                status=Status.FAILURE,
+                status=Status.EXCEPTION,
                 name=f"command::{func.__name__}",
                 output=f"Unexpected error:\n{traceback.format_exc()}"
             )]
@@ -71,16 +72,19 @@ class Stager:
         if not exc_type:
             return
         if exc_type is subprocess.CalledProcessError:
-            self.fail(exc_val.stdout)
+            self.failure(exc_val.stdout)
         elif issubclass(exc_type, Exception):
-            self.fail(f"Unexpected error:\n{traceback.format_tb(exc_tb)}")
+            self.exception(f"Unexpected error:\n{traceback.format_exc()}")
         return True
 
     def success(self, output=""):
         self.stages.append(Stage(Status.SUCCESS, self.__name, output=output))
 
-    def fail(self, output):
+    def failure(self, output):
         self.stages.append(Stage(Status.FAILURE, self.__name, output=output))
+
+    def exception(self, output):
+        self.stages.append(Stage(Status.EXCEPTION, self.__name, output=output))
 
     def is_success(self):
         return all(s.status == Status.SUCCESS for s in self.stages)
@@ -147,7 +151,7 @@ def build_tests(args: argparse.Namespace) -> typing.List[Stage]:
         output = r.stdout.strip()
         if output:
             errfmt_files = ', '.join(output.split('\n'))
-            st.fail(
+            st.failure(
                 f'Formatting error: {errfmt_files}.\n'
                 f'Use `gofmt` to format these files'
             )
@@ -169,14 +173,14 @@ def build_tests(args: argparse.Namespace) -> typing.List[Stage]:
                 try:
                     tests = yaml.safe_load(f)
                 except yaml.YAMLError as exc:
-                    st.fail(f'Could not parse `{config_file.name}`\n{exc}')
+                    st.failure(f'Could not parse `{config_file.name}`\n{exc}')
                     return stager.stages
         except Exception as exc:
-            st.fail(f'Could not read `{config_file.name}`\n{exc}')
+            st.failure(f'Could not read `{config_file.name}`\n{exc}')
             return stager.stages
 
         if type(tests) is not list or any(type(x) is not str for x in tests):
-            st.fail(
+            st.failure(
                 f'`{config_file.name}` is invalid: '
                 f'it must contain a list of test names only'
             )
@@ -185,7 +189,7 @@ def build_tests(args: argparse.Namespace) -> typing.List[Stage]:
         all_tests = set(_all_tests())
         invalid_tests = sorted(set(tests) - all_tests)
         if invalid_tests:
-            st.fail(
+            st.failure(
                 f'`{config_file.name}` contains invalid test names: '
                 f'{", ".join(invalid_tests)}'
             )
