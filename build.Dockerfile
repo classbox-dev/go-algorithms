@@ -11,7 +11,7 @@ ENV \
 RUN \
     : "${USER_ID:?UID of the local unprivileged user must be passed via --build-arg}" && \
     : "${GROUP_ID:?GID of the local unprivileged group must be passed via --build-arg}" && \
-    apk add --no-cache --update su-exec curl ca-certificates python3 py3-yaml wget git && \
+    apk add --no-cache --update su-exec curl ca-certificates python3 py3-yaml py3-requests wget git && \
     mkdir -p /home/$USER_NAME && \
     adduser -s /bin/sh -D -u ${USER_ID} -g ${GROUP_ID} $USER_NAME && \
     mkdir -p /in /out /opt/bin && \

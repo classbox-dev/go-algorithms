@@ -4,6 +4,7 @@ import argparse
 import dataclasses
 import enum
 import functools as ft
+import io
 import json
 import os
 import pathlib
@@ -14,7 +15,9 @@ import time
 import traceback
 import typing
 import urllib.request
+import zipfile
 
+import requests
 import yaml
 
 
@@ -142,12 +145,38 @@ def _compile(tests: typing.List[str], output_path: pathlib.Path):
 
 @command
 def build_tests(args: argparse.Namespace) -> typing.List[Stage]:
-    os.chdir(str(args.input_path))
-
     stager = Stager()
 
+    tmp_dir = tempfile.mkdtemp()
+    tmp_path = pathlib.Path(tmp_dir).absolute()
+
+    with stager("fetch") as st:
+        # noinspection PyBroadException
+        try:
+            r = requests.get(args.url)
+            r.raise_for_status()
+        except Exception:
+            st.exception(f'Could not download source code')
+            return stager.stages
+
+        # noinspection PyBroadException
+        try:
+            with zipfile.ZipFile(io.BytesIO(r.content)) as f:
+                f.extractall(tmp_path)
+        except Exception:
+            st.exception(f'Could not unpack source code')
+            return stager.stages
+
+        nested = list(tmp_path.glob("*"))
+        if len(nested) != 1:
+            st.exception(f'Could not read unpacked source code')
+            return stager.stages
+        src_dir = nested[0]
+
+        st.success()
+
     with stager("format") as st:
-        r = _run(['gofmt', '-l', '.'], cwd=str(args.input_path))
+        r = _run(['gofmt', '-l', '.'], cwd=str(src_dir))
         output = r.stdout.strip()
         if output:
             errfmt_files = ', '.join(output.split('\n'))
@@ -160,14 +189,14 @@ def build_tests(args: argparse.Namespace) -> typing.List[Stage]:
             st.success()
 
     with stager("lint") as st:
-        _run(['stdlib-linter', '.'], cwd=str(args.input_path))
+        _run(['stdlib-linter', '.'], cwd=str(src_dir))
         st.success()
 
     if not stager.is_success():
         return stager.stages
 
     with stager("configure") as st:
-        config_file = pathlib.Path('./.tests.yaml')
+        config_file = src_dir / '.tests.yaml'
         try:
             with config_file.open() as f:
                 try:
@@ -178,6 +207,8 @@ def build_tests(args: argparse.Namespace) -> typing.List[Stage]:
         except Exception as exc:
             st.failure(f'Could not read `{config_file.name}`\n{exc}')
             return stager.stages
+
+        tests = tests or []  # initial config is parsed as `None`
 
         if type(tests) is not list or any(type(x) is not str for x in tests):
             st.failure(
@@ -265,7 +296,6 @@ def main():
         return path
 
     parser = argparse.ArgumentParser()
-    parser.add_argument('-i', dest='input_path', default='/in', type=arg_path)
     # noinspection PyTypeChecker
     parser.add_argument(
         '-o', dest='output_path', default='/out',
@@ -275,6 +305,7 @@ def main():
     subparsers = parser.add_subparsers(dest='command', required=True)
 
     parser_tests = subparsers.add_parser('tests')
+    parser_tests.add_argument('url')
     parser_tests.set_defaults(func=build_tests)
 
     parser_tests = subparsers.add_parser('baseline')
