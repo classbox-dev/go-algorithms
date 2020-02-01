@@ -116,7 +116,9 @@ def _all_tests() -> typing.List[str]:
         return [test['id'] for test in tests if (path / test['id']).is_dir()]
 
 
-def _compile(tests: typing.List[str], output_path: pathlib.Path):
+def _compile(tests: typing.List[str],
+             input_path: pathlib.Path,
+             output_path: pathlib.Path):
     stager = Stager()
 
     with tempfile.TemporaryDirectory() as tmp_dir:
@@ -124,7 +126,7 @@ def _compile(tests: typing.List[str], output_path: pathlib.Path):
         tests_dir = tmp_path / 'stdlib-tests'
 
         shutil.copytree('/stdlib-tests', str(tests_dir))
-        shutil.copytree('/in', str(tmp_path / 'stdlib'))
+        shutil.copytree(str(input_path), str(tmp_path / 'stdlib'))
 
         for test_name in tests:
             with stager(f"build::{test_name}") as st:
@@ -233,14 +235,14 @@ def build_tests(args: argparse.Namespace) -> typing.List[Stage]:
             st.success("No tests selected")
             return stager.stages
 
-    stager.stages.extend(_compile(tests, args.output_path))
+    stager.stages.extend(_compile(tests, src_dir, args.output_path))
     return stager.stages
 
 
 @command
 def build_baseline(args: argparse.Namespace) -> typing.List[Stage]:
     tests = _all_tests()
-    return _compile(tests, args.output_path)
+    return _compile(tests, pathlib.Path("/stdlib"), args.output_path)
 
 
 @command
@@ -249,7 +251,7 @@ def build_docs(args: argparse.Namespace) -> typing.List[Stage]:
         ['godoc', '-http=:6060', '-links=false', '-templates=/opt/static'],
         stdout=subprocess.DEVNULL,
         stderr=subprocess.STDOUT,
-        cwd=str(args.input_path)
+        cwd=str("/stdlib")
     )
 
     deadline = time.monotonic() + 3
