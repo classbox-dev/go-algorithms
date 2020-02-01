@@ -1,21 +1,17 @@
 FROM golang:1.13.5-alpine3.11
 LABEL maintainer="Max Kuznetsov <maks.kuznetsov@gmail.com>"
-ARG USER_ID
-ARG GROUP_ID
 ENV \
     CGO_ENABLED=0 \
     GOOS=linux \
     GOARCH=amd64 \
     GO111MODULE="on" \
-    USER_NAME=sandbox
+    APP_USER=app \
+    APP_UID=2000
 RUN \
-    : "${USER_ID:?UID of the local unprivileged user must be passed via --build-arg}" && \
-    : "${GROUP_ID:?GID of the local unprivileged group must be passed via --build-arg}" && \
-    apk add --no-cache --update su-exec curl ca-certificates python3 py3-yaml py3-requests wget git && \
-    mkdir -p /home/$USER_NAME && \
-    adduser -s /bin/sh -D -u ${USER_ID} -g ${GROUP_ID} $USER_NAME && \
-    mkdir -p /in /out /opt/bin && \
-    chown -R $USER_NAME:$USER_NAME /in /out
+    apk add --no-cache --update curl ca-certificates python3 py3-yaml py3-requests wget git && \
+    adduser -s /bin/sh -D -u $APP_UID $APP_USER && \
+    mkdir -p /out /opt/bin && \
+    chown -R $APP_USER:$APP_USER /out
 RUN \
     go get golang.org/x/tools/cmd/godoc@v0.0.0-20200110142700-428f1ab0ca03 && \
     go get github.com/mkuznets/stdlib-linter@v0.1.0
@@ -31,4 +27,4 @@ ENTRYPOINT ["/opt/bin/init.sh"]
 
 COPY stdlib-tests /stdlib-tests
 COPY stdlib /stdlib
-USER ${USER_ID}:${GROUP_ID}
+USER ${APP_UID}
