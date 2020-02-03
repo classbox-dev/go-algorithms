@@ -5,13 +5,13 @@ ENV \
     GOOS=linux \
     GOARCH=amd64 \
     GO111MODULE="on" \
-    APP_USER=app \
-    APP_UID=2000
+    LOGIN=sandbox \
+    UID=2000
 RUN \
     apk add --no-cache --update curl ca-certificates python3 py3-yaml py3-requests wget git && \
-    adduser -s /bin/sh -D -u $APP_UID $APP_USER && \
+    adduser -s /bin/sh -D -u $UID $LOGIN && \
     mkdir -p /out /opt/bin && \
-    chown -R $APP_USER:$APP_USER /out
+    chown -R $LOGIN:$LOGIN /out
 RUN \
     go get golang.org/x/tools/cmd/godoc@v0.0.0-20200110142700-428f1ab0ca03 && \
     go get github.com/mkuznets/stdlib-linter@v0.1.0
@@ -27,4 +27,4 @@ ENTRYPOINT ["/opt/bin/init.sh"]
 
 COPY stdlib-tests /stdlib-tests
 COPY stdlib /stdlib
-USER ${APP_UID}
+USER ${UID}

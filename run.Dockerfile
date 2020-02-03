@@ -17,22 +17,12 @@ RUN \
 
 FROM alpine:3.11.2
 COPY --from=build linux-4.15.0/tools/perf/perf /usr/local/bin/
-ENV \
-    USER_NAME=app \
-    USER_ID=2000 \
-    SANDBOX_DIR="/sandbox" \
-    TIMEOUT_RUN=10 \
-    TIMEOUT_MEASURE=120 \
-    MEMORY_RUN=524288 \
-    MEMORY_MEASURE=524288
-RUN mkdir -p ${SANDBOX_DIR} && \
-    adduser -s /bin/sh -D -u ${USER_ID} $USER_NAME && \
-    chown -R $USER_NAME:$USER_NAME ${SANDBOX_DIR}
-
-WORKDIR ${SANDBOX_DIR}
-
-COPY sandbox/run /opt/bin
-RUN chmod +x /opt/bin/*
+ENV LOGIN=sandbox UID=2000 TIMEOUT=60
+RUN mkdir -p "/in" && \
+    adduser -s /bin/sh -D -u ${UID} $LOGIN && \
+    chown -R $LOGIN:$LOGIN "/in"
+WORKDIR "/in"
+COPY sandbox/run/init.sh /opt/bin/init.sh
+RUN chmod +x /opt/bin/init.sh
 ENTRYPOINT ["/opt/bin/init.sh"]
-
-USER ${USER_ID}
+USER ${UID}
