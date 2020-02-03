@@ -132,7 +132,7 @@ def _compile(tests: typing.List[str],
             with stager(f"build::{test_name}") as st:
                 _run(
                     [
-                        'go', 'test', '-c', '-o',
+                        'go', 'test', '-c', '-trimpath', '-o',
                         str(output_path / f'{test_name}.test'),
                         f'hsecode.com/stdlib-tests/{test_name}'
                     ],
