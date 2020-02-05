@@ -1,0 +1,19 @@
+name: build
+on:
+  push:
+    branches:
+      - master
+jobs:
+  build:
+    runs-on: ubuntu-18.04
+    steps:
+      - name: checkout
+        uses: actions/checkout@v2
+      - id: build
+        name: docker build
+        run: cd $GITHUB_WORKSPACE && make
+      - name: docker push
+        run: |
+          docker login -u mkuznets -p ${{ secrets.PACKAGES_TOKEN }} docker.pkg.github.com
+          docker push docker.pkg.github.com/mkuznets/stdlib/builder:latest
+          docker push docker.pkg.github.com/mkuznets/stdlib/runner:latest
