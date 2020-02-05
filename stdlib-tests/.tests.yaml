@@ -1,3 +1,4 @@
-- id: "primes"
+- name: "primes"
   description: "Nth Prime"
   topic: "introduction"
+  score: 1
