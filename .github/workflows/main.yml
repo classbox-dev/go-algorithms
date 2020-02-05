@@ -22,7 +22,8 @@ jobs:
 
           docker login -u mkuznets -p ${{ secrets.DOCKER_TOKEN }} docker.pkg.github.com
 
-          docker build . -f build.Dockerfile -t ${{ env.builder_tag }}
+          docker pull ${{ env.builder_tag }} || true
+          docker build . -f build.Dockerfile -t ${{ env.builder_tag }} --cache-from ${{ env.builder_tag }}
 
           docker pull ${{ env.perf_tag }} || true
           docker build . -f run.Dockerfile -t ${{ env.perf_tag }} --cache-from ${{ env.perf_tag }} --target perf
