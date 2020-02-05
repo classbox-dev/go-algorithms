@@ -13,7 +13,7 @@ func TestUnit__IsPrime(t *testing.T) {
 	for i := 1; i <= N; i++ {
 		p := primes.NthPrime(uint32(i))
 		if !big.NewInt(int64(p)).ProbablyPrime(0) {
-			t.Fatalf("NthPrime(%d)=%d is not prime!", i, p)
+			t.Fatalf("NthPrime(%d)=%d is not prime", i, p)
 		}
 		ii, ok := ps[p]
 		if ok {
