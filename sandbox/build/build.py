@@ -35,6 +35,7 @@ class Stage:
     status: Status
     name: str
     output: str = ''
+    test: str = ''
 
     def json(self):
         data = dataclasses.asdict(self)
@@ -80,14 +81,14 @@ class Stager:
             self.exception(f"Unexpected error:\n{traceback.format_exc()}")
         return True
 
-    def success(self, output=""):
-        self.stages.append(Stage(Status.SUCCESS, self.__name, output=output))
+    def success(self, output="", test=""):
+        self.stages.append(Stage(Status.SUCCESS, self.__name, output=output, test=test))
 
-    def failure(self, output):
-        self.stages.append(Stage(Status.FAILURE, self.__name, output=output))
+    def failure(self, output, test=""):
+        self.stages.append(Stage(Status.FAILURE, self.__name, output=output, test=test))
 
-    def exception(self, output):
-        self.stages.append(Stage(Status.EXCEPTION, self.__name, output=output))
+    def exception(self, output, test=""):
+        self.stages.append(Stage(Status.EXCEPTION, self.__name, output=output, test=test))
 
     def is_success(self):
         return all(s.status == Status.SUCCESS for s in self.stages)
@@ -113,7 +114,7 @@ def _all_tests() -> typing.List[str]:
     path = pathlib.Path('/stdlib-tests')
     with (path / '.tests.yaml').open() as f:
         tests = yaml.safe_load(f)
-        return [test['id'] for test in tests if (path / test['id']).is_dir()]
+        return [test['name'] for test in tests if (path / test['name']).is_dir()]
 
 
 def _compile(tests: typing.List[str],
@@ -138,7 +139,7 @@ def _compile(tests: typing.List[str],
                     ],
                     cwd=str(tests_dir)
                 )
-                st.success()
+                st.success(test=test_name)
 
     return stager.stages
 
@@ -284,7 +285,16 @@ def build_docs(args: argparse.Namespace) -> typing.List[Stage]:
     return [Stage(Status.SUCCESS, "docs")]
 
 
+@command
+def build_meta(args: argparse.Namespace) -> typing.List[Stage]:
+    path = pathlib.Path('/stdlib-tests')
+    with (path / '.tests.yaml').open() as f:
+        tests = yaml.safe_load(f)
+    return [Stage(Status.SUCCESS, "meta", json.dumps(tests))]
+
+
 # ------------------------------------------------------------------------------
+
 
 def main():
     def arg_path(x, write=False):
@@ -315,6 +325,9 @@ def main():
 
     parser_docs = subparsers.add_parser('docs')
     parser_docs.set_defaults(func=build_docs)
+
+    parser_meta = subparsers.add_parser('meta')
+    parser_meta.set_defaults(func=build_meta)
 
     args_ = parser.parse_args()
 
