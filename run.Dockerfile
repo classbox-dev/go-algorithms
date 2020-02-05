@@ -1,4 +1,4 @@
-FROM ubuntu:18.04 as build
+FROM ubuntu:18.04 as perf
 WORKDIR /
 ADD sandbox/run/sources.txt /etc/apt/sources.list
 RUN \
@@ -16,7 +16,7 @@ RUN \
     make -j LDFLAGS=-static CFLAGS='-DNDEBUG -O3'
 
 FROM alpine:3.11.2
-COPY --from=build linux-4.15.0/tools/perf/perf /usr/local/bin/
+COPY --from=perf linux-4.15.0/tools/perf/perf /usr/local/bin/
 ENV LOGIN=sandbox UID=2000 TIMEOUT=60
 RUN mkdir -p "/in" && \
     adduser -s /bin/sh -D -u ${UID} $LOGIN && \

@@ -4,22 +4,34 @@ on:
     branches:
       - master
 env:
+  perf_tag: docker.pkg.github.com/mkuznets/stdlib/perf:latest
   builder_tag: docker.pkg.github.com/mkuznets/stdlib/builder:latest
   runner_tag: docker.pkg.github.com/mkuznets/stdlib/runner:latest
 jobs:
   build:
     runs-on: ubuntu-18.04
     steps:
+
       - name: checkout
         uses: actions/checkout@v2
+
       - id: build
         name: docker build
         run: |
           cd $GITHUB_WORKSPACE
+
           docker login -u mkuznets -p ${{ secrets.DOCKER_TOKEN }} docker.pkg.github.com
-          docker build . -f build.Dockerfile -t stdlib-builder:latest -t ${{ env.builder_tag }}
-          docker build . -f run.Dockerfile -t stdlib-runner:latest -t ${{ env.runner_tag }}
+
+          docker build . -f build.Dockerfile -t ${{ env.builder_tag }}
+
+          docker pull ${{ env.perf_tag }} || true
+          docker build . -f run.Dockerfile -t ${{ env.perf_tag }} --cache-from ${{ env.perf_tag }} --target perf
+
+          docker pull ${{ env.runner_tag }} || true
+          docker build . -f run.Dockerfile -t ${{ env.runner_tag }} --cache-from ${{ env.perf_tag }} --cache-from ${{ env.runner_tag }}
+
       - name: docker push
         run: |
           docker push ${{ env.builder_tag }}
           docker push ${{ env.runner_tag }}
+          docker push ${{ env.perf_tag }}
