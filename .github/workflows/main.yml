@@ -1,8 +1,11 @@
-name: build
+name: Update stdlib images
 on:
   push:
     branches:
       - master
+env:
+  builder_tag: docker.pkg.github.com/mkuznets/stdlib/builder:latest
+  runner_tag: docker.pkg.github.com/mkuznets/stdlib/runner:latest
 jobs:
   build:
     runs-on: ubuntu-18.04
@@ -11,9 +14,12 @@ jobs:
         uses: actions/checkout@v2
       - id: build
         name: docker build
-        run: cd $GITHUB_WORKSPACE && make
+        run: |
+          cd $GITHUB_WORKSPACE
+          docker login -u mkuznets -p ${{ secrets.DOCKER_TOKEN }} docker.pkg.github.com
+          docker build . -f build.Dockerfile -t stdlib-builder:latest -t ${{ env.builder_tag }}
+          docker build . -f run.Dockerfile -t stdlib-runner:latest -t ${{ env.runner_tag }}
       - name: docker push
         run: |
-          docker login -u mkuznets -p ${{ secrets.PACKAGES_TOKEN }} docker.pkg.github.com
-          docker push docker.pkg.github.com/mkuznets/stdlib/builder:latest
-          docker push docker.pkg.github.com/mkuznets/stdlib/runner:latest
+          docker push ${{ env.builder_tag }}
+          docker push ${{ env.runner_tag }}
