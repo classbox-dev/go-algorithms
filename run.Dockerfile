@@ -10,13 +10,14 @@ RUN \
         make build-essential \
         && \
     apt-get source linux-image-unsigned-4.15.0-50-generic && \
-    apt-get clean
-RUN \
+    apt-get clean && \
     cd /linux-4.15.0/tools/perf && \
-    make -j LDFLAGS=-static CFLAGS='-DNDEBUG -O3'
+    make -j LDFLAGS=-static CFLAGS='-DNDEBUG -O3' && \
+    cp perf /perf && \
+    rm -rf /linux-4.15.0
 
 FROM alpine:3.11.2
-COPY --from=perf linux-4.15.0/tools/perf/perf /usr/local/bin/
+COPY --from=perf perf /usr/local/bin/
 ENV LOGIN=sandbox UID=2000 TIMEOUT=60
 RUN mkdir -p "/in" && \
     adduser -s /bin/sh -D -u ${UID} $LOGIN && \
