@@ -112,8 +112,8 @@ def _run(args: typing.List[str], **kwargs):
 
 def _all_tests() -> typing.List[str]:
     path = pathlib.Path('/stdlib-tests')
-    with (path / '.tests.yaml').open() as f:
-        tests = yaml.safe_load(f)
+    with (path / '.stdlib.yaml').open() as f:
+        tests = yaml.safe_load(f)['tests']
         return [test['name'] for test in tests if (path / test['name']).is_dir()]
 
 
@@ -199,11 +199,11 @@ def build_tests(args: argparse.Namespace) -> typing.List[Stage]:
         return stager.stages
 
     with stager("configure") as st:
-        config_file = src_dir / '.tests.yaml'
+        config_file = src_dir / '.stdlib.yaml'
         try:
             with config_file.open() as f:
                 try:
-                    tests = yaml.safe_load(f)
+                    tests = yaml.safe_load(f)["tests"]
                 except yaml.YAMLError as exc:
                     st.failure(f'Could not parse `{config_file.name}`\n{exc}')
                     return stager.stages
@@ -299,8 +299,8 @@ def build_docs(args: argparse.Namespace) -> typing.List[Stage]:
 @command
 def build_meta(args: argparse.Namespace) -> typing.List[Stage]:
     path = pathlib.Path('/stdlib-tests')
-    with (path / '.tests.yaml').open() as f:
-        tests = yaml.safe_load(f)
+    with (path / '.stdlib.yaml').open() as f:
+        tests = yaml.safe_load(f)["tests"]
     return [Stage(Status.SUCCESS, "meta", json.dumps(tests))]
 
 

@@ -1,0 +1,5 @@
+tests:
+  - name: "primes"
+    description: "Nth Prime"
+    topic: "introduction"
+    score: 2
