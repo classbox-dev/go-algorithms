@@ -5,9 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#375EAB">
 {{with .Tabtitle}}
-  <title>{{html .}} - Go Documentation Server</title>
+  <title>{{html .}} - godoc</title>
 {{else}}
-  <title>Go Documentation Server</title>
+  <title>godoc</title>
 {{end}}
 <link type="text/css" rel="stylesheet" href="/lib/godoc/style.css">
 {{if .TreeView}}
@@ -33,7 +33,9 @@
 </div><!-- #lowframe -->
 
 <div id="topbar"{{if .Title}} class="wide"{{end}}><div class="container">
-<div class="top-heading" id="heading-wide"><a href="/pkg/">Go Documentation Server</a></div>
+<div class="top-heading" id="heading-wide">
+    __HEAD__
+</div>
 <div class="top-heading" id="heading-narrow"><a href="/pkg/">GoDoc</a></div>
 <a href="#" id="menu-button"><span id="menu-button-arrow">&#9661;</span></a>
 

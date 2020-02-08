@@ -248,41 +248,52 @@ def build_baseline(args: argparse.Namespace) -> typing.List[Stage]:
 
 @command
 def build_docs(args: argparse.Namespace) -> typing.List[Stage]:
-    godoc = subprocess.Popen(
-        ['godoc', '-http=:6060', '-links=false', '-templates=/opt/static'],
-        stdout=subprocess.DEVNULL,
-        stderr=subprocess.STDOUT,
-        cwd=str("/stdlib")
-    )
 
-    deadline = time.monotonic() + 3
-    while time.monotonic() < deadline:
-        try:
-            urllib.request.urlopen('http://127.0.0.1:6060', timeout=0.5)
-            break
-        except urllib.request.URLError:
-            continue
-    else:
-        raise RuntimeError('could not start documentation server')
+    stager = Stager()
 
-    docs_path = args.output_path / 'docs'
-    shutil.rmtree(str(docs_path), ignore_errors=True)
-    docs_path.mkdir()
-    r = _run([
-        'wget', '-r', '-np', '-N', '-nH', '--cut-dirs=3',
-        '-E', '-p', '-k', '-e', 'robots=off',
-        'http://127.0.0.1:6060/pkg/hsecode.com/stdlib'
-    ], cwd=str(docs_path))
+    with stager("docs") as st:
 
-    if r.returncode:
-        print(r.stdout)
+        godoc = subprocess.Popen(
+            ['godoc', '-http=:6060', '-links=false', '-templates=/opt/static'],
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.STDOUT,
+            cwd=str("/stdlib")
+        )
 
-    godoc.kill()
+        deadline = time.monotonic() + 3
+        while time.monotonic() < deadline:
+            try:
+                urllib.request.urlopen('http://127.0.0.1:6060', timeout=0.5)
+                break
+            except urllib.request.URLError:
+                continue
+        else:
+            raise RuntimeError('could not start documentation server')
 
-    # Postprocess
-    (docs_path / 'stdlib.html').rename(docs_path / 'index.html')
+        docs_path = args.output_path / 'docs'
+        shutil.rmtree(str(docs_path), ignore_errors=True)
+        docs_path.mkdir()
+        r = _run([
+            'wget', '-r', '-np', '-N', '-nH', '--cut-dirs=3',
+            '-E', '-p', '-k', '-e', 'robots=off',
+            'http://127.0.0.1:6060/pkg/hsecode.com/stdlib'
+        ], cwd=str(docs_path))
 
-    return [Stage(Status.SUCCESS, "docs")]
+        godoc.kill()
+
+        # Postprocess
+        (docs_path / 'stdlib.html').rename(docs_path / 'index.html')
+
+        for p in docs_path.glob("**/*.html"):
+            src = (
+                p.read_text()
+                    .replace("__HEAD__", f'<a href="{args.web}">hsecode.com/stdlib</a> / <a href="{args.docs}">docs</a>')
+            )
+            p.write_text(src)
+
+        st.success()
+
+    return stager.stages
 
 
 @command
@@ -324,6 +335,8 @@ def main():
     parser_tests.set_defaults(func=build_baseline)
 
     parser_docs = subparsers.add_parser('docs')
+    parser_docs.add_argument('--web', required=True)
+    parser_docs.add_argument('--docs', required=True)
     parser_docs.set_defaults(func=build_docs)
 
     parser_meta = subparsers.add_parser('meta')
