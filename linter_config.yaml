@@ -1,0 +1,13 @@
+packages:
+  - errors
+  - fmt
+  - strings
+  - strconv
+  - math
+  - math/rand
+  - math/bits
+  - github.com/cheekybits/genny/generic
+package_prefixes:
+  - hsecode.com/stdlib
+banned_ids:
+banned_calls:
