@@ -192,7 +192,7 @@ def build_tests(args: argparse.Namespace) -> typing.List[Stage]:
             st.success()
 
     with stager("lint") as st:
-        _run(['stdlib-linter', '.'], cwd=str(src_dir))
+        _run(['stdlib-linter', '-c', '/linter_config.yaml', '.'], cwd=str(src_dir))
         st.success()
 
     if not stager.is_success():
@@ -248,7 +248,6 @@ def build_baseline(args: argparse.Namespace) -> typing.List[Stage]:
 
 @command
 def build_docs(args: argparse.Namespace) -> typing.List[Stage]:
-
     stager = Stager()
 
     with stager("docs") as st:
@@ -273,7 +272,7 @@ def build_docs(args: argparse.Namespace) -> typing.List[Stage]:
         docs_path = args.output_path / 'docs'
         shutil.rmtree(str(docs_path), ignore_errors=True)
         docs_path.mkdir()
-        r = _run([
+        _run([
             'wget', '-r', '-np', '-N', '-nH', '--cut-dirs=3',
             '-E', '-p', '-k', '-e', 'robots=off',
             'http://127.0.0.1:6060/pkg/hsecode.com/stdlib'
@@ -283,11 +282,12 @@ def build_docs(args: argparse.Namespace) -> typing.List[Stage]:
 
         # Postprocess
         (docs_path / 'stdlib.html').rename(docs_path / 'index.html')
+        shutil.copy2('/linter_config.yaml', str(docs_path / 'linter.yaml'))
 
         for p in docs_path.glob("**/*.html"):
             src = (
                 p.read_text()
-                    .replace("__HEAD__", f'<a href="{args.web}">hsecode.com/stdlib</a> / <a href="{args.docs}">docs</a>')
+                .replace("__HEAD__", f'<a href="{args.web}">hsecode.com/stdlib</a> / <a href="{args.docs}">docs</a>')
             )
             p.write_text(src)
 

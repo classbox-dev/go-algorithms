@@ -14,7 +14,8 @@ RUN \
     chown -R $LOGIN:$LOGIN /out
 RUN \
     go get golang.org/x/tools/cmd/godoc@v0.0.0-20200110142700-428f1ab0ca03 && \
-    go get github.com/mkuznets/stdlib-linter@v0.1.0
+    go get github.com/mkuznets/stdlib-linter@v0.3.1 && \
+    go get github.com/cheekybits/genny@v1.0.0
 WORKDIR /
 
 COPY godocs /opt
@@ -27,4 +28,5 @@ ENTRYPOINT ["/opt/bin/init.sh"]
 
 COPY stdlib-tests /stdlib-tests
 COPY stdlib /stdlib
+COPY linter_config.yaml /linter_config.yaml
 USER ${UID}
