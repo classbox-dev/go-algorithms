@@ -36,3 +36,5 @@ jobs:
           docker push ${{ env.builder_tag }}
           docker push ${{ env.runner_tag }}
           docker push ${{ env.perf_tag }}
+
+          curl -H "Content-Type: application/json" -X PUT -d '{"is_ready": false}' https://hsecode.com/stdlib/api/course || true
