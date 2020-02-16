@@ -20,7 +20,7 @@ jobs:
         run: |
           cd $GITHUB_WORKSPACE
 
-          docker login -u mkuznets -p ${{ secrets.DOCKER_TOKEN }} docker.pkg.github.com
+          docker login -u mkuznets -p ${{ secrets.GITHUB_TOKEN }} docker.pkg.github.com
 
           docker pull ${{ env.builder_tag }} || true
           docker build . -f build.Dockerfile -t ${{ env.builder_tag }} --cache-from ${{ env.builder_tag }}
