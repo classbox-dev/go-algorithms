@@ -10,6 +10,7 @@ import os
 import pathlib
 import shutil
 import subprocess
+import sys
 import tempfile
 import time
 import traceback
@@ -144,6 +145,20 @@ def _compile(tests: typing.List[str],
     return stager.stages
 
 
+def _test(tests: typing.List[str]) -> typing.List[Stage]:
+    stager = Stager()
+
+    for test_name in tests:
+        with stager(f"build::{test_name}") as st:
+            _run(
+                ['go', 'test', f'hsecode.com/stdlib-tests/{test_name}'],
+                cwd=str("/stdlib-tests")
+            )
+            st.success(test=test_name)
+
+    return stager.stages
+
+
 # ------------------------------------------------------------------------------
 
 @command
@@ -246,6 +261,21 @@ def build_baseline(args: argparse.Namespace) -> typing.List[Stage]:
     return _compile(tests, pathlib.Path("/stdlib"), args.output_path)
 
 
+def test_all(args: argparse.Namespace):
+    results = _test(_all_tests())
+
+    if all(r.status == Status.SUCCESS for r in results):
+        print("OK")
+        sys.exit(0)
+
+    for stage in results:
+        if stage.status != Status.SUCCESS:
+            print(f"{stage.name}: {stage.status.name}\n")
+            print(stage.output)
+            print()
+    sys.exit(1)
+
+
 @command
 def build_docs(args: argparse.Namespace) -> typing.List[Stage]:
     stager = Stager()
@@ -287,7 +317,8 @@ def build_docs(args: argparse.Namespace) -> typing.List[Stage]:
         for p in docs_path.glob("**/*.html"):
             src = (
                 p.read_text()
-                .replace("__HEAD__", f'<a href="{args.web}">hsecode.com/stdlib</a> / <a href="{args.docs}">docs</a>')
+                    .replace("__HEAD__",
+                             f'<a href="{args.web}">hsecode.com/stdlib</a> / <a href="{args.docs}">docs</a>')
             )
             p.write_text(src)
 
@@ -341,6 +372,9 @@ def main():
 
     parser_meta = subparsers.add_parser('meta')
     parser_meta.set_defaults(func=build_meta)
+
+    parser_meta = subparsers.add_parser('test-all')
+    parser_meta.set_defaults(func=test_all)
 
     args_ = parser.parse_args()
 

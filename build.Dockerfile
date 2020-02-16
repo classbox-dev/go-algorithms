@@ -28,5 +28,6 @@ ENTRYPOINT ["/opt/bin/init.sh"]
 
 COPY stdlib-tests /stdlib-tests
 COPY stdlib /stdlib
+RUN cd /stdlib && go generate ./... && /opt/bin/build.py test-all
 COPY linter_config.yaml /linter_config.yaml
 USER ${UID}
