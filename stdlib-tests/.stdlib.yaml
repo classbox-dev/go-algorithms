@@ -1,5 +1,5 @@
 tests:
-  - name: "primes"
-    description: "Nth Prime"
+  - name: "cmp"
+    description: "Implement `cmp.Min` and `cmp.Max`"
     topic: "introduction"
-    score: 2
+    score: 0
