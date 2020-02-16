@@ -317,7 +317,7 @@ def build_docs(args: argparse.Namespace) -> typing.List[Stage]:
         for p in docs_path.glob("**/*.html"):
             src = p.read_text()
             src = src.replace("__HEAD__", f'<a href="{args.web}">hsecode.com/stdlib</a> / <a href="{args.docs}">docs</a>')
-            src = src.replace('<a href="http://127.0.0.1:6060/pkg/">GoDoc</a></div>', f'<a href="{args.docs}">docs</a>')
+            src = src.replace('<a href="http://127.0.0.1:6060/pkg/">GoDoc</a>', f'<a href="{args.docs}">docs</a>')
             p.write_text(src)
 
         st.success()
