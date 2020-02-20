@@ -3,6 +3,10 @@ tests:
     description: "Implement `cmp.Min` and `cmp.Max`"
     topic: "00-introduction"
     score: 0
+  - name: "primes"
+    description: "Implement `math.NthPrime` function"
+    topic: "00-introduction"
+    score: 2
   - name: "vector"
     description: "Implement `vector` package"
     topic: "01-data-structures"
