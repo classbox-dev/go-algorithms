@@ -6,4 +6,4 @@ tests:
   - name: "vector"
     description: "Implement `vector` package"
     topic: "01-data-structures"
-    score: 5
+    score: 6
