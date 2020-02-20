@@ -15,3 +15,7 @@ tests:
     description: "Implement `matrix` package"
     topic: "01-data-structures"
     score: 2
+  - name: "ndarray"
+    description: "Implement `ndarray` package"
+    topic: "01-data-structures"
+    score: 2

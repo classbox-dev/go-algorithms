@@ -3,3 +3,4 @@ tests:
   - primes
   - vector
   - matrix
+  - ndarray
