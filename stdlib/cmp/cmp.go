@@ -1,4 +1,3 @@
-// Package cmp defines Min and Max functions for a variable number of ValueType arguments.
 package cmp
 
 import "github.com/cheekybits/genny/generic"

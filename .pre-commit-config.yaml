@@ -1,9 +1,9 @@
 repos:
 - repo: git://github.com/mkuznets/stdlib-linter
-  rev: master
+  rev: v0.4.0
   hooks:
     - id: generate
     - id: gofmt
     - id: stdlib-linter
-      args: [./stdlib]
+      args: [-c=./linter_config.yaml, ./stdlib]
     - id: no-untracked

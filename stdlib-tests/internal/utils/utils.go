@@ -2,7 +2,10 @@ package utils
 
 import (
 	"math/rand"
+	"runtime"
+	"runtime/debug"
 	"sort"
+	"testing"
 )
 
 func SliceRandom(rng int, length int) []int {
@@ -37,4 +40,31 @@ func Range(a, b int) []int {
 		s = append(s, i)
 	}
 	return s
+}
+
+func ExpectedPanic(t *testing.T, message string, f func()) {
+	panicked := false
+	defer func() {
+		if r := recover(); r != nil {
+			panicked = true
+		}
+	}()
+	f()
+	if !panicked {
+		t.Fatal(message)
+	}
+}
+
+func MemoryLeak(f func()) int64 {
+	debug.SetGCPercent(-1) // Disable GC
+	runtime.GC()
+	var m runtime.MemStats
+	runtime.ReadMemStats(&m)
+	memStart := int64(m.Alloc)
+
+	f()
+
+	runtime.GC()
+	runtime.ReadMemStats(&m)
+	return int64(m.Alloc) - memStart
 }

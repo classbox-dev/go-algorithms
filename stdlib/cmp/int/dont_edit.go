@@ -2,7 +2,6 @@
 // Any changes will be lost if this file is regenerated.
 // see https://github.com/cheekybits/genny
 
-// Package cmp defines Min and Max functions for a variable number of int arguments.
 package cmp
 
 // int is a generic type for Min and Max (imported from github.com/cheekybits/genny/generic). Concrete types have to support comparison via operators < and >.
