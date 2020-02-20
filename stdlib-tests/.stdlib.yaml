@@ -11,3 +11,7 @@ tests:
     description: "Implement `vector` package"
     topic: "01-data-structures"
     score: 6
+  - name: "matrix"
+    description: "Implement `matrix` package"
+    topic: "01-data-structures"
+    score: 2

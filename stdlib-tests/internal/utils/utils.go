@@ -1,6 +1,7 @@
 package utils
 
 import (
+	"fmt"
 	"math/rand"
 	"runtime"
 	"runtime/debug"
@@ -67,4 +68,11 @@ func MemoryLeak(f func()) int64 {
 	runtime.GC()
 	runtime.ReadMemStats(&m)
 	return int64(m.Alloc) - memStart
+}
+
+// Use ensures that the given value will not be optimised out
+func Use(v interface{}) {
+	if rand.Float32() == 0.00123 {
+		fmt.Println(v)
+	}
 }
