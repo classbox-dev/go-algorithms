@@ -4,3 +4,4 @@ tests:
   - vector
   - matrix
   - ndarray
+  - maxqueue

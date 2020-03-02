@@ -19,3 +19,7 @@ tests:
     description: "Implement `ndarray` package"
     topic: "01-data-structures"
     score: 2
+  - name: "maxqueue"
+    description: "Implement `maxqueue` package"
+    topic: "01-data-structures"
+    score: 2
