@@ -29,7 +29,7 @@ func max(a, b int) int {
 	return b
 }
 
-func TestUnit_SmallN(t *ing.T) {
+func TestUnit_SmallN(t *testing.T) {
 	data := utils.Range(0, 100)
 	testData := make([]int, 100)
 	copy(testData, data)
