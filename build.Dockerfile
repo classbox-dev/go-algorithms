@@ -12,11 +12,6 @@ RUN \
     adduser -s /bin/sh -D -u $UID $LOGIN && \
     mkdir -p /out /opt/bin && \
     chown -R $LOGIN:$LOGIN /out
-RUN \
-    go get golang.org/x/tools/cmd/godoc@v0.0.0-20200110142700-428f1ab0ca03 && \
-    go get github.com/mkuznets/stdlib-linter@v0.3.1 && \
-    go get github.com/cheekybits/genny@v1.0.0
-WORKDIR /
 
 COPY godocs /opt
 COPY sandbox/build /opt/bin
@@ -26,8 +21,16 @@ RUN \
     ln -s /opt/bin/build.py /opt/bin/build
 ENTRYPOINT ["/opt/bin/init.sh"]
 
+USER ${UID}
+
+RUN \
+    go get golang.org/x/tools/cmd/godoc@v0.0.0-20200110142700-428f1ab0ca03 && \
+    go get  github.com/mkuznets/stdlib-linter@v0.3.1 && \
+    go get -u github.com/cheekybits/genny@v1.0.0 && \
+    go mod download github.com/cheekybits/genny@v1.0.0
+WORKDIR /
+
 COPY stdlib-tests /stdlib-tests
 COPY stdlib /stdlib
 RUN cd /stdlib && go generate ./... && /opt/bin/build.py test-all
 COPY linter_config.yaml /linter_config.yaml
-USER ${UID}
