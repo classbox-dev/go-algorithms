@@ -23,3 +23,11 @@ tests:
     description: "Implement `maxqueue` package"
     topic: "01-data-structures"
     score: 2
+  - name: "nthelement"
+    description: "Implement `pick.NthElement` function"
+    topic: "02-sorting"
+    score: 3
+  - name: "firstn"
+    description: "Implement `pick.FirstN` function"
+    topic: "02-sorting"
+    score: 4

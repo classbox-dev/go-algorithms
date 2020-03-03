@@ -3,13 +3,12 @@ package matrix_test
 import (
 	"hsecode.com/stdlib-tests/internal/utils"
 	matrix "hsecode.com/stdlib/matrix/int"
-	"math/rand"
 	"reflect"
 	"testing"
 )
 
 func TestUnit__RowsCols(t *testing.T) {
-	n, m := rand.Int()%256, rand.Int()%256
+	n, m := utils.Rand.Int()%256, utils.Rand.Int()%256
 	mat := matrix.New(n, m)
 	if mat.Rows != n {
 		t.Fatal("unexpected value of Rows")
@@ -43,15 +42,14 @@ func TestUnit__OutOfRange(t *testing.T) {
 }
 
 func TestUnit__FillAndRead(t *testing.T) {
-	utils.InitSeed()
-	n, m := rand.Int()%256, rand.Int()%256
+	n, m := utils.Rand.Int()%256, utils.Rand.Int()%256
 	mat := matrix.New(n, m)
 	expected := make([]int, n*m)
 	result := make([]int, n*m)
 
 	for i := 0; i < n; i++ {
 		for j := 0; j < m; j++ {
-			v := rand.Int()
+			v := utils.Rand.Int()
 			expected = append(expected, v)
 			mat.Set(i, j, v)
 		}
@@ -67,14 +65,12 @@ func TestUnit__FillAndRead(t *testing.T) {
 }
 
 func TestPerf__Iterate(t *testing.T) {
-	utils.InitSeed()
-
 	n, m := 4096, 8192
 	mat := matrix.New(n, m)
 
 	sum := 0
 	for c := 0; c < 10; c++ {
-		init := rand.Int() % 1024
+		init := utils.Rand.Int() % 1024
 		for i := 0; i < n; i++ {
 			for j := 0; j < m; j++ {
 				mat.Set(i, j, init+i+j)

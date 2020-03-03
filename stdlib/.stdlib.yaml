@@ -5,3 +5,5 @@ tests:
   - matrix
   - ndarray
   - maxqueue
+  - nthelement
+  - firstn

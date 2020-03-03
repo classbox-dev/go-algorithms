@@ -6,11 +6,13 @@ stdlib source code can only use the following packages:
 
 	errors
 	fmt
+	sort
 	strings
 	strconv
 	math
 	math/rand
 	math/bits
+	container/heap
 	github.com/cheekybits/genny/generic
 
 Imports from hsecode.com/stdlib itself are allowed.

@@ -3,7 +3,6 @@ package vector_test
 import (
 	"hsecode.com/stdlib-tests/internal/utils"
 	IntVector "hsecode.com/stdlib/vector/int"
-	"math/rand"
 	"reflect"
 	"runtime"
 	"runtime/debug"
@@ -70,7 +69,6 @@ func TestUnit__PopFromEmpty(t *testing.T) {
 }
 
 func TestUnit__Get(t *testing.T) {
-	utils.InitSeed()
 	h := IntVector.New(0)
 	for i := 0; i < 30; i++ {
 		e := Element(i * i)
@@ -84,14 +82,13 @@ func TestUnit__Get(t *testing.T) {
 }
 
 func TestUnit__Set(t *testing.T) {
-	utils.InitSeed()
 	h := IntVector.New(0)
 	for i := 0; i < 30; i++ {
 		e := Element(i * i)
 		h.Push(e)
 	}
 	for i := 30 - 1; i >= 0; i-- {
-		newValue := Element(rand.Uint64() % 1024)
+		newValue := Element(utils.Rand.Uint64() % 1024)
 		h.Set(i, newValue)
 		if h.Get(i) != newValue {
 			t.Fatal("Get(i) after Set(i, x) did not return `x`")
@@ -100,8 +97,6 @@ func TestUnit__Set(t *testing.T) {
 }
 
 func TestUnit__InsertMiddle(t *testing.T) {
-	utils.InitSeed()
-
 	expected := make([]Element, 0, 30)
 	h := IntVector.New(0)
 	for i := 0; i < 30; i++ {
@@ -110,7 +105,7 @@ func TestUnit__InsertMiddle(t *testing.T) {
 		expected = append(expected, e)
 	}
 	for i := 0; i < 30; i++ {
-		newValue := Element(rand.Uint64() % 1024)
+		newValue := Element(utils.Rand.Uint64() % 1024)
 		h.Insert(i, newValue)
 		expected = append(expected[:i], append([]Element{newValue}, expected[i:]...)...)
 		result := toSlice(h)
@@ -207,9 +202,7 @@ func TestUnit__DeleteLeft(t *testing.T) {
 }
 
 func TestPerf__PushAllPopAll(t *testing.T) {
-
-	utils.InitSeed()
-	n := int((rand.Uint32() % 1000000) + 1000000)
+	n := int((utils.Rand.Uint32() % 1000000) + 1000000)
 	leakMargin := int64(4096) // bytes
 
 	arr := IntVector.New(0)
@@ -233,8 +226,7 @@ func TestPerf__PushAllPopAll(t *testing.T) {
 }
 
 func TestPerf__InsertAllDeleteAll(t *testing.T) {
-	utils.InitSeed()
-	n := int((rand.Uint32() % 10000) + 10000)
+	n := int((utils.Rand.Uint32() % 10000) + 10000)
 	leakMargin := int64(4096) // bytes
 
 	arr := IntVector.New(0)
@@ -258,8 +250,7 @@ func TestPerf__InsertAllDeleteAll(t *testing.T) {
 }
 
 func TestPerf__InsertOnly(t *testing.T) {
-	utils.InitSeed()
-	n := int((rand.Uint32() % 10000) + 10000)
+	n := int((utils.Rand.Uint32() % 10000) + 10000)
 
 	elemSize := int64(unsafe.Sizeof(Element(0)))
 	leakMargin := int64(n) * elemSize * 4 // bytes
@@ -282,7 +273,6 @@ func TestPerf__InsertOnly(t *testing.T) {
 }
 
 func TestPerf__RandomPushPop(t *testing.T) {
-	utils.InitSeed()
 	debug.SetGCPercent(-1) // Disable GC
 	runtime.GC()
 
@@ -293,7 +283,7 @@ func TestPerf__RandomPushPop(t *testing.T) {
 		arr.Push(Element(i))
 	}
 	for i := 0; i < n; i++ {
-		rnd := rand.NormFloat64() + 0.3
+		rnd := utils.Rand.NormFloat64() + 0.3
 		if rnd > 0. {
 			arr.Push(Element(i))
 		} else if arr.Len > n/4 {
@@ -303,8 +293,6 @@ func TestPerf__RandomPushPop(t *testing.T) {
 }
 
 func TestPerf__RandomInsertDelete(t *testing.T) {
-	utils.InitSeed()
-
 	debug.SetGCPercent(-1) // Disable GC
 	runtime.GC()
 
@@ -315,8 +303,8 @@ func TestPerf__RandomInsertDelete(t *testing.T) {
 		arr.Push(Element(i))
 	}
 	for i := 0; i < n; i++ {
-		rnd := rand.NormFloat64() + 0.3
-		idx := rand.Intn(arr.Len)
+		rnd := utils.Rand.NormFloat64() + 0.3
+		idx := utils.Rand.Intn(arr.Len)
 		if rnd > 0. {
 			arr.Insert(idx, Element(i))
 		} else if arr.Len > n/4 {

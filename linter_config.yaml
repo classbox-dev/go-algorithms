@@ -6,6 +6,8 @@ packages:
   - math
   - math/rand
   - math/bits
+  - sort
+  - container/heap
   - github.com/cheekybits/genny/generic
 package_prefixes:
   - hsecode.com/stdlib

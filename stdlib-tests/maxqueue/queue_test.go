@@ -3,12 +3,10 @@ package maxqueue_test
 import (
 	"hsecode.com/stdlib-tests/internal/utils"
 	maxqueue "hsecode.com/stdlib/maxqueue/int"
-	"math/rand"
 	"testing"
 )
 
 func TestUnit__QueueOrder(t *testing.T) {
-	utils.InitSeed()
 	q := maxqueue.New()
 
 	n := 100
@@ -16,7 +14,7 @@ func TestUnit__QueueOrder(t *testing.T) {
 	output := make([]int, 0, n)
 
 	for i := 0; i < n; i++ {
-		input = append(input, rand.Int()%1000)
+		input = append(input, utils.Rand.Int()%1000)
 	}
 	for i := 0; i < n; i++ {
 		q.Push(input[i])
@@ -173,11 +171,10 @@ func TestUnit__MaxAll(t *testing.T) {
 
 func TestPerf__RandomOperations(t *testing.T) {
 	q := maxqueue.New()
-	utils.InitSeed()
 	for i := 0; i < 2000000; i++ {
-		q.Push(rand.Int() % 10000)
+		q.Push(utils.Rand.Int() % 10000)
 		_, err := q.Max()
-		if err == nil && (rand.Int()%1000) > 800 {
+		if err == nil && (utils.Rand.Int()%1000) > 800 {
 			//noinspection GoUnhandledErrorResult
 			q.Pop()
 			//noinspection GoUnhandledErrorResult

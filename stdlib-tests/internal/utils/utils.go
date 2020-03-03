@@ -9,21 +9,19 @@ import (
 	"testing"
 )
 
+var Rand = rand.New(rand.NewSource(0xDEADBEEF))
+
 func SliceRandom(rng int, length int) []int {
 	output := make([]int, 0, length)
 	for i := 0; i < length; i++ {
-		output = append(output, (rand.Int()%(2*rng))-rng)
+		output = append(output, (Rand.Int()%(2*rng))-rng)
 	}
 	return output
 }
 
-func InitSeed() {
-	rand.Seed(0xDEADBEEF)
-}
-
 func RangeShuffled(a, b int) []int {
 	s := Range(a, b)
-	rand.Shuffle(len(s), func(i, j int) {
+	Rand.Shuffle(len(s), func(i, j int) {
 		s[i], s[j] = s[j], s[i]
 	})
 	return s
@@ -31,7 +29,7 @@ func RangeShuffled(a, b int) []int {
 
 func RangeReversed(a, b int) []int {
 	s := Range(a, b)
-	sort.Slice(s, func(i, j int) bool { return i > j })
+	sort.Sort(sort.Reverse(sort.IntSlice(s)))
 	return s
 }
 
@@ -72,7 +70,7 @@ func MemoryLeak(f func()) int64 {
 
 // Use ensures that the given value will not be optimised out
 func Use(v interface{}) {
-	if rand.Float32() == 0.00123 {
+	if Rand.Float32() == 0.00123 {
 		fmt.Println(v)
 	}
 }

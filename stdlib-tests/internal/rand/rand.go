@@ -1,6 +1,8 @@
 package rand
 
-import "math/rand"
+import (
+	"hsecode.com/stdlib-tests/internal/utils"
+)
 
 type Rand struct {
 	alphabet string
@@ -18,7 +20,7 @@ func (r *Rand) String(length int) string {
 	bytes := make([]byte, length)
 	n := r.length
 	for i := 0; i < length; i++ {
-		bytes[i] = r.alphabet[rand.Intn(n)]
+		bytes[i] = r.alphabet[utils.Rand.Intn(n)]
 	}
 	return string(bytes)
 }

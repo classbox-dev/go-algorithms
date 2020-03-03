@@ -77,7 +77,6 @@ func TestUnit__MaxPanic(t *testing.T) {
 }
 
 func TestUnit__Many(t *testing.T) {
-	utils.InitSeed()
 	for i := 1; i < 500; i += 10 {
 		s := utils.RangeShuffled(i, i+i)
 		if cmp.Min(s...) != i {
@@ -90,7 +89,6 @@ func TestUnit__Many(t *testing.T) {
 }
 
 func TestPerf__Many(t *testing.T) {
-	utils.InitSeed()
 	for c := 0; c < 350; c++ {
 		for i := 2; i < 500; i += 1 {
 			s := utils.RangeShuffled(i, i+i)

@@ -1,6 +1,8 @@
 package cmp
 
-import "github.com/cheekybits/genny/generic"
+import (
+	"github.com/cheekybits/genny/generic"
+)
 
 //go:generate genny -in=$GOFILE -out=int/dont_edit.go gen "ValueType=int"
 

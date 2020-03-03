@@ -5,7 +5,6 @@ import (
 	ref "hsecode.com/stdlib-tests/internal/ndarray"
 	"hsecode.com/stdlib-tests/internal/utils"
 	"hsecode.com/stdlib/ndarray"
-	"math/rand"
 	"strings"
 	"testing"
 )
@@ -75,14 +74,13 @@ func TestUnit__InvalidIdx(t *testing.T) {
 }
 
 func TestUnit__RandomValidIdx(t *testing.T) {
-	utils.InitSeed()
 	for i := 0; i < 1000; i++ {
-		length := rand.Intn(7) + 1
+		length := utils.Rand.Intn(7) + 1
 		var axes, nidx []int
 		for j := 0; j < length; j++ {
-			a := rand.Intn(8) + 1
+			a := utils.Rand.Intn(8) + 1
 			axes = append(axes, a)
-			k := rand.Int() % a
+			k := utils.Rand.Int() % a
 			nidx = append(nidx, k)
 		}
 		expected := ref.New(axes...).Idx(nidx...)
@@ -95,18 +93,16 @@ func TestUnit__RandomValidIdx(t *testing.T) {
 }
 
 func TestUnit__RandomInvalidLength(t *testing.T) {
-	utils.InitSeed()
-
 	for i := 0; i < 1000; i++ {
 
-		length := rand.Intn(7) + 3
+		length := utils.Rand.Intn(7) + 3
 		var axes, nidx []int
 
 		for j := 0; j < length; j++ {
-			a := rand.Intn(8) + 1
+			a := utils.Rand.Intn(8) + 1
 			axes = append(axes, a)
 
-			k := rand.Int() % a
+			k := utils.Rand.Int() % a
 			nidx = append(nidx, k)
 		}
 
@@ -126,16 +122,14 @@ func TestUnit__RandomInvalidLength(t *testing.T) {
 }
 
 func TestUnit__RandomInvalidValues(t *testing.T) {
-	utils.InitSeed()
-
 	for i := 0; i < 1000; i++ {
-		length := rand.Intn(7) + 3
+		length := utils.Rand.Intn(7) + 3
 		var axes, nidx []int
 
 		for j := 0; j < length; j++ {
-			a := rand.Intn(8) + 1
+			a := utils.Rand.Intn(8) + 1
 			axes = append(axes, a)
-			k := a + rand.Int()%a
+			k := a + utils.Rand.Int()%a
 			nidx = append(nidx, k)
 		}
 
@@ -147,13 +141,12 @@ func TestUnit__RandomInvalidValues(t *testing.T) {
 }
 
 func TestPerf__NewOnceIdxMany(t *testing.T) {
-	utils.InitSeed()
 	matrix := ndarray.New(10, 10, 10, 10, 10, 10, 10, 10, 10, 10)
 	var s int
 	for i := 0; i < 200000; i++ {
 		var nidx []int
 		for j := 0; j < 10; j++ {
-			k := rand.Intn(10)
+			k := utils.Rand.Intn(10)
 			nidx = append(nidx, k)
 		}
 		idx := matrix.Idx(nidx...)
@@ -163,13 +156,12 @@ func TestPerf__NewOnceIdxMany(t *testing.T) {
 }
 
 func TestPerf__NewManyIdxMany(t *testing.T) {
-	utils.InitSeed()
 	var s int
 	for i := 0; i < 200000; i++ {
 		matrix := ndarray.New(10, 10, 10, 10, 10, 10, 10, 10, 10, 10)
 		var nidx []int
 		for j := 0; j < 10; j++ {
-			k := rand.Intn(10)
+			k := utils.Rand.Intn(10)
 			nidx = append(nidx, k)
 		}
 		idx := matrix.Idx(nidx...)
