@@ -5,6 +5,7 @@ import (
 	"hsecode.com/stdlib-tests/internal/utils"
 	"hsecode.com/stdlib/math"
 	"math/big"
+	"runtime/debug"
 	"testing"
 )
 
@@ -45,7 +46,8 @@ func TestUnit__CheckPoints(t *testing.T) {
 }
 
 func TestPerf__CheckPoints(t *testing.T) {
-	ns := []int{793, 4536, 54729, 636450, 2672370, 10056324}
+	debug.SetGCPercent(-1) // Disable GC
+	ns := []int{793, 4536, 54729, 636450, 2672370, 10056325}
 	for _, n := range ns {
 		math.NthPrime(n)
 	}
