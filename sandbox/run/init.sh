@@ -4,5 +4,5 @@ if [ "$(id -u)" = "0" ]; then
     exit 1
 fi
 export PATH=/opt/bin:/in:$PATH
-ulimit -v 524288
+ulimit -v 786432
 timeout -s KILL $TIMEOUT "$@"

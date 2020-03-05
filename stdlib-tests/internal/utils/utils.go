@@ -9,6 +9,8 @@ import (
 	"testing"
 )
 
+const Rebuild = "rebuild0001"
+
 var Rand = rand.New(rand.NewSource(0xDEADBEEF))
 
 func SliceRandom(rng int, length int) []int {
