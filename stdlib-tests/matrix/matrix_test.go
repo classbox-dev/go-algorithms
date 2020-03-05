@@ -4,6 +4,7 @@ import (
 	"hsecode.com/stdlib-tests/internal/utils"
 	matrix "hsecode.com/stdlib/matrix/int"
 	"reflect"
+	"runtime/debug"
 	"testing"
 )
 
@@ -65,6 +66,8 @@ func TestUnit__FillAndRead(t *testing.T) {
 }
 
 func TestPerf__Iterate(t *testing.T) {
+	debug.SetGCPercent(-1) // Disable GC
+
 	n, m := 4096, 8192
 	mat := matrix.New(n, m)
 
