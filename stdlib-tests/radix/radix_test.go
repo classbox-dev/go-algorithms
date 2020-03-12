@@ -10,7 +10,7 @@ import (
 func randomData(length int, generator func() uint64) []uint64 {
 	data := make([]uint64, length)
 	for i := 0; i < length; i++ {
-		data[i] = utils.Rand.Uint64()
+		data[i] = generator()
 	}
 	return data
 }
