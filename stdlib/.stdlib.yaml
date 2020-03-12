@@ -7,3 +7,4 @@ tests:
   - maxqueue
   - nthelement
   - firstn
+  - radix

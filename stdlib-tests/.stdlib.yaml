@@ -31,3 +31,7 @@ tests:
     description: "Implement `pick.FirstN` function"
     topic: "02-sorting"
     score: 4
+  - name: "radix"
+    description: "Implement `radix` package"
+    topic: "02-sorting"
+    score: 3
