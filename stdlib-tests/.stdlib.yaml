@@ -35,3 +35,7 @@ tests:
     description: "Implement `radix` package"
     topic: "02-sorting"
     score: 3
+  - name: "listsort"
+    description: "Implement `xlist.Sort` function"
+    topic: "02-sorting"
+    score: 4
