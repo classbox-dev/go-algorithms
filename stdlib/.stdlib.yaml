@@ -13,3 +13,4 @@ tests:
   - treebalanced
   - treeinorder
   - treeserialise
+  - bitset
