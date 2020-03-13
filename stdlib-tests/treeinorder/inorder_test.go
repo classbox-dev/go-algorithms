@@ -20,7 +20,7 @@ func TestUnit__BST(t *testing.T) {
 		T.InOrder(func(node *tree.Tree) { output = append(output, node.Value) })
 
 		if !reflect.DeepEqual(output, data) {
-			t.Fatalf("Invalid result.\nOutput: %v\nSerialised tree: %v", output, xtree.Serialise(T))
+			t.Fatalf("Invalid result.\nOutput: %v\nSerialised tree: %v", output, xtree.Encode(T))
 		}
 	}
 }
@@ -34,7 +34,7 @@ func TestUnit__NonBST(t *testing.T) {
 		T.InOrder(func(node *tree.Tree) { output = append(output, node.Value) })
 
 		if !reflect.DeepEqual(output, data) {
-			t.Fatalf("Invalid result.\nOutput: %v\nSerialised tree: %v", output, xtree.Serialise(T))
+			t.Fatalf("Invalid result.\nOutput: %v\nSerialised tree: %v", output, xtree.Encode(T))
 		}
 	}
 }

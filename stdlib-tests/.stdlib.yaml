@@ -51,3 +51,7 @@ tests:
     description: "Implement `tree.Inorder` function"
     topic: "03-trees"
     score: 2
+  - name: "treeserialise"
+    description: "Implement `tree.Decode` and `tree.Tree.Encode` functions"
+    topic: "03-trees"
+    score: 3

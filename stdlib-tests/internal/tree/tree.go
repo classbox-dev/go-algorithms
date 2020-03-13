@@ -1,6 +1,7 @@
 package tree
 
 import (
+	"fmt"
 	"hsecode.com/stdlib/tree"
 	"sort"
 	"strconv"
@@ -52,7 +53,7 @@ func Insert(T **tree.Tree, elem int) bool {
 	return true
 }
 
-func Serialise(T *tree.Tree) []string {
+func Encode(T *tree.Tree) []string {
 	if T == nil {
 		return []string{}
 	}
@@ -84,12 +85,49 @@ func Serialise(T *tree.Tree) []string {
 		depth++
 		level = nextLevel
 	}
+	return Normalise(result)
+}
 
+func Decode(data []string) (*tree.Tree, error) {
+	var root *tree.Tree
+	level := []**tree.Tree{&root}
+	var i int
+	n := len(data)
+
+	for len(level) > 0 {
+		nextLevel := make([]**tree.Tree, 0)
+		for _, node := range level {
+			if i < n {
+				if data[i] != "nil" {
+					if node == nil {
+						return nil, fmt.Errorf("invalid representation: node %v under a nil node", data[i])
+					}
+					val, err := strconv.Atoi(data[i])
+					if err != nil {
+						return nil, fmt.Errorf("one of the items is neither iterger or nil: %v", data[i])
+					}
+					*node = &tree.Tree{val, nil, nil}
+					nextLevel = append(nextLevel, &((*node).Left), &((*node).Right))
+				} else {
+					nextLevel = append(nextLevel, nil, nil)
+				}
+				i++
+			} else {
+				nextLevel = nextLevel[:0]
+				break
+			}
+		}
+		level = nextLevel
+	}
+	return root, nil
+}
+
+func Normalise(data []string) []string {
 	n := 0
-	for i := len(result) - 1; i >= 0 && result[i] == "nil"; i-- {
+	for i := len(data) - 1; i >= 0 && data[i] == "nil"; i-- {
 		n++
 	}
-	return result[:len(result)-n]
+	return data[:len(data)-n]
 }
 
 func MaxDepth(tree *tree.Tree) int {

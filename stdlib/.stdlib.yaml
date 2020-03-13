@@ -12,3 +12,4 @@ tests:
   - lru
   - treebalanced
   - treeinorder
+  - treeserialise
