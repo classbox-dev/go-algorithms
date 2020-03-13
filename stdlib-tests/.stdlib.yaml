@@ -1,57 +1,57 @@
 tests:
   - name: "cmp"
-    description: "Implement `cmp.Min` and `cmp.Max`"
+    description: "`cmp.Min` and `cmp.Max`"
     topic: "00-introduction"
     score: 0
   - name: "primes"
-    description: "Implement `math.NthPrime` function"
+    description: "`math.NthPrime` function"
     topic: "00-introduction"
     score: 2
   - name: "vector"
-    description: "Implement `vector` package"
+    description: "`vector` package"
     topic: "01-data-structures"
     score: 6
   - name: "matrix"
-    description: "Implement `matrix` package"
+    description: "`matrix` package"
     topic: "01-data-structures"
     score: 2
   - name: "ndarray"
-    description: "Implement `ndarray` package"
+    description: "`ndarray` package"
     topic: "01-data-structures"
     score: 2
   - name: "maxqueue"
-    description: "Implement `maxqueue` package"
+    description: "`maxqueue` package"
     topic: "01-data-structures"
     score: 2
   - name: "nthelement"
-    description: "Implement `pick.NthElement` function"
+    description: "`pick.NthElement` function"
     topic: "02-sorting"
     score: 3
   - name: "firstn"
-    description: "Implement `pick.FirstN` function"
+    description: "`pick.FirstN` function"
     topic: "02-sorting"
     score: 4
   - name: "radix"
-    description: "Implement `radix` package"
+    description: "`radix` package"
     topic: "02-sorting"
     score: 3
   - name: "listsort"
-    description: "Implement `xlist.Sort` function"
+    description: "`xlist.Sort` function"
     topic: "02-sorting"
     score: 4
   - name: "lru"
-    description: "Implement `lru` package"
+    description: "`lru` package"
     topic: "04-hashing"
     score: 2
   - name: "treebalanced"
-    description: "Implement `tree.NewBST` function"
+    description: "`tree.NewBST` function"
     topic: "03-trees"
     score: 2
   - name: "treeinorder"
-    description: "Implement `tree.Inorder` function"
+    description: "`tree.InOrder` function"
     topic: "03-trees"
     score: 2
   - name: "treeserialise"
-    description: "Implement `tree.Decode` and `tree.Tree.Encode` functions"
+    description: "`tree.Decode` and `tree.Tree.Encode` functions"
     topic: "03-trees"
     score: 3
