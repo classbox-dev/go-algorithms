@@ -9,3 +9,4 @@ tests:
   - firstn
   - radix
   - listsort
+  - lru

@@ -39,3 +39,7 @@ tests:
     description: "Implement `xlist.Sort` function"
     topic: "02-sorting"
     score: 4
+  - name: "lru"
+    description: "Implement `lru` package"
+    topic: "03-hashing"
+    score: 2
