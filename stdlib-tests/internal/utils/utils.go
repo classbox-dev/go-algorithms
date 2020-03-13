@@ -21,6 +21,18 @@ func SliceRandom(rng int, length int) []int {
 	return output
 }
 
+func Unique(data []int) []int {
+	unique := make([]int, 0, len(data))
+	same := make(map[int]struct{}, len(data))
+	for _, e := range data {
+		if _, ok := same[e]; !ok {
+			same[e] = struct{}{}
+			unique = append(unique, e)
+		}
+	}
+	return unique
+}
+
 func RangeShuffled(a, b int) []int {
 	s := Range(a, b)
 	Rand.Shuffle(len(s), func(i, j int) {

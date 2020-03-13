@@ -13,6 +13,7 @@ stdlib source code can only use the following packages:
 	math/rand
 	math/bits
 	container/heap
+	container/list
 	github.com/cheekybits/genny/generic
 
 Imports from hsecode.com/stdlib itself are allowed.

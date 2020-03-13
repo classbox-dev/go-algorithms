@@ -41,5 +41,13 @@ tests:
     score: 4
   - name: "lru"
     description: "Implement `lru` package"
-    topic: "03-hashing"
+    topic: "04-hashing"
+    score: 2
+  - name: "treebalanced"
+    description: "Implement `tree.NewBST` function"
+    topic: "03-trees"
+    score: 2
+  - name: "treeinorder"
+    description: "Implement `tree.Inorder` function"
+    topic: "03-trees"
     score: 2

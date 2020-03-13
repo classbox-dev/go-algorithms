@@ -10,3 +10,5 @@ tests:
   - radix
   - listsort
   - lru
+  - treebalanced
+  - treeinorder
