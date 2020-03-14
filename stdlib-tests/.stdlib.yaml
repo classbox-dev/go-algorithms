@@ -55,6 +55,10 @@ tests:
     description: "`tree.Decode` and `tree.Tree.Encode` functions"
     topic: "03-trees"
     score: 3
+  - name: "treesym"
+    description: "`tree.Tree.IsSym` function"
+    topic: "03-trees"
+    score: 2
   - name: "bitset"
     description: "`bitset` package"
     topic: "05-sets"
