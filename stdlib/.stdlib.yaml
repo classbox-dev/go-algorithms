@@ -14,5 +14,6 @@ tests:
   - treeserialise
   - treesym
   - treenoleft
+  - treeancestry
   - lru
   - bitset

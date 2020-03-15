@@ -67,3 +67,7 @@ tests:
     description: "`bitset` package"
     topic: "05-sets"
     score: 4
+  - name: "treeancestry"
+    description: "`tree/ancestry` package"
+    topic: "07-graphs"
+    score: 3
