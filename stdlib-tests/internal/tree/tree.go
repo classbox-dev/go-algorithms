@@ -142,13 +142,18 @@ func MaxDepth(tree *tree.Tree) int {
 	return 1 + rm
 }
 
-func InOrder(bst *tree.Tree) []int {
-	if bst == nil {
-		return []int{}
+func InOrder(T *tree.Tree, visit func(node *tree.Tree)) {
+	stack := make([]*tree.Tree, 0)
+	node := T
+	for len(stack) > 0 || node != nil {
+		if node != nil {
+			stack = append(stack, node)
+			node = node.Left
+		} else {
+			node = stack[len(stack)-1]
+			stack = stack[:len(stack)-1]
+			visit(node)
+			node = node.Right
+		}
 	}
-	result := make([]int, 0)
-	result = append(result, InOrder(bst.Left)...)
-	result = append(result, bst.Value)
-	result = append(result, InOrder(bst.Right)...)
-	return result
 }

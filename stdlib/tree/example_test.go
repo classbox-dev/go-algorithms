@@ -74,3 +74,33 @@ func ExampleTree_Encode() {
 	fmt.Println(T.Encode())
 	// Output: [2 1 3 nil nil nil 10]
 }
+
+func ExampleTree_NoLeft() {
+	// Create BST:
+	//     6
+	//    / \
+	//   2   8
+	//  / \
+	// 1   3
+	T := &tree.Tree{
+		Value: 6,
+		Left:  &tree.Tree{Value: 2, Left: &tree.Tree{Value: 1}, Right: &tree.Tree{Value: 3}},
+		Right: &tree.Tree{Value: 8},
+	}
+
+	// Equivalent BST without left subtrees
+	R := T.NoLeft()
+
+	// Print all nodes
+	for R != nil {
+		fmt.Println(R.Value)
+		R = R.Right
+	}
+
+	// Output:
+	// 1
+	// 2
+	// 3
+	// 6
+	// 8
+}

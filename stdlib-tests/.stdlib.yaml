@@ -59,6 +59,10 @@ tests:
     description: "`tree.Tree.IsSym` function"
     topic: "03-trees"
     score: 2
+  - name: "treenoleft"
+    description: "`tree.Tree.NoLeft` function"
+    topic: "03-trees"
+    score: 2
   - name: "bitset"
     description: "`bitset` package"
     topic: "05-sets"

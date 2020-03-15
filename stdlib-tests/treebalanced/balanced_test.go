@@ -17,7 +17,8 @@ func TestUnit__Random(t *testing.T) {
 		sort.Ints(unique)
 
 		bst := tree.NewBST(elements)
-		inorder := xtree.InOrder(bst)
+		inorder := make([]int, 0, len(elements))
+		xtree.InOrder(bst, func(node *tree.Tree) { inorder = append(inorder, node.Value) })
 
 		if !reflect.DeepEqual(inorder, unique) {
 			t.Fatalf("The tree contains wrong elements, duplicates, or is not a valid BST.\nInput: %v", elements)

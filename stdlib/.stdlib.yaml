@@ -9,9 +9,10 @@ tests:
   - firstn
   - radix
   - listsort
-  - lru
   - treebalanced
   - treeinorder
   - treeserialise
   - treesym
+  - treenoleft
+  - lru
   - bitset
