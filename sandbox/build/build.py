@@ -12,6 +12,7 @@ import shutil
 import subprocess
 import sys
 import tempfile
+import textwrap
 import time
 import traceback
 import typing
@@ -161,6 +162,17 @@ def _test(tests: typing.List[str]) -> typing.List[Stage]:
 
 # ------------------------------------------------------------------------------
 
+def wrap(text: str):
+    lines = []
+    width = 70
+    for line in text.splitlines():
+        if len(line) <= width:
+            lines.append(line)
+        else:
+            lines.extend(textwrap.wrap(line, width=width, drop_whitespace=False))
+    return '\n'.join(lines)
+
+
 @command
 def build_tests(args: argparse.Namespace) -> typing.List[Stage]:
     stager = Stager()
@@ -214,7 +226,10 @@ def build_tests(args: argparse.Namespace) -> typing.List[Stage]:
         return stager.stages
 
     with stager("configure") as st:
+
         config_file = src_dir / '.stdlib.yaml'
+        hint = f"To select a test, add its ID to {config_file.name} file at the root of your repository."
+
         try:
             with config_file.open() as f:
                 try:
@@ -238,17 +253,17 @@ def build_tests(args: argparse.Namespace) -> typing.List[Stage]:
         all_tests = set(_all_tests())
         invalid_tests = sorted(set(tests) - all_tests)
         if invalid_tests:
-            st.failure(
-                f'`{config_file.name}` contains invalid test names: '
-                f'{", ".join(invalid_tests)}'
-            )
+            names = ", ".join(invalid_tests)
+            msg = f'{config_file.name} contains invalid test names: {names}'
+            st.failure(wrap(msg))
             return stager.stages
 
         tests = sorted(set(_all_tests()) & set(tests))
         if tests:
-            st.success()
+            msg = f"Selected tests: {', '.join(tests)}\n\n{hint}"
+            st.success(wrap(msg))
         else:
-            st.success("No tests selected")
+            st.success(wrap(f"No tests selected.\n\n{hint}"))
             return stager.stages
 
     stager.stages.extend(_compile(tests, src_dir, args.output_path))
