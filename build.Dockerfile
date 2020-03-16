@@ -13,22 +13,23 @@ RUN \
     mkdir -p /out /opt/bin && \
     chown -R $LOGIN:$LOGIN /out
 
-COPY godocs /opt
-COPY sandbox/build /opt/bin
-RUN \
-    patch -N $(go env GOROOT)/src/fmt/print.go /opt/noprint.patch && \
-    chmod -R +x /opt/bin && \
-    ln -s /opt/bin/build.py /opt/bin/build
-ENTRYPOINT ["/opt/bin/init.sh"]
-
-USER ${UID}
-
 RUN \
     go get golang.org/x/tools/cmd/godoc@v0.0.0-20200110142700-428f1ab0ca03 && \
     go get  github.com/mkuznets/stdlib-linter@v0.3.1 && \
     go get -u github.com/cheekybits/genny@v1.0.0 && \
     go mod download github.com/cheekybits/genny@v1.0.0
 WORKDIR /
+
+COPY godocs /opt
+COPY sandbox/build /opt/bin
+RUN \
+    patch -N $(go env GOROOT)/src/fmt/print.go /opt/noprint.patch && \
+    chmod -R +x /opt/bin && \
+    ln -s /opt/bin/build.py /opt/bin/build && \
+    chown -R $LOGIN:$LOGIN /go
+ENTRYPOINT ["/opt/bin/init.sh"]
+
+USER ${UID}
 
 COPY stdlib-tests /stdlib-tests
 COPY stdlib /stdlib
