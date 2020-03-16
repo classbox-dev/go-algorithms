@@ -71,3 +71,7 @@ tests:
     description: "`tree/ancestry` package"
     topic: "07-graphs"
     score: 3
+  - name: "islands"
+    description: "`graph/islands` package"
+    topic: "07-graphs"
+    score: 3
