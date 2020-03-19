@@ -62,7 +62,7 @@ func Example_metro() {
 
 // Metro returns a graph of stations
 func Metro() *graph.Graph {
-	resp, err := http.Get("http://127.0.0.1:8082/.static/metro.json")
+	resp, err := http.Get("https://hsecode.com/.static/metro.json")
 	if err != nil {
 		panic(err)
 	}
