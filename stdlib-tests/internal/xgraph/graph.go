@@ -8,6 +8,13 @@ import (
 	"strings"
 )
 
+type Cycle uint8
+
+const (
+	ForceCycle Cycle = iota
+	Ordinary
+)
+
 type sentinel struct{}
 
 type IntValue int
@@ -40,7 +47,7 @@ func String(g *graph.Graph) string {
 	return output.String()
 }
 
-func RandomConnected(type_ graph.Type, n int) *graph.Graph {
+func RandomConnected(type_ graph.Type, n int, cycle Cycle, density float64) *graph.Graph {
 	G := graph.New(type_)
 	for src := 1; src <= n; src++ {
 		u := G.AddNode(IntValue(src))
@@ -49,19 +56,38 @@ func RandomConnected(type_ graph.Type, n int) *graph.Graph {
 		weight := utils.Rand.Intn(3 * (n + 1))
 		G.AddEdge(u, v, weight)
 	}
-	nEdges := int(0.4*float64(n)*float64(n-1)) - n - 1
-	for i := 0; i < nEdges; i++ {
-		src, dst := utils.Rand.Intn(n), utils.Rand.Intn(n)
-		if src == dst {
-			i--
-			continue
+
+	if cycle == ForceCycle {
+		cn := make([]int, n)
+		for i := range cn {
+			cn[i] = i + 1
 		}
-		u, v := G.AddNode(IntValue(src)), G.AddNode(IntValue(dst))
-		if u.Edge(v) != nil {
-			i--
-			continue
+		utils.Rand.Shuffle(n, func(i, j int) {
+			cn[i], cn[j] = cn[j], cn[i]
+		})
+		cn = cn[:n/2]
+		for i := 0; i < n/2; i++ {
+			weight := utils.Rand.Intn(3 * (n + 1))
+			G.AddEdge(G.Node(cn[i]), G.Node(cn[(i+1)%(n/2)]), weight)
 		}
-		G.AddEdge(u, v, utils.Rand.Intn(3*(n+1)))
 	}
+
+	if density != 0 {
+		nEdges := int(density*float64(n)*float64(n-1)) - n - 1
+		for i := 0; i < nEdges; i++ {
+			src, dst := utils.Rand.Intn(n), utils.Rand.Intn(n)
+			if src == dst {
+				i--
+				continue
+			}
+			u, v := G.AddNode(IntValue(src)), G.AddNode(IntValue(dst))
+			if u.Edge(v) != nil {
+				i--
+				continue
+			}
+			G.AddEdge(u, v, utils.Rand.Intn(3*(n+1)))
+		}
+	}
+
 	return G
 }

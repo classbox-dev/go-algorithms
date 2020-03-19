@@ -79,3 +79,7 @@ tests:
     description: "`graph` package (without subpackages)"
     topic: "07-graphs"
     score: 4
+  - name: "graphtsort"
+    description: "`graph/tsort` package"
+    topic: "07-graphs"
+    score: 6

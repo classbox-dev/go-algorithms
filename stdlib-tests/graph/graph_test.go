@@ -200,7 +200,7 @@ func TestUnit__EdgesUndirected(t *testing.T) {
 }
 
 func TestPerf__Neighbours(t *testing.T) {
-	g := xgraph.RandomConnected(graph.Directed, 1100)
+	g := xgraph.RandomConnected(graph.Directed, 1100, xgraph.Ordinary, 0.4)
 	g.Nodes(func(u *graph.Node) {
 		u.Neighbours(func(v *graph.Node, edge *graph.Edge) {
 			utils.Use(g.Node(u.Value.ID()))
@@ -208,7 +208,7 @@ func TestPerf__Neighbours(t *testing.T) {
 			utils.Use(u.Edge(v))
 		})
 	})
-	g = xgraph.RandomConnected(graph.Undirected, 1100)
+	g = xgraph.RandomConnected(graph.Undirected, 1100, xgraph.Ordinary, 0.4)
 	g.Nodes(func(u *graph.Node) {
 		u.Neighbours(func(v *graph.Node, edge *graph.Edge) {
 			utils.Use(g.Node(u.Value.ID()))
