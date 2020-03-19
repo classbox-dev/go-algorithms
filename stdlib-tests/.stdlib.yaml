@@ -83,3 +83,7 @@ tests:
     description: "`graph/tsort` package"
     topic: "07-graphs"
     score: 6
+  - name: "graphmst"
+    description: "`graph/mst` package"
+    topic: "07-graphs"
+    score: 6
