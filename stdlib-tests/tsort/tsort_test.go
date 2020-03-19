@@ -1,4 +1,4 @@
-package graphtsort_test
+package tsort_test
 
 import (
 	"hsecode.com/stdlib-tests/internal/utils"

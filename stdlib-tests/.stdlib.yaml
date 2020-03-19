@@ -69,21 +69,25 @@ tests:
     score: 4
   - name: "treeancestry"
     description: "`tree/ancestry` package"
-    topic: "07-graphs"
+    topic: "07-graphs-00"
     score: 3
   - name: "islands"
     description: "`graph/islands` package"
-    topic: "07-graphs"
+    topic: "07-graphs-01"
     score: 3
   - name: "graph"
     description: "`graph` package (without subpackages)"
-    topic: "07-graphs"
+    topic: "07-graphs-02"
     score: 4
-  - name: "graphtsort"
+  - name: "tsort"
     description: "`graph/tsort` package"
-    topic: "07-graphs"
+    topic: "07-graphs-03"
     score: 6
-  - name: "graphmst"
+  - name: "mst"
     description: "`graph/mst` package"
-    topic: "07-graphs"
+    topic: "07-graphs-04"
+    score: 6
+  - name: "dijkstra"
+    description: "`graph/dijkstra` package"
+    topic: "07-graphs-05"
     score: 6

@@ -1,4 +1,4 @@
-package graphmst_test
+package mst_test
 
 import (
 	"gonum.org/v1/gonum/graph/path"

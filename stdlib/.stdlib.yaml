@@ -19,5 +19,6 @@ tests:
   - bitset
   - islands
   - graph
-  - graphtsort
-  - graphmst
+  - tsort
+  - mst
+  - dijkstra
