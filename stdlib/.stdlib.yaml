@@ -18,3 +18,4 @@ tests:
   - lru
   - bitset
   - islands
+  - graph

@@ -75,3 +75,7 @@ tests:
     description: "`graph/islands` package"
     topic: "07-graphs"
     score: 3
+  - name: "graph"
+    description: "`graph` package (without subpackages)"
+    topic: "07-graphs"
+    score: 4

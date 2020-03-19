@@ -17,7 +17,8 @@ RUN \
     go get golang.org/x/tools/cmd/godoc@v0.0.0-20200110142700-428f1ab0ca03 && \
     go get  github.com/mkuznets/stdlib-linter@v0.3.1 && \
     go get -u github.com/cheekybits/genny@v1.0.0 && \
-    go mod download github.com/cheekybits/genny@v1.0.0
+    go mod download github.com/cheekybits/genny@v1.0.0 && \
+    go mod download gonum.org/v1/gonum@v0.7.0
 WORKDIR /
 
 COPY godocs /opt
