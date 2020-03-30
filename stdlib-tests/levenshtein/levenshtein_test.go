@@ -82,13 +82,13 @@ func TestUnit__Basic(t *testing.T) {
 		expected := ref.Distance(inp.s1, inp.s2)
 
 		if distance != expected {
-			t.Fatalf("New(\"%v\", \"%v\").Distance() == %v, expected %v", inp.s1, inp.s2, distance, expected)
+			t.Fatalf(`New("%v", "%v").Distance() == %v, expected %v`, inp.s1, inp.s2, distance, expected)
 		}
 		if transcriptDistance(transcript) != expected {
-			t.Fatalf("New(\"%v\", \"%v\").Transcript() is not optimal", inp.s1, inp.s2)
+			t.Fatalf(`New("%v", "%v").Transcript() is not optimal`, inp.s1, inp.s2)
 		}
 		if !transcriptValid(transcript, inp.s1, inp.s2) {
-			t.Fatalf("New(\"%v\", \"%v\").Transcript() is invalid", inp.s1, inp.s2)
+			t.Fatalf(`New("%v", "%v").Transcript() is invalid`, inp.s1, inp.s2)
 		}
 	}
 	runtime.GC()
@@ -108,13 +108,13 @@ func TestUnit__RandomSmall(t *testing.T) {
 			expected := ref.Distance(s1, s2)
 
 			if distance != expected {
-				t.Fatalf("New(\"%v\", \"%v\").Distance() == %v, expected %v", s1, s2, distance, expected)
+				t.Fatalf(`New("%v", "%v").Distance() == %v, expected %v`, s1, s2, distance, expected)
 			}
 			if transcriptDistance(transcript) != expected {
-				t.Fatalf("New(\"%v\", \"%v\").Transcript() is not optimal", s1, s2)
+				t.Fatalf(`New("%v", "%v").Transcript() is not optimal`, s1, s2)
 			}
 			if !transcriptValid(transcript, s1, s2) {
-				t.Fatalf("New(\"%v\", \"%v\").Transcript() is invalid", s1, s2)
+				t.Fatalf(`New("%v", "%v").Transcript() is invalid`, s1, s2)
 			}
 		}
 	}
