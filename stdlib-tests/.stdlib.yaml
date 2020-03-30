@@ -71,6 +71,10 @@ tests:
     description: "`strings/levenshtein` package"
     topic: "06-dynprog"
     score: 4
+  - name: "lcs"
+    description: "`strings.LCS` function"
+    topic: "06-dynprog"
+    score: 3
   - name: "treeancestry"
     description: "`tree/ancestry` package"
     topic: "07-graphs-00"
