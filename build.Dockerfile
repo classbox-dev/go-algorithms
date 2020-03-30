@@ -18,7 +18,8 @@ RUN \
     go get  github.com/mkuznets/stdlib-linter@v0.3.1 && \
     go get -u github.com/cheekybits/genny@v1.0.0 && \
     go mod download github.com/cheekybits/genny@v1.0.0 && \
-    go mod download gonum.org/v1/gonum@v0.7.0
+    go mod download gonum.org/v1/gonum@v0.7.0 && \
+    chown -R $LOGIN:$LOGIN /go
 WORKDIR /
 
 COPY godocs /opt
@@ -26,8 +27,7 @@ COPY sandbox/build /opt/bin
 RUN \
     patch -N $(go env GOROOT)/src/fmt/print.go /opt/noprint.patch && \
     chmod -R +x /opt/bin && \
-    ln -s /opt/bin/build.py /opt/bin/build && \
-    chown -R $LOGIN:$LOGIN /go
+    ln -s /opt/bin/build.py /opt/bin/build
 ENTRYPOINT ["/opt/bin/init.sh"]
 
 USER ${UID}

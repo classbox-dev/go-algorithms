@@ -18,6 +18,7 @@ import traceback
 import typing
 import urllib.request
 import zipfile
+from concurrent import futures
 
 import requests
 import yaml
@@ -146,20 +147,6 @@ def _compile(tests: typing.List[str],
     return stager.stages
 
 
-def _test(tests: typing.List[str]) -> typing.List[Stage]:
-    stager = Stager()
-
-    for test_name in tests:
-        with stager(f"build::{test_name}") as st:
-            _run(
-                ['go', 'test', f'hsecode.com/stdlib-tests/{test_name}'],
-                cwd=str("/stdlib-tests")
-            )
-            st.success(test=test_name)
-
-    return stager.stages
-
-
 # ------------------------------------------------------------------------------
 
 def wrap(text: str):
@@ -277,17 +264,24 @@ def build_baseline(args: argparse.Namespace) -> typing.List[Stage]:
 
 
 def test_all(args: argparse.Namespace):
-    results = _test(_all_tests())
+    def run(name):
+        try:
+            _run(
+                ['go', 'test', f'hsecode.com/stdlib-tests/{name}'],
+                cwd=str("/stdlib-tests")
+            )
+            return True
+        except subprocess.CalledProcessError as exc:
+            print(name)
+            print(exc.output)
+            return False
 
-    if all(r.status == Status.SUCCESS for r in results):
+    with futures.ThreadPoolExecutor(max_workers=8) as pool:
+        results = pool.map(run, _all_tests())
+
+    if all(results):
         print("OK")
         sys.exit(0)
-
-    for stage in results:
-        if stage.status != Status.SUCCESS:
-            print(f"{stage.name}: {stage.status.name}\n")
-            print(stage.output)
-            print()
     sys.exit(1)
 
 
