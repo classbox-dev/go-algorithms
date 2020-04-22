@@ -24,3 +24,4 @@ tests:
   - dijkstra
   - levenshtein
   - lcs
+  - segmentation

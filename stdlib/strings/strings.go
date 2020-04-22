@@ -1,5 +1,16 @@
 package strings
 
+import (
+	"errors"
+)
+
+func max(x, y int) int {
+	if x > y {
+		return x
+	}
+	return y
+}
+
 // LCS returns the longest common subsequence of the given strings.
 func LCS(s1, s2 string) string {
 
@@ -37,9 +48,33 @@ func LCS(s1, s2 string) string {
 	return string(b)
 }
 
-func max(x, y int) int {
-	if x > y {
-		return x
+// Segmentation breaks the given string into words.
+// A 'word' is a non-empty string for which the given isWord function returns true.
+// An error is returned if the segmentation is not possible.
+func Segmentation(s string, isWord func(w string) bool) ([]string, error) {
+	n := len(s)
+	if n == 0 {
+		return []string{}, nil
 	}
-	return y
+	split := make([]int, n+1)
+	split[n] = 1
+	for r := n; r > 0; r-- {
+		if split[r] > 0 {
+			for l := r - 1; l >= 0; l-- {
+				if isWord(s[l:r]) {
+					split[l] = len(s[l:r])
+				}
+			}
+		}
+	}
+	if split[0] == 0 {
+		return nil, errors.New("no segmentation possible")
+	}
+	words := make([]string, 0, 4)
+	for i := 0; i < n; {
+		l := split[i]
+		words = append(words, s[i:i+l])
+		i += l
+	}
+	return words, nil
 }

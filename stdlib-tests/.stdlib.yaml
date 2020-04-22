@@ -75,6 +75,10 @@ tests:
     description: "`strings.LCS` function"
     topic: "06-dynprog"
     score: 3
+  - name: "segmentation"
+    description: "`strings.Segmentation` function"
+    topic: "06-dynprog"
+    score: 3
   - name: "treeancestry"
     description: "`tree/ancestry` package"
     topic: "07-graphs-00"
