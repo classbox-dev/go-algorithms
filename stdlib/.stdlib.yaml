@@ -25,3 +25,4 @@ tests:
   - levenshtein
   - lcs
   - segmentation
+  - fulltext

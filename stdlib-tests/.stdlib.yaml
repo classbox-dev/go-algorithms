@@ -103,3 +103,7 @@ tests:
     description: "`graph/dijkstra` package"
     topic: "07-graphs-05"
     score: 6
+  - name: "fulltext"
+    description: "`strings/fulltext` package"
+    topic: "08-strings"
+    score: 4
