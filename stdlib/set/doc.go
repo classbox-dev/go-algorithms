@@ -1,6 +1,6 @@
 // Package set implements an ordered collection of unique elements with logarithmic operations.
 /*
-Because of generic elements, the set can also be used as ordered dictionary with range loopups.
+Because of generic elements, the set can also be used as ordered dictionary with range lookups.
 
 Iterators
 
@@ -21,6 +21,6 @@ The semantics is optimised for using Next() and Prev() as conditions in for-loop
 Implementation
 
 The reference implementation uses skip-list with the maximum number of pointer levels hard-coded to 26.
-Therefore the set can hold up to 33.6 million elements without losing its logarithmic expected running time for insertions, deletions, and loopups.
+Therefore the set can hold up to 33.6 million elements without losing its logarithmic expected running time for insertions, deletions, and lookups.
 */
 package set

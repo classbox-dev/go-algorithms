@@ -166,8 +166,8 @@ func (s *Set) Delete(e Element) bool {
 	return true
 }
 
-// Find returns an element equivalent to the given from the set, or nil if it is not present.
-// The ok result indicates whether such element was found.
+// Find returns an element from the set that is equivalent to the given one, or nil if such element is not present.
+// The ok result indicates whether the element was found.
 // The running time is O(log N) for N elements.
 func (s *Set) Find(e Element) (Element, bool) {
 	var stack fatNext
@@ -214,8 +214,7 @@ func (s *Set) UpperBound(e Element) *Iterator {
 	return &Iterator{curr: stack[0], head: s.head}
 }
 
-// Len returns the number of element in the set.
-// The running time is O(1).
+// Len returns the number of elements in the set. The running time is O(1).
 func (s *Set) Len() int {
 	return s.length
 }
