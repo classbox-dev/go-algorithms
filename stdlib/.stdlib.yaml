@@ -16,6 +16,7 @@ tests:
   - treenoleft
   - treeancestry
   - lru
+  - set
   - bitset
   - islands
   - graph

@@ -67,6 +67,10 @@ tests:
     description: "`bitset` package"
     topic: "05-sets"
     score: 4
+  - name: "set"
+    description: "`set` package"
+    topic: "05-sets"
+    score: 9
   - name: "levenshtein"
     description: "`strings/levenshtein` package"
     topic: "06-dynprog"
