@@ -1,113 +1,113 @@
 tests:
-  - name: "cmp"
-    description: "`cmp.Min` and `cmp.Max`"
-    topic: "00-introduction"
+  - name: cmp
+    description: '`cmp.Min` and `cmp.Max`'
+    topic: 00-introduction
     score: 0
-  - name: "primes"
-    description: "`math.NthPrime` function"
-    topic: "00-introduction"
-    score: 2
-  - name: "vector"
-    description: "`vector` package"
-    topic: "01-data-structures"
-    score: 6
-  - name: "matrix"
-    description: "`matrix` package"
-    topic: "01-data-structures"
-    score: 2
-  - name: "ndarray"
-    description: "`ndarray` package"
-    topic: "01-data-structures"
-    score: 2
-  - name: "maxqueue"
-    description: "`maxqueue` package"
-    topic: "01-data-structures"
-    score: 2
-  - name: "nthelement"
-    description: "`pick.NthElement` function"
-    topic: "02-sorting"
+  - name: primes
+    description: '`math.NthPrime` function'
+    topic: 00-introduction
     score: 3
-  - name: "firstn"
-    description: "`pick.FirstN` function"
-    topic: "02-sorting"
+  - name: vector
+    description: '`vector` package'
+    topic: 01-data-structures
+    score: 7
+  - name: matrix
+    description: '`matrix` package'
+    topic: 01-data-structures
+    score: 3
+  - name: ndarray
+    description: '`ndarray` package'
+    topic: 01-data-structures
+    score: 3
+  - name: maxqueue
+    description: '`maxqueue` package'
+    topic: 01-data-structures
+    score: 3
+  - name: nthelement
+    description: '`pick.NthElement` function'
+    topic: 02-sorting
     score: 4
-  - name: "radix"
-    description: "`radix` package"
-    topic: "02-sorting"
-    score: 3
-  - name: "listsort"
-    description: "`xlist.Sort` function"
-    topic: "02-sorting"
+  - name: firstn
+    description: '`pick.FirstN` function'
+    topic: 02-sorting
+    score: 5
+  - name: radix
+    description: '`radix` package'
+    topic: 02-sorting
     score: 4
-  - name: "lru"
-    description: "`lru` package"
-    topic: "04-hashing"
-    score: 2
-  - name: "treebalanced"
-    description: "`tree.NewBST` function"
-    topic: "03-trees"
-    score: 2
-  - name: "treeinorder"
-    description: "`tree.InOrder` function"
-    topic: "03-trees"
-    score: 2
-  - name: "treeserialise"
-    description: "`tree.Decode` and `tree.Tree.Encode` functions"
-    topic: "03-trees"
+  - name: listsort
+    description: '`xlist.Sort` function'
+    topic: 02-sorting
+    score: 5
+  - name: lru
+    description: '`lru` package'
+    topic: 04-hashing
     score: 3
-  - name: "treesym"
-    description: "`tree.Tree.IsSym` function"
-    topic: "03-trees"
-    score: 2
-  - name: "treenoleft"
-    description: "`tree.Tree.NoLeft` function"
-    topic: "03-trees"
-    score: 2
-  - name: "bitset"
-    description: "`bitset` package"
-    topic: "05-sets"
+  - name: treebalanced
+    description: '`tree.NewBST` function'
+    topic: 03-trees
+    score: 3
+  - name: treeinorder
+    description: '`tree.InOrder` function'
+    topic: 03-trees
+    score: 3
+  - name: treeserialise
+    description: '`tree.Decode` and `tree.Tree.Encode` functions'
+    topic: 03-trees
     score: 4
-  - name: "set"
-    description: "`set` package"
-    topic: "05-sets"
-    score: 9
-  - name: "levenshtein"
-    description: "`strings/levenshtein` package"
-    topic: "06-dynprog"
+  - name: treesym
+    description: '`tree.Tree.IsSym` function'
+    topic: 03-trees
+    score: 3
+  - name: treenoleft
+    description: '`tree.Tree.NoLeft` function'
+    topic: 03-trees
+    score: 3
+  - name: bitset
+    description: '`bitset` package'
+    topic: 05-sets
+    score: 5
+  - name: set
+    description: '`set` package'
+    topic: 05-sets
+    score: 10
+  - name: levenshtein
+    description: '`strings/levenshtein` package'
+    topic: 06-dynprog
+    score: 5
+  - name: lcs
+    description: '`strings.LCS` function'
+    topic: 06-dynprog
     score: 4
-  - name: "lcs"
-    description: "`strings.LCS` function"
-    topic: "06-dynprog"
-    score: 3
-  - name: "segmentation"
-    description: "`strings.Segmentation` function"
-    topic: "06-dynprog"
-    score: 3
-  - name: "treeancestry"
-    description: "`tree/ancestry` package"
-    topic: "07-graphs-00"
-    score: 3
-  - name: "islands"
-    description: "`graph/islands` package"
-    topic: "07-graphs-01"
-    score: 3
-  - name: "graph"
-    description: "`graph` package (without subpackages)"
-    topic: "07-graphs-02"
+  - name: segmentation
+    description: '`strings.Segmentation` function'
+    topic: 06-dynprog
     score: 4
-  - name: "tsort"
-    description: "`graph/tsort` package"
-    topic: "07-graphs-03"
-    score: 6
-  - name: "mst"
-    description: "`graph/mst` package"
-    topic: "07-graphs-04"
-    score: 6
-  - name: "dijkstra"
-    description: "`graph/dijkstra` package"
-    topic: "07-graphs-05"
-    score: 6
-  - name: "fulltext"
-    description: "`strings/fulltext` package"
-    topic: "08-strings"
+  - name: treeancestry
+    description: '`tree/ancestry` package'
+    topic: 07-graphs-00
     score: 4
+  - name: islands
+    description: '`graph/islands` package'
+    topic: 07-graphs-01
+    score: 4
+  - name: graph
+    description: '`graph` package (without subpackages)'
+    topic: 07-graphs-02
+    score: 5
+  - name: tsort
+    description: '`graph/tsort` package'
+    topic: 07-graphs-03
+    score: 7
+  - name: mst
+    description: '`graph/mst` package'
+    topic: 07-graphs-04
+    score: 7
+  - name: dijkstra
+    description: '`graph/dijkstra` package'
+    topic: 07-graphs-05
+    score: 7
+  - name: fulltext
+    description: '`strings/fulltext` package'
+    topic: 08-strings
+    score: 5
