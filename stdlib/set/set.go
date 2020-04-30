@@ -167,7 +167,7 @@ func (s *Set) Delete(e Element) bool {
 }
 
 // Find returns an element from the set that is equivalent to the given one, or nil if such element is not present.
-// The ok result indicates whether the element was found.
+// The boolean indicates whether the element was found.
 // The running time is O(log N) for N elements.
 func (s *Set) Find(e Element) (Element, bool) {
 	var stack fatNext
