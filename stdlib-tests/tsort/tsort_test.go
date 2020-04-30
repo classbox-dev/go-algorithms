@@ -39,24 +39,30 @@ func TestUnit__Random(t *testing.T) {
 	for i := 0; i < 400; i += 5 {
 		n := i + 3
 		g := xgraph.RandomConnected(graph.Directed, n, xgraph.Ordinary, 0)
+
 		ordering, err := tsort.New(g)
 		if err != nil {
 			t.Fatal("tsort.New() returned unexpected error")
 		}
-		uniq := make(map[*graph.Node]struct{})
-		pos := make(map[*graph.Node]int)
+
+		uniq := make(map[graph.Node]struct{})
+		pos := make(map[graph.Node]int)
+
 		for i, node := range ordering {
 			uniq[node] = struct{}{}
 			pos[node] = i
 		}
+
 		nNodes := 0
-		g.Nodes(func(_ *graph.Node) {
+		g.Nodes(func(_ graph.Node) {
 			nNodes++
 		})
+
 		if len(uniq) != nNodes {
 			t.Fatal("tsort.New() returned less nodes than expected")
 		}
-		g.Edges(func(u, v *graph.Node, e *graph.Edge) {
+
+		g.Edges(func(u, v graph.Node, _ interface{}) {
 			if pos[u] > pos[v] {
 				t.Fatal("tsort.New() returned an invalid topological ordering")
 			}

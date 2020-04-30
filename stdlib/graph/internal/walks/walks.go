@@ -13,7 +13,7 @@ const (
 )
 
 type DFS struct {
-	Nodes    map[*graph.Node]*DFSItem
+	Nodes    map[int]*DFSItem
 	HasCycle bool
 }
 
@@ -23,51 +23,59 @@ type DFSItem struct {
 	Exit   int
 }
 
-func NewDFS(g *graph.Graph, f func(*graph.Node)) *DFS {
+func NewDFS(g *graph.Graph, f func(graph.Node)) *DFS {
 	dfs := new(DFS)
-	dfs.Nodes = make(map[*graph.Node]*DFSItem, 0)
+	dfs.Nodes = make(map[int]*DFSItem)
 
-	g.Nodes(func(node *graph.Node) {
-		dfs.Nodes[node] = &DFSItem{Colour: White}
+	g.Nodes(func(node graph.Node) {
+		dfs.Nodes[node.ID()] = &DFSItem{Colour: White}
 	})
 	n := len(dfs.Nodes)
 	time := 0
-	stack := make([]*graph.Node, 0, n)
+	stack := make([]int, 0, n)
 
-	g.Nodes(func(node *graph.Node) {
-		if dfs.Nodes[node].Colour != White {
+	g.Nodes(func(node graph.Node) {
+		if dfs.Nodes[node.ID()].Colour != White {
 			return
 		}
-		stack = append(stack, node)
+
+		stack = append(stack, node.ID())
+
 		for len(stack) > 0 {
 			xn := stack[len(stack)-1]
 			item := dfs.Nodes[xn]
+
 			switch item.Colour {
+
 			case White:
 				item.Enter = time
 				time++
 				f(node) // visit time!
 				item.Colour = Grey
-				xn.Neighbours(func(node *graph.Node, edge *graph.Edge) {
-					if node.Edge(xn) != nil && g.Type == graph.Undirected {
+
+				g.Neighbours(xn, func(node graph.Node, data interface{}) {
+					// skip back edges in undirected graphs
+					if _, ok := g.Edge(node.ID(), xn); ok && g.Type == graph.Undirected {
 						return
 					}
-
-					switch dfs.Nodes[node].Colour {
+					switch dfs.Nodes[node.ID()].Colour {
 					case White:
-						stack = append(stack, node)
+						stack = append(stack, node.ID())
 					case Grey:
 						dfs.HasCycle = true
 					}
 				})
+
 			case Grey:
 				time++
 				stack = stack[0 : len(stack)-1]
 				item.Exit = time
 				item.Colour = Black
+
 			default:
 				stack = stack[:len(stack)-1]
 			}
+
 		}
 	})
 	return dfs

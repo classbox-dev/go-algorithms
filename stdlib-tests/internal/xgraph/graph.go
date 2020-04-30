@@ -15,8 +15,6 @@ const (
 	Ordinary
 )
 
-type sentinel struct{}
-
 type IntValue int
 
 func (v IntValue) ID() int {
@@ -29,20 +27,13 @@ func String(g *graph.Graph) string {
 	if g.Type == graph.Undirected {
 		left = "<"
 	}
-	nodes := make([]*graph.Node, 0)
-	g.Nodes(func(node *graph.Node) { nodes = append(nodes, node) })
+	nodes := make([]IntValue, 0)
+	g.Nodes(func(node graph.Node) { nodes = append(nodes, node.(IntValue)) })
 	sort.Slice(nodes, func(i, j int) bool {
-		return nodes[i].Value.ID() < nodes[j].Value.ID()
+		return nodes[i].ID() < nodes[j].ID()
 	})
-	edges := make(map[*graph.Edge]sentinel, 0)
-	g.Nodes(func(u *graph.Node) {
-		u.Neighbours(func(v *graph.Node, edge *graph.Edge) {
-			if _, ok := edges[edge]; ok {
-				return
-			}
-			edges[edge] = sentinel{}
-			output.WriteString(fmt.Sprintf("%v %s-[%v]-> %v\n", u.Value, left, edge.Value, v.Value))
-		})
+	g.Edges(func(src, dst graph.Node, data interface{}) {
+		output.WriteString(fmt.Sprintf("%v %s-[%v]-> %v\n", src, left, data, dst))
 	})
 	return output.String()
 }
@@ -50,11 +41,11 @@ func String(g *graph.Graph) string {
 func RandomConnected(type_ graph.Type, n int, cycle Cycle, density float64) *graph.Graph {
 	G := graph.New(type_)
 	for src := 1; src <= n; src++ {
-		u := G.AddNode(IntValue(src))
+		G.AddNode(IntValue(src))
 		dst := utils.Rand.Intn(src)
-		v := G.AddNode(IntValue(dst))
+		G.AddNode(IntValue(dst))
 		weight := utils.Rand.Intn(3 * (n + 1))
-		G.AddEdge(u, v, weight)
+		G.AddEdge(src, dst, weight)
 	}
 
 	if cycle == ForceCycle {
@@ -68,7 +59,7 @@ func RandomConnected(type_ graph.Type, n int, cycle Cycle, density float64) *gra
 		cn = cn[:n/2]
 		for i := 0; i < n/2; i++ {
 			weight := utils.Rand.Intn(3 * (n + 1))
-			G.AddEdge(G.Node(cn[i]), G.Node(cn[(i+1)%(n/2)]), weight)
+			G.AddEdge(cn[i], cn[(i+1)%(n/2)], weight)
 		}
 	}
 
@@ -80,12 +71,13 @@ func RandomConnected(type_ graph.Type, n int, cycle Cycle, density float64) *gra
 				i--
 				continue
 			}
-			u, v := G.AddNode(IntValue(src)), G.AddNode(IntValue(dst))
-			if u.Edge(v) != nil {
+			G.AddNode(IntValue(src))
+			G.AddNode(IntValue(dst))
+			if _, ok := G.Edge(src, dst); ok {
 				i--
 				continue
 			}
-			G.AddEdge(u, v, utils.Rand.Intn(3*(n+1)))
+			G.AddEdge(src, dst, utils.Rand.Intn(3*(n+1)))
 		}
 	}
 

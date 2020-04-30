@@ -34,7 +34,7 @@ func Example_metro() {
 		CSKA         = 241
 	)
 
-	path := dijkstra.New(m, Frunzenskaya, CSKA, func(e *graph.Edge) uint { return e.Value.(uint) })
+	path := dijkstra.New(m, Frunzenskaya, CSKA, func(e interface{}) uint { return e.(uint) })
 	if path == nil {
 		fmt.Println("no path")
 		return
@@ -42,7 +42,7 @@ func Example_metro() {
 
 	fmt.Printf("Time: %v sec\n", path.Weight)
 	for _, p := range path.Nodes {
-		fmt.Println(p.Value.(*Station).Name)
+		fmt.Println(p.(*Station).Name)
 	}
 
 	// Output:
@@ -84,7 +84,7 @@ func Metro() *graph.Graph {
 	}
 
 	for _, link := range metro.Links {
-		g.AddEdge(g.Node(link.From), g.Node(link.To), link.Time)
+		g.AddEdge(link.From, link.To, link.Time)
 	}
 	return g
 }

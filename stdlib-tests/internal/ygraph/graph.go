@@ -19,11 +19,14 @@ func ReferenceWeightedDirected(g *graph.Graph) *simple.WeightedDirectedGraph {
 }
 
 func copyGraph(dst ggraph.WeightedBuilder, src *graph.Graph) {
-	src.Nodes(func(node *graph.Node) {
-		dst.AddNode(simple.Node(node.Value.ID()))
+
+	src.Nodes(func(node graph.Node) {
+		dst.AddNode(simple.Node(node.ID()))
 	})
-	src.Edges(func(u, v *graph.Node, e *graph.Edge) {
-		edge := dst.NewWeightedEdge(simple.Node(u.Value.ID()), simple.Node(v.Value.ID()), float64(e.Value.(int)))
+
+	src.Edges(func(u, v graph.Node, e interface{}) {
+		edge := dst.NewWeightedEdge(simple.Node(u.ID()), simple.Node(v.ID()), float64(e.(int)))
 		dst.SetWeightedEdge(edge)
 	})
+
 }

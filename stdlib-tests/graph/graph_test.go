@@ -29,33 +29,33 @@ func TestUnit__AddNode(t *testing.T) {
 		g.AddNode(data)
 
 		valuesGraph := make([]Data, 0, i+1)
-		g.Nodes(func(node *graph.Node) {
+		g.Nodes(func(node graph.Node) {
 			if node == nil {
-				t.Fatal("Graph.Nodes() yielded nil unexpectedly")
+				t.Fatal("Nodes() yielded nil unexpectedly")
 			}
-			valuesGraph = append(valuesGraph, node.Value.(Data))
+			valuesGraph = append(valuesGraph, node.(Data))
 		})
 
 		sort.Slice(values, func(i, j int) bool { return values[i].Id < values[j].Id })
 		sort.Slice(valuesGraph, func(i, j int) bool { return valuesGraph[i].Id < valuesGraph[j].Id })
 
 		if !reflect.DeepEqual(values, valuesGraph) {
-			t.Fatal("Graph.Nodes() yielded unexpected set of nodes")
+			t.Fatal("Nodes() yielded unexpected set of nodes")
 		}
 		for _, value := range values {
-			x := g.Node(value.Id)
-			if x == nil || x.Value.(Data) != value {
-				t.Fatal("Graph.Node() yielded unexpected node")
+			x, ok := g.Node(value.Id)
+			if !ok || x.(Data) != value {
+				t.Fatal("Node() yielded unexpected node")
 			}
 		}
-		if g.Node(-1) != nil {
-			t.Fatal("Graph.Node() unexpectedly returned a node instead of nil")
+		if _, ok := g.Node(-1); ok {
+			t.Fatal("Node() indicated success for a missing node")
 		}
 	}
 }
 
 func TestUnit__AddNodeOverwrite(t *testing.T) {
-	N := 100
+	N := 10
 	g := graph.New(graph.Undirected)
 
 	values := make([]Data, 0, N)
@@ -70,47 +70,51 @@ func TestUnit__AddNodeOverwrite(t *testing.T) {
 	}
 
 	valuesGraph := make([]Data, 0, N)
-	g.Nodes(func(node *graph.Node) {
+	g.Nodes(func(node graph.Node) {
 		if node == nil {
-			t.Fatal("Graph.Nodes() yielded nil unexpectedly")
+			t.Fatal("Nodes() yielded nil unexpectedly")
 		}
-		valuesGraph = append(valuesGraph, node.Value.(Data))
+		valuesGraph = append(valuesGraph, node.(Data))
 	})
 
 	sort.Slice(values, func(i, j int) bool { return values[i].Id < values[j].Id })
 	sort.Slice(valuesGraph, func(i, j int) bool { return valuesGraph[i].Id < valuesGraph[j].Id })
 
 	if !reflect.DeepEqual(values, valuesGraph) {
-		t.Fatal("Graph.Nodes() yielded unexpected set of nodes after they have been overwritten by Graph.AddNode()")
+		t.Fatal("Nodes() yielded unexpected set of nodes after they have been overwritten by Graph.AddNode()")
 	}
 
 	for _, value := range values {
-		x := g.Node(value.Id)
-		if x == nil || x.Value.(Data) != value {
-			t.Fatal("Graph.Node() yielded unexpected node")
+		x, ok := g.Node(value.Id)
+		if !ok || x.(Data) != value {
+			t.Fatal("Node() yielded unexpected node")
 		}
 	}
 }
 
 func TestUnit__AddEdgePanic(t *testing.T) {
 	g1 := graph.New(graph.Directed)
-	n1 := g1.AddNode(xgraph.IntValue(1))
+	g1.AddNode(xgraph.IntValue(1))
 
 	g2 := graph.New(graph.Directed)
-	n2 := g2.AddNode(xgraph.IntValue(2))
+	g2.AddNode(xgraph.IntValue(2))
 
-	msg := "Graph.AddEdge() did not panic when called with non-existing nodes"
+	msg := "AddEdge() did not panic when called with missing nodes"
 	utils.ExpectedPanic(t, msg, func() {
-		g1.AddEdge(n1, n2, nil)
+		g1.AddEdge(1, 2, nil)
 	})
 	utils.ExpectedPanic(t, msg, func() {
-		g1.AddEdge(n2, n1, nil)
+		g1.AddEdge(2, 1, nil)
 	})
+}
 
-	msg = "Graph.AddEdge() did not panic when called with a nil node"
+func TestUnit__NeighboursPanic(t *testing.T) {
+	g := graph.New(graph.Directed)
+	g.AddNode(xgraph.IntValue(1))
+
+	msg := "Neighbours() did not panic when called for a missing node"
 	utils.ExpectedPanic(t, msg, func() {
-		var e *graph.Node
-		g1.AddEdge(n1, e, nil)
+		g.Neighbours(2, func(v graph.Node, _ interface{}) {})
 	})
 }
 
@@ -122,98 +126,114 @@ func TestUnit__Edges(t *testing.T) {
 		g.AddNode(xgraph.IntValue(i))
 	}
 
-	edges := make(map[*graph.Node]map[*graph.Node]*graph.Edge, 0)
+	edges := make(map[int]map[int]float64, 0)
 
 	for j := 0; j < eN; j++ {
-		u := g.Node(utils.Rand.Intn(N))
-		v := g.Node(utils.Rand.Intn(N))
-		e := g.AddEdge(u, v, nil)
+		u := utils.Rand.Intn(N)
+		v := utils.Rand.Intn(N)
+		data := utils.Rand.Float64()
+		g.AddEdge(u, v, data)
+
 		if _, ok := edges[u]; !ok {
-			edges[u] = make(map[*graph.Node]*graph.Edge, 0)
+			edges[u] = make(map[int]float64, 0)
 		}
-		edges[u][v] = e
+		edges[u][v] = data
+
 	}
 
 	for u, adj := range edges {
 		for v, edge := range adj {
-			if u.Edge(v) != edge {
-				t.Fatal("Node.Edge() yielded unexpected edge")
+			data, ok := g.Edge(u, v)
+			if !ok {
+				t.Fatal("Edge() did not find an existing edge")
+			}
+			if data != edge {
+				t.Fatal("Edge() returned unexpected edge data")
 			}
 		}
 	}
 
 	// Traverse all edges via Edges
-	edgesGraph := make(map[*graph.Node]map[*graph.Node]*graph.Edge, 0)
-	g.Edges(func(u, v *graph.Node, e *graph.Edge) {
-		if _, ok := edgesGraph[u]; !ok {
-			edgesGraph[u] = make(map[*graph.Node]*graph.Edge, 0)
+	edgesGraph := make(map[int]map[int]float64, 0)
+
+	g.Edges(func(u, v graph.Node, e interface{}) {
+		if _, ok := edgesGraph[u.ID()]; !ok {
+			edgesGraph[u.ID()] = make(map[int]float64, 0)
 		}
-		edgesGraph[u][v] = e
+		edgesGraph[u.ID()][v.ID()] = e.(float64)
 	})
 
 	if !reflect.DeepEqual(edges, edgesGraph) {
-		t.Fatal("Graph.Edges() yielded unexpected set of nodes")
+		t.Fatal("Edges() yielded unexpected set of nodes")
 	}
 
 	// Traverse all edges via Nodes + Neighbours
-	edgesGraph = make(map[*graph.Node]map[*graph.Node]*graph.Edge, 0)
-	g.Nodes(func(u *graph.Node) {
-		u.Neighbours(func(v *graph.Node, e *graph.Edge) {
-			if _, ok := edgesGraph[u]; !ok {
-				edgesGraph[u] = make(map[*graph.Node]*graph.Edge, 0)
+	edgesGraph = make(map[int]map[int]float64, 0)
+	g.Nodes(func(u graph.Node) {
+		g.Neighbours(u.ID(), func(v graph.Node, e interface{}) {
+			if _, ok := edgesGraph[u.ID()]; !ok {
+				edgesGraph[u.ID()] = make(map[int]float64, 0)
 			}
-			edgesGraph[u][v] = e
+			edgesGraph[u.ID()][v.ID()] = e.(float64)
 		})
 	})
-
 	if !reflect.DeepEqual(edges, edgesGraph) {
-		t.Fatal("Graph.Nodes() + Node.Neighbours() yielded unexpected set of nodes")
+		t.Fatal("Nodes()+Neighbours() yielded unexpected set of nodes")
 	}
 
-	extra := g.AddNode(xgraph.IntValue(2 * N))
-	if g.Node(0).Edge(extra) != nil {
-		t.Fatal("Node.Edge() unexpectedly returned a node instead of nil")
+	g.AddNode(xgraph.IntValue(2 * N))
+	if _, ok := g.Edge(0, 2*N); ok {
+		t.Fatal("Edge() indicated success for a missing edge")
+	}
+
+	if _, ok := g.Edge(2*N+1, 2*N+2); ok {
+		t.Fatal("Edge() indicated success for a missing node")
 	}
 }
 
 func TestUnit__EdgesUndirected(t *testing.T) {
 	g := graph.New(graph.Undirected)
-	a, b := g.AddNode(xgraph.IntValue(42)), g.AddNode(xgraph.IntValue(43))
-	g.AddEdge(a, b, nil)
+	g.AddNode(xgraph.IntValue(42))
+	g.AddNode(xgraph.IntValue(43))
+	g.AddEdge(42, 43, nil)
 	c := 0
-	g.Edges(func(u, v *graph.Node, e *graph.Edge) {
+	g.Edges(func(u, v graph.Node, e interface{}) {
 		c++
 	})
 	if c != 1 {
-		t.Fatalf("Graph.Edges() yielded %v edges for a 1-edge undirected graph", c)
+		t.Fatalf("Edges() yielded %v edges for a 1-edge undirected graph", c)
 	}
 
 	c = 0
-	g.Nodes(func(u *graph.Node) {
-		u.Neighbours(func(v *graph.Node, e *graph.Edge) {
+	g.Nodes(func(u graph.Node) {
+		g.Neighbours(u.ID(), func(v graph.Node, e interface{}) {
 			c++
 		})
 	})
 	if c != 2 {
-		t.Fatalf("Graph.Nodes() + Node.Neighbours() expected to yield twice for a 1-edge undirected graph, got %v", c)
+		t.Fatalf("Nodes()+Neighbours() expected to yield twice for a 1-edge undirected graph, got %v", c)
 	}
 }
 
 func TestPerf__Neighbours(t *testing.T) {
 	g := xgraph.RandomConnected(graph.Directed, 1100, xgraph.Ordinary, 0.4)
-	g.Nodes(func(u *graph.Node) {
-		u.Neighbours(func(v *graph.Node, edge *graph.Edge) {
-			utils.Use(g.Node(u.Value.ID()))
-			utils.Use(g.Node(v.Value.ID()))
-			utils.Use(u.Edge(v))
+	g.Nodes(func(u graph.Node) {
+		g.Neighbours(u.ID(), func(v graph.Node, edge interface{}) {
+			g.Node(u.ID())
+			n, _ := g.Node(v.ID())
+			utils.Use(n)
+			e, _ := g.Edge(u.ID(), v.ID())
+			utils.Use(e)
 		})
 	})
 	g = xgraph.RandomConnected(graph.Undirected, 1100, xgraph.Ordinary, 0.4)
-	g.Nodes(func(u *graph.Node) {
-		u.Neighbours(func(v *graph.Node, edge *graph.Edge) {
-			utils.Use(g.Node(u.Value.ID()))
-			utils.Use(g.Node(v.Value.ID()))
-			utils.Use(u.Edge(v))
+	g.Nodes(func(u graph.Node) {
+		g.Neighbours(u.ID(), func(v graph.Node, edge interface{}) {
+			g.Node(u.ID())
+			n, _ := g.Node(v.ID())
+			utils.Use(n)
+			e, _ := g.Edge(u.ID(), v.ID())
+			utils.Use(e)
 		})
 	})
 }

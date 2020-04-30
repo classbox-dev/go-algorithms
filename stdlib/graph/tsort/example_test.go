@@ -18,18 +18,12 @@ func Example() {
 	for i := 0; i <= 3; i++ {
 		G.AddNode(Int(i))
 	}
-	G.AddEdge(G.Node(2), G.Node(1), nil)
-	G.AddEdge(G.Node(1), G.Node(0), nil)
-	G.AddEdge(G.Node(3), G.Node(1), nil)
-	G.AddEdge(G.Node(3), G.Node(0), nil)
+	G.AddEdge(2, 1, nil)
+	G.AddEdge(1, 0, nil)
+	G.AddEdge(3, 1, nil)
+	G.AddEdge(3, 0, nil)
 
 	nodes, _ := tsort.New(G)
-	for _, node := range nodes {
-		fmt.Println(node.Value)
-	}
-	// Output:
-	// 3
-	// 2
-	// 1
-	// 0
+	fmt.Println(nodes)
+	// Output: [3 2 1 0]
 }

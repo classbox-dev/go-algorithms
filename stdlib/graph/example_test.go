@@ -24,18 +24,18 @@ func Example() {
 	for i := 1; i <= 5; i++ {
 		G.AddNode(Int(i))
 	}
-	G.AddEdge(G.Node(1), G.Node(2), nil)
-	G.AddEdge(G.Node(2), G.Node(3), nil)
-	G.AddEdge(G.Node(3), G.Node(4), nil)
-	G.AddEdge(G.Node(4), G.Node(5), nil)
-	G.AddEdge(G.Node(5), G.Node(1), nil)
-	G.AddEdge(G.Node(2), G.Node(4), nil)
-	G.AddEdge(G.Node(2), G.Node(5), nil)
+	G.AddEdge(1, 2, nil)
+	G.AddEdge(2, 3, nil)
+	G.AddEdge(3, 4, nil)
+	G.AddEdge(4, 5, nil)
+	G.AddEdge(5, 1, nil)
+	G.AddEdge(2, 4, nil)
+	G.AddEdge(2, 5, nil)
 
 	// Compute neighbour nodes for 2
 	nodes := make([]int, 0)
-	G.Node(2).Neighbours(func(v *graph.Node, e *graph.Edge) {
-		nodes = append(nodes, v.Value.ID())
+	G.Neighbours(2, func(v graph.Node, e interface{}) {
+		nodes = append(nodes, v.ID())
 	})
 
 	sort.Ints(nodes)
@@ -45,35 +45,39 @@ func Example() {
 
 func ExampleGraph_Edges_undirected() {
 	ug := graph.New(graph.Undirected)
-	ug.AddEdge(ug.AddNode(Int(2)), ug.AddNode(Int(3)), "single edge")
-	ug.Edges(func(u, v *graph.Node, e *graph.Edge) {
-		fmt.Println(u.Value, v.Value, e.Value)
+	ug.AddNode(Int(2))
+	ug.AddNode(Int(3))
+
+	ug.AddEdge(2, 3, "single edge")
+	ug.Edges(func(u, v graph.Node, e interface{}) {
+		fmt.Println(u, v, e)
 	})
 	// Output: 2 3 single edge
 }
 
 func ExampleNode_Edge() {
 	g := graph.New(graph.Directed)
+	g.AddNode(Int(2))
+	g.AddNode(Int(3))
 
-	u, v := g.AddNode(Int(2)), g.AddNode(Int(3))
-	g.AddEdge(u, v, "some edge")
+	g.AddEdge(2, 3, "edge-data")
 
-	fmt.Println(u.Edge(v).Value)
-	fmt.Println(v.Edge(u))
+	fmt.Println(g.Edge(2, 3))
+	fmt.Println(g.Edge(3, 2))
 	// Output:
-	// some edge
-	// <nil>
+	// edge-data true
+	// <nil> false
 }
 
 func ExampleGraph_Node() {
 	g := graph.New(graph.Directed)
 	g.AddNode(Int(2))
 
-	fmt.Println(g.Node(2).Value)
+	fmt.Println(g.Node(2))
 	fmt.Println(g.Node(8))
 	// Output:
-	// 2
-	// <nil>
+	// 2 true
+	// <nil> false
 }
 
 func ExampleGraph_Nodes() {
@@ -81,8 +85,8 @@ func ExampleGraph_Nodes() {
 	g.AddNode(Int(2))
 	g.AddNode(Int(3))
 
-	g.Nodes(func(node *graph.Node) {
-		fmt.Println(node.Value)
+	g.Nodes(func(node graph.Node) {
+		fmt.Println(node)
 	})
 	// Output:
 	// 2
@@ -91,12 +95,14 @@ func ExampleGraph_Nodes() {
 
 func ExampleGraph_Edges_directed() {
 	g := graph.New(graph.Directed)
-	u, v := g.AddNode(Int(2)), g.AddNode(Int(3))
-	g.AddEdge(u, v, "forward edge")
-	g.AddEdge(v, u, "backward edge")
+	g.AddNode(Int(2))
+	g.AddNode(Int(3))
 
-	g.Edges(func(u, v *graph.Node, e *graph.Edge) {
-		fmt.Println(u.Value, v.Value, e.Value)
+	g.AddEdge(2, 3, "forward edge")
+	g.AddEdge(3, 2, "backward edge")
+
+	g.Edges(func(u, v graph.Node, e interface{}) {
+		fmt.Println(u, v, e)
 	})
 	// Output:
 	// 2 3 forward edge

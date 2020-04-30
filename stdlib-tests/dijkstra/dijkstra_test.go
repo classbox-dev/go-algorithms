@@ -18,7 +18,7 @@ func TestUnit__Random(t *testing.T) {
 		for j := 0; j < 40; j++ {
 			a, b := utils.Rand.Intn(n)+1, utils.Rand.Intn(n)+1
 
-			p := dijkstra.New(g, a, b, func(edge *graph.Edge) uint { return uint(edge.Value.(int)) })
+			p := dijkstra.New(g, a, b, func(edge interface{}) uint { return uint(edge.(int)) })
 			_, correctWeight := path.DijkstraFrom(ref.Node(int64(a)), ref).To(int64(b))
 
 			if p == nil {
@@ -27,12 +27,14 @@ func TestUnit__Random(t *testing.T) {
 				}
 				continue
 			}
+
 			for i := 0; i < len(p.Nodes)-1; i++ {
-				if p.Nodes[i].Edge(p.Nodes[i+1]) == nil {
+				if _, ok := g.Edge(p.Nodes[i].ID(), p.Nodes[i+1].ID()); !ok {
 					t.Fatal("dijkstra.New() returned a disconnected path")
 				}
 			}
-			if correctWeight != float64(p.Weight) {
+
+			if math.Round(correctWeight) != math.Round(float64(p.Weight)) {
 				t.Fatal("dijkstra.New() returned a path with non-optimal edge sum")
 			}
 		}
@@ -44,7 +46,7 @@ func TestPerf__Random(t *testing.T) {
 		g := xgraph.RandomConnected(graph.Directed, n, xgraph.Ordinary, 0.4)
 		for j := 0; j < 90; j++ {
 			a, b := utils.Rand.Intn(n)+1, utils.Rand.Intn(n)+1
-			p := dijkstra.New(g, a, b, func(edge *graph.Edge) uint { return uint(edge.Value.(int)) })
+			p := dijkstra.New(g, a, b, func(edge interface{}) uint { return uint(edge.(int)) })
 			utils.Use(p)
 		}
 	}

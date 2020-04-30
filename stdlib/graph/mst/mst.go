@@ -8,17 +8,18 @@ import (
 
 const maxInt = int(^uint(0) >> 1)
 
-// New returns a minimum spanning tree of the given undirected graph with regard to the given weight function.
+// New returns a minimum spanning tree of the given undirected graph subject to edge weights.
+// The given weight function turns edge data into an integer weight.
 // Panics if the graph is directed.
-func New(g *graph.Graph, weight func(*graph.Edge) int) *graph.Graph {
+func New(g *graph.Graph, weight func(interface{}) int) *graph.Graph {
 	if g.Type != graph.Undirected {
 		panic("expected undirected graph")
 	}
 
-	hp := &xheap.Nodes{Lookup: make(map[*graph.Node]*xheap.Item, 0)}
+	hp := xheap.New()
 	heap.Init(hp)
 
-	g.Nodes(func(node *graph.Node) {
+	g.Nodes(func(node graph.Node) {
 		heap.Push(hp, &xheap.Item{Node: node, Parent: nil, Key: maxInt})
 	})
 
@@ -26,8 +27,9 @@ func New(g *graph.Graph, weight func(*graph.Edge) int) *graph.Graph {
 	for hp.Len() > 0 {
 		u := heap.Pop(hp).(*xheap.Item)
 
-		u.Node.Neighbours(func(node *graph.Node, edge *graph.Edge) {
-			hi := hp.Lookup[node]
+		g.Neighbours(u.Node.ID(), func(node graph.Node, edge interface{}) {
+			hi := hp.Lookup[node.ID()]
+
 			if hi.Idx != -1 && weight(edge) < hi.Key {
 				hi.Parent = u.Node
 				hi.Key = weight(edge)
@@ -37,13 +39,17 @@ func New(g *graph.Graph, weight func(*graph.Edge) int) *graph.Graph {
 	}
 
 	ng := graph.New(graph.Undirected)
+
 	for _, x := range items {
-		u := ng.AddNode(x.Node.Value)
+		xID := x.Node.ID()
+		ng.AddNode(x.Node)
 		if x.Parent != nil {
-			v := ng.AddNode(x.Parent.Value)
-			e := x.Parent.Edge(x.Node)
-			ng.AddEdge(u, v, e.Value)
+			pID := x.Parent.ID()
+			ng.AddNode(x.Parent)
+			e, _ := g.Edge(pID, xID)
+			ng.AddEdge(pID, xID, e)
 		}
 	}
+
 	return ng
 }

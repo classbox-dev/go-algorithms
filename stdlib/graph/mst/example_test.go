@@ -20,19 +20,19 @@ func Example() {
 	}
 
 	// "Heavy" nodes
-	G.AddEdge(G.Node(0), G.Node(1), 50)
-	G.AddEdge(G.Node(0), G.Node(2), 50)
-	G.AddEdge(G.Node(0), G.Node(3), 30)
+	G.AddEdge(0, 1, 50)
+	G.AddEdge(0, 2, 50)
+	G.AddEdge(0, 3, 30)
 
 	// "Light" nodes
-	G.AddEdge(G.Node(1), G.Node(2), 2)
-	G.AddEdge(G.Node(2), G.Node(3), 5)
-	G.AddEdge(G.Node(3), G.Node(1), 8)
+	G.AddEdge(1, 2, 2)
+	G.AddEdge(2, 3, 5)
+	G.AddEdge(3, 1, 8)
 
-	tree := mst.New(G, func(edge *graph.Edge) int { return edge.Value.(int) })
+	tree := mst.New(G, func(edge interface{}) int { return edge.(int) })
 
-	tree.Edges(func(u, v *graph.Node, e *graph.Edge) {
-		fmt.Println(u.Value, v.Value)
+	tree.Edges(func(u, v graph.Node, _ interface{}) {
+		fmt.Println(u.ID(), v.ID())
 	})
 
 	// Output:

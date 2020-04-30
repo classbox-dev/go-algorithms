@@ -7,24 +7,32 @@ import (
 	"sort"
 )
 
-// New returns one of the possible topological orderings of the provided graph.
-// Error is returned if the given graph is undirected or cyclic.
+// New returns one of the possible topological orderings of the provided directed acyclic graph.
+// Returns an error if the given graph is undirected or cyclic.
 // The function must be implemented non-recursively.
-func New(g *graph.Graph) ([]*graph.Node, error) {
+func New(g *graph.Graph) ([]graph.Node, error) {
 	if g.Type == graph.Undirected {
-		return []*graph.Node{}, errors.New("directed graph expected")
+		return nil, errors.New("directed graph expected")
 	}
-	dfs := walks.NewDFS(g, func(node *graph.Node) {})
+
+	dfs := walks.NewDFS(g, func(node graph.Node) {})
 	if dfs.HasCycle {
-		return []*graph.Node{}, errors.New("cycle detected")
+		return nil, errors.New("cycle detected")
 	}
-	nodes := make([]*graph.Node, 0, len(dfs.Nodes))
-	for node := range dfs.Nodes {
-		nodes = append(nodes, node)
+
+	nodes := make([]int, 0, len(dfs.Nodes))
+	for id := range dfs.Nodes {
+		nodes = append(nodes, id)
 	}
 
 	sort.Slice(nodes, func(i, j int) bool {
 		return dfs.Nodes[nodes[i]].Exit > dfs.Nodes[nodes[j]].Exit
 	})
-	return nodes, nil
+
+	sorted := make([]graph.Node, len(dfs.Nodes))
+	for i, id := range nodes {
+		sorted[i], _ = g.Node(id)
+	}
+
+	return sorted, nil
 }

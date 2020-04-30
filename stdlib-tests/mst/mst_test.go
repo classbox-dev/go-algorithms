@@ -14,10 +14,12 @@ import (
 )
 
 func TestUnit__Directed(t *testing.T) {
+
 	g := xgraph.RandomConnected(graph.Directed, 5, xgraph.Ordinary, 0)
+
 	msg := "mst.New() did not panic for a directed graph"
 	utils.ExpectedPanic(t, msg, func() {
-		mst.New(g, func(edge *graph.Edge) int { return 0 })
+		mst.New(g, func(_ interface{}) int { return 0 })
 	})
 }
 
@@ -29,10 +31,10 @@ func TestUnit__Random(t *testing.T) {
 		b := simple.NewWeightedUndirectedGraph(-1, -1)
 		totalExpected := path.Prim(b, ref)
 
-		ng := mst.New(G, func(edge *graph.Edge) int { return edge.Value.(int) })
+		ng := mst.New(G, func(edge interface{}) int { return edge.(int) })
 
 		total := 0
-		ng.Edges(func(u, v *graph.Node, e *graph.Edge) { total += e.Value.(int) })
+		ng.Edges(func(u, v graph.Node, e interface{}) { total += e.(int) })
 
 		if math.Round(float64(total)) != totalExpected {
 			t.Fatal("mst.New() returned a graph with non-minimal edge sum")
@@ -47,10 +49,13 @@ func TestUnit__Random(t *testing.T) {
 
 func TestPerf__Random(t *testing.T) {
 	for k := 10; k < 150; k += 3 {
+
 		G := xgraph.RandomConnected(graph.Undirected, k, xgraph.Ordinary, 0.3)
+
 		for l := 0; l < 50; l++ {
-			ng := mst.New(G, func(edge *graph.Edge) int { return edge.Value.(int) })
+			ng := mst.New(G, func(edge interface{}) int { return edge.(int) })
 			utils.Use(&ng)
 		}
+
 	}
 }
