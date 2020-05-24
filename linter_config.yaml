@@ -1,3 +1,4 @@
+goroutines_banned: true
 packages:
   - errors
   - fmt
