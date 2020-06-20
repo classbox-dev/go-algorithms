@@ -35,6 +35,7 @@ type Node interface {
 }
 
 // AddNode creates a new node or overwrites an existing one with the same ID.
+// In the latter case, the method preserves edges incident to the node.
 func (g *Graph) AddNode(node Node) {
 	id := node.ID()
 	g.lookup[id] = node
