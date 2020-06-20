@@ -92,6 +92,23 @@ func TestUnit__AddNodeOverwrite(t *testing.T) {
 	}
 }
 
+func TestUnit__AddNodePreservesEdges(t *testing.T) {
+	g := graph.New(graph.Undirected)
+
+	g.AddNode(Data{Id: 100})
+	g.AddNode(Data{Id: 200})
+
+	g.AddEdge(100, 200, "foobar")
+
+	g.AddNode(Data{Id: 100, Payload: 23142938423})
+	g.AddNode(Data{Id: 200, Payload: 23142938423})
+
+	e, ok := g.Edge(100, 200)
+	if !ok || e.(string) != "foobar" {
+		t.Fatal("AddNode() with an existing ID does not preserve incident edges")
+	}
+}
+
 func TestUnit__AddEdgePanic(t *testing.T) {
 	g1 := graph.New(graph.Directed)
 	g1.AddNode(xgraph.IntValue(1))
