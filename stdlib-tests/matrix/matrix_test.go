@@ -66,7 +66,7 @@ func TestUnit__FillAndRead(t *testing.T) {
 }
 
 func TestPerf__Iterate(t *testing.T) {
-	n, m := 4096000, 4
+	n, m := 2096000, 4
 	mat := matrix.New(n, m)
 
 	sum := 0
