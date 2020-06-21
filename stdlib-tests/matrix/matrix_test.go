@@ -1,10 +1,11 @@
 package matrix_test
 
 import (
-	"hsecode.com/stdlib-tests/internal/utils"
-	matrix "hsecode.com/stdlib/matrix/int"
 	"reflect"
 	"testing"
+
+	"hsecode.com/stdlib-tests/internal/utils"
+	matrix "hsecode.com/stdlib/matrix/int"
 )
 
 func TestUnit__RowsCols(t *testing.T) {
@@ -65,15 +66,19 @@ func TestUnit__FillAndRead(t *testing.T) {
 }
 
 func TestPerf__Iterate(t *testing.T) {
-	n, m := 4096, 8192
+	n, m := 4096000, 4
 	mat := matrix.New(n, m)
 
 	sum := 0
-	for c := 0; c < 10; c++ {
-		init := utils.Rand.Int() % 1024
+	for c := 0; c < 30; c++ {
 		for i := 0; i < n; i++ {
 			for j := 0; j < m; j++ {
-				mat.Set(i, j, init+i+j)
+				mat.Set(i, j, 23)
+			}
+		}
+		for i := 0; i < m; i++ {
+			for j := 0; j < n; j++ {
+				mat.Set(j, i, 11)
 			}
 		}
 		for i := 0; i < n; i++ {
