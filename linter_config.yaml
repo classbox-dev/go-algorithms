@@ -15,5 +15,8 @@ package_prefixes:
   - hsecode.com/stdlib
 banned_ids:
 banned_calls:
+  "*":
+    - println
+    - print
   vector:
     - append
