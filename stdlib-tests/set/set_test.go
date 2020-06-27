@@ -530,7 +530,7 @@ func TestPerf__Random(t *testing.T) {
 	l := 0
 
 	sign := -1
-	for i := 0; i < 18; i++ {
+	for i := 0; i < 14; i++ {
 		a := limits[l]
 		b := a + sign*magnituge*10
 		limits[l] = b + sign*100
