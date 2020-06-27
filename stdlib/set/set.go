@@ -199,6 +199,7 @@ func (s *Set) End() *Iterator {
 }
 
 // LowerBound returns an iterator pointing to the first element not less than the given one.
+// If no such element is found, past-the-end (see End()) iterator is returned.
 // The running time is O(log N) for N elements.
 func (s *Set) LowerBound(e Element) *Iterator {
 	var stack fatNext
@@ -207,6 +208,7 @@ func (s *Set) LowerBound(e Element) *Iterator {
 }
 
 // UpperBound returns an iterator pointing to the first element greater than the given one.
+// If no such element is found, past-the-end (see End()) iterator is returned.
 // The running time is O(log N) for N elements.
 func (s *Set) UpperBound(e Element) *Iterator {
 	var stack fatNext
