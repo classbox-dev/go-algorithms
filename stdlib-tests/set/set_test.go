@@ -26,27 +26,34 @@ type I int
 func (v I) Less(other set.Element) bool {
 	return int(v) < int(other.(I))
 }
-
 func (v I) Equal(other set.Element) bool {
 	return int(v) == int(other.(I))
 }
 
 func consume(it *set.Iterator, dir Direction, f func(v int) (stop bool)) {
 	var iter func() bool
+	iterFunc := ""
 	if dir == Forward {
 		iter = func() bool { return it.Next() }
+		iterFunc = "Next()"
 	} else {
 		iter = func() bool { return it.Prev() }
+		iterFunc = "Prev()"
 	}
 	i := 0
 	for iter() && i < hardLimit {
-		if f(int(it.Value().(I))) {
+		v := it.Value()
+		if v == nil {
+			e := fmt.Sprintf("Iterator.Value() returned <nil> after .%s==true", iterFunc)
+			panic(e)
+		}
+		if f(int(v.(I))) {
 			break
 		}
 		i++
 	}
 	if i >= hardLimit {
-		panic(fmt.Sprintf("Infinite loop detected on consuming an iterator"))
+		panic("Infinite loop detected on consuming an iterator")
 	}
 }
 
