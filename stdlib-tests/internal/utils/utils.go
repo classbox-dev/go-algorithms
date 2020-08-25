@@ -9,7 +9,7 @@ import (
 	"testing"
 )
 
-const Rebuild = "rebuild0006"
+const Rebuild = "rebuild0007"
 
 var Rand = rand.New(rand.NewSource(0xDEADBEEF))
 
