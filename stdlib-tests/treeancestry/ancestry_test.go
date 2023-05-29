@@ -1,11 +1,11 @@
 package treeancestry_test
 
 import (
-	"hsecode.com/stdlib-tests/v2/internal/matrix"
-	xtree "hsecode.com/stdlib-tests/v2/internal/tree"
-	"hsecode.com/stdlib-tests/v2/internal/utils"
-	"hsecode.com/stdlib/v2/tree"
-	"hsecode.com/stdlib/v2/tree/ancestry"
+	"hsecode.com/stdlib-tests/internal/matrix"
+	xtree "hsecode.com/stdlib-tests/internal/tree"
+	"hsecode.com/stdlib-tests/internal/utils"
+	"hsecode.com/stdlib/tree"
+	"hsecode.com/stdlib/tree/ancestry"
 	"testing"
 )
 

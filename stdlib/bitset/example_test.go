@@ -2,7 +2,7 @@ package bitset_test
 
 import (
 	"fmt"
-	"hsecode.com/stdlib/v2/bitset"
+	"hsecode.com/stdlib/bitset"
 )
 
 func ExampleBitset_Set() {

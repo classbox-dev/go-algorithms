@@ -2,7 +2,7 @@ package cmp_test
 
 import (
 	// imported package is renamed to avoid conflict with type `int`
-	"hsecode.com/stdlib/v2/cmp"
+	"hsecode.com/stdlib/cmp"
 )
 
 var primes = []int{7, 11, 2, 3, 23, 5}

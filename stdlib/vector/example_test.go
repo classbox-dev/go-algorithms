@@ -3,7 +3,7 @@ package vector_test
 import (
 	// imported package is renamed to avoid conflict with type `int`
 	"fmt"
-	"hsecode.com/stdlib/v2/vector"
+	"hsecode.com/stdlib/vector"
 )
 
 func ExampleVector_Push() {

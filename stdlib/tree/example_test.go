@@ -2,7 +2,7 @@ package tree_test
 
 import (
 	"fmt"
-	"hsecode.com/stdlib/v2/tree"
+	"hsecode.com/stdlib/tree"
 )
 
 func ExampleDecode() {

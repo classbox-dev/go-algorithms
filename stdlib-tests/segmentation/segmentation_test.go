@@ -2,9 +2,9 @@ package segmentation_test
 
 import (
 	"fmt"
-	"hsecode.com/stdlib-tests/v2/internal/rand"
-	"hsecode.com/stdlib-tests/v2/internal/utils"
-	xstrings "hsecode.com/stdlib/v2/strings"
+	"hsecode.com/stdlib-tests/internal/rand"
+	"hsecode.com/stdlib-tests/internal/utils"
+	xstrings "hsecode.com/stdlib/strings"
 	"runtime"
 	"strings"
 	"testing"

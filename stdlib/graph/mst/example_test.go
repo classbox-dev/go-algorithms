@@ -2,8 +2,8 @@ package mst_test
 
 import (
 	"fmt"
-	"hsecode.com/stdlib/v2/graph"
-	"hsecode.com/stdlib/v2/graph/mst"
+	"hsecode.com/stdlib/graph"
+	"hsecode.com/stdlib/graph/mst"
 )
 
 type Int int

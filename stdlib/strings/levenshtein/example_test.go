@@ -2,7 +2,7 @@ package levenshtein_test
 
 import (
 	"fmt"
-	"hsecode.com/stdlib/v2/strings/levenshtein"
+	"hsecode.com/stdlib/strings/levenshtein"
 )
 
 func ExampleLevenshtein_Distance() {

@@ -3,7 +3,7 @@ package ygraph
 import (
 	ggraph "gonum.org/v1/gonum/graph"
 	"gonum.org/v1/gonum/graph/simple"
-	"hsecode.com/stdlib/v2/graph"
+	"hsecode.com/stdlib/graph"
 )
 
 func ReferenceWeightedUndirected(g *graph.Graph) *simple.WeightedUndirectedGraph {

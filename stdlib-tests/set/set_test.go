@@ -2,8 +2,8 @@ package radix_test
 
 import (
 	"fmt"
-	"hsecode.com/stdlib-tests/v2/internal/utils"
-	"hsecode.com/stdlib/v2/set"
+	"hsecode.com/stdlib-tests/internal/utils"
+	"hsecode.com/stdlib/set"
 	"reflect"
 	"runtime"
 	"sort"

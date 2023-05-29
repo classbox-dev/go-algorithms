@@ -3,7 +3,7 @@ package pick_test
 import (
 	// imported package is renamed to avoid conflict with type `int`
 	"fmt"
-	"hsecode.com/stdlib/v2/pick"
+	"hsecode.com/stdlib/pick"
 	"sort"
 )
 

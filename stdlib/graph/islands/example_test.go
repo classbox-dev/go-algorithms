@@ -2,8 +2,8 @@ package islands_test
 
 import (
 	"fmt"
-	"hsecode.com/stdlib/v2/graph/islands"
-	matrix "hsecode.com/stdlib/v2/matrix"
+	"hsecode.com/stdlib/graph/islands"
+	matrix "hsecode.com/stdlib/matrix"
 )
 
 // Three islands

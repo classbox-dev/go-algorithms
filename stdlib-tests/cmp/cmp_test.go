@@ -1,8 +1,8 @@
 package cmp_test
 
 import (
-	"hsecode.com/stdlib-tests/v2/internal/utils"
-	"hsecode.com/stdlib/v2/cmp"
+	"hsecode.com/stdlib-tests/internal/utils"
+	"hsecode.com/stdlib/cmp"
 	"testing"
 )
 

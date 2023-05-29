@@ -2,7 +2,7 @@ package set_test
 
 import (
 	"fmt"
-	"hsecode.com/stdlib/v2/set"
+	"hsecode.com/stdlib/set"
 )
 
 func Example() {

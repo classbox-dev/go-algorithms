@@ -2,8 +2,8 @@ package dijkstra
 
 import (
 	"container/heap"
-	"hsecode.com/stdlib/v2/graph"
-	"hsecode.com/stdlib/v2/graph/internal/xheap"
+	"hsecode.com/stdlib/graph"
+	"hsecode.com/stdlib/graph/internal/xheap"
 )
 
 const maxInt = int(^uint(0) >> 1)

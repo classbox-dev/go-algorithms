@@ -2,10 +2,10 @@ package islands_test
 
 import (
 	"fmt"
-	xislands "hsecode.com/stdlib-tests/v2/internal/islands"
-	"hsecode.com/stdlib-tests/v2/internal/utils"
-	"hsecode.com/stdlib/v2/graph/islands"
-	"hsecode.com/stdlib/v2/matrix"
+	xislands "hsecode.com/stdlib-tests/internal/islands"
+	"hsecode.com/stdlib-tests/internal/utils"
+	"hsecode.com/stdlib/graph/islands"
+	"hsecode.com/stdlib/matrix"
 	"strings"
 	"testing"
 )

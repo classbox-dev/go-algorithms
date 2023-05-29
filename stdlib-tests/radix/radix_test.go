@@ -1,8 +1,8 @@
 package radix_test
 
 import (
-	"hsecode.com/stdlib-tests/v2/internal/utils"
-	"hsecode.com/stdlib/v2/radix"
+	"hsecode.com/stdlib-tests/internal/utils"
+	"hsecode.com/stdlib/radix"
 	"sort"
 	"testing"
 )

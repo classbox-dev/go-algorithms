@@ -1,4 +1,4 @@
-module hsecode.com/stdlib/v2
+module hsecode.com/stdlib
 
 go 1.18
 

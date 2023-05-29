@@ -1,6 +1,6 @@
 package xheap
 
-import "hsecode.com/stdlib/v2/graph"
+import "hsecode.com/stdlib/graph"
 
 type Item struct {
 	Node, Parent graph.Node

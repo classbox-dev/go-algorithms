@@ -2,8 +2,8 @@ package listsort_test
 
 import (
 	"container/list"
-	"hsecode.com/stdlib-tests/v2/internal/utils"
-	"hsecode.com/stdlib/v2/xlist"
+	"hsecode.com/stdlib-tests/internal/utils"
+	"hsecode.com/stdlib/xlist"
 	"sort"
 	"testing"
 )

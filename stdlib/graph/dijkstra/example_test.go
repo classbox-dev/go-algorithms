@@ -3,8 +3,8 @@ package dijkstra_test
 import (
 	"encoding/json"
 	"fmt"
-	"hsecode.com/stdlib/v2/graph"
-	"hsecode.com/stdlib/v2/graph/dijkstra"
+	"hsecode.com/stdlib/graph"
+	"hsecode.com/stdlib/graph/dijkstra"
 	"io/ioutil"
 	"net/http"
 )

@@ -1,8 +1,8 @@
 package nthelement_test
 
 import (
-	"hsecode.com/stdlib-tests/v2/internal/utils"
-	"hsecode.com/stdlib/v2/pick"
+	"hsecode.com/stdlib-tests/internal/utils"
+	"hsecode.com/stdlib/pick"
 	"sort"
 	"testing"
 )

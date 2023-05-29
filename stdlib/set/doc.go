@@ -4,7 +4,18 @@ Because of generic elements, the set can also be used as ordered dictionary with
 
 Iterators
 
-See the diagram visualising set iterators and iteration order: https://hsecode.com/.static/set-iterator.png
+The following diagram demonstrates the behaviour of an iterator that initially points to the value "E":
+
+	                           UpperBound("C")
+	Begin()  LowerBound("C")   LowerBound("D")            End()
+	     │             │       │                            │
+	     ▼             ▼       ▼                            ▼
+	   ┌───┐   ┌───┐   ┌───┐ ┌───┐    ┌───┐        ┌───┐  ┌ ─ ┐
+	   │ A │   │ B │   │ C │ │ E │    │ F │    ... │ Z │
+	   └───┘   └───┘   └───┘ └───┘    └───┘        └───┘  └ ─ ┘
+	      ◀─────  ◀─────      │▲ ──────▶  ─────▶
+	       Prev()  Prev()     └┘   Next() Next()
+	                       Next()
 
 The semantics is optimised for using Next() and Prev() as conditions in for-loops:
 

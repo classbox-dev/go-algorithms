@@ -3,7 +3,7 @@ package graph_test
 import (
 	"fmt"
 
-	"hsecode.com/stdlib/v2/graph"
+	"hsecode.com/stdlib/graph"
 )
 
 func ExampleGraph_Edges_undirected() {

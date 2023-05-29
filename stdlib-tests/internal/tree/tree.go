@@ -2,7 +2,7 @@ package tree
 
 import (
 	"fmt"
-	"hsecode.com/stdlib/v2/tree"
+	"hsecode.com/stdlib/tree"
 	"sort"
 	"strconv"
 )

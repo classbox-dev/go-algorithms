@@ -1,6 +1,6 @@
 package islands
 
-import "hsecode.com/stdlib/v2/matrix"
+import "hsecode.com/stdlib/matrix"
 
 // Count returns the number of islands (contiguous non-zero regions) on the given grid.
 // The function can (and probably should) mutate the grid. Reference solution uses depth-first search.

@@ -3,7 +3,7 @@ package xlist_test
 import (
 	"container/list"
 	"fmt"
-	"hsecode.com/stdlib/v2/xlist"
+	"hsecode.com/stdlib/xlist"
 )
 
 var xs = []int{13, 2, 29, 3, 7, 23, 31}

@@ -2,7 +2,7 @@ package fulltext_test
 
 import (
 	"fmt"
-	"hsecode.com/stdlib/v2/strings/fulltext"
+	"hsecode.com/stdlib/strings/fulltext"
 )
 
 func Example() {

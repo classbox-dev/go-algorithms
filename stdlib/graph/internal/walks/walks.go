@@ -1,7 +1,7 @@
 package walks
 
 import (
-	"hsecode.com/stdlib/v2/graph"
+	"hsecode.com/stdlib/graph"
 )
 
 type Colour uint8

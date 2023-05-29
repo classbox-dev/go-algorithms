@@ -2,11 +2,11 @@ package dijkstra_test
 
 import (
 	"gonum.org/v1/gonum/graph/path"
-	"hsecode.com/stdlib-tests/v2/internal/utils"
-	"hsecode.com/stdlib-tests/v2/internal/xgraph"
-	"hsecode.com/stdlib-tests/v2/internal/ygraph"
-	"hsecode.com/stdlib/v2/graph"
-	"hsecode.com/stdlib/v2/graph/dijkstra"
+	"hsecode.com/stdlib-tests/internal/utils"
+	"hsecode.com/stdlib-tests/internal/xgraph"
+	"hsecode.com/stdlib-tests/internal/ygraph"
+	"hsecode.com/stdlib/graph"
+	"hsecode.com/stdlib/graph/dijkstra"
 	"math"
 	"testing"
 )

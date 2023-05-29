@@ -1,6 +1,6 @@
 package ancestry
 
-import "hsecode.com/stdlib/v2/tree"
+import "hsecode.com/stdlib/tree"
 
 type time struct {
 	exit  int

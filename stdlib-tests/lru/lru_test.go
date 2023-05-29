@@ -2,7 +2,7 @@ package lru_test
 
 import (
 	"fmt"
-	"hsecode.com/stdlib/v2/lru"
+	"hsecode.com/stdlib/lru"
 	"reflect"
 	"strings"
 	"testing"
