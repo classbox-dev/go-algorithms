@@ -4,3 +4,6 @@ all: build.Dockerfile run.Dockerfile
 
 clean:
 	find . -type f \( -name "*.test" -o -name "*.prof" \) -delete
+
+generate:
+	./scripts/generate-docs.sh
