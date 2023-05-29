@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#375EAB">
+
+  <title>maxqueue - Go Documentation Server</title>
+
+<link type="text/css" rel="stylesheet" href="../style.css">
+
+<script>window.initFuncs = [];</script>
+<script src="../jquery.js" defer></script>
+
+
+
+<script>var goVersion = "go1.19.3";</script>
+<script src="../godocs.js" defer></script>
+</head>
+<body>
+
+<div id='lowframe' style="position: fixed; bottom: 0; left: 0; height: 0; width: 100%; border-top: thin solid grey; background-color: white; overflow: auto;">
+...
+</div><!-- #lowframe -->
+
+<div id="topbar" class="wide"><div class="container">
+<div class="top-heading" id="heading-wide">Go Documentation Server</div>
+<div class="top-heading" id="heading-narrow">GoDoc</div>
+<a href="index.html#" id="menu-button"><span id="menu-button-arrow">&#9661;</span></a>
+
+</div></div>
+
+
+
+<div id="page" class="wide">
+<div class="container">
+
+
+  <h1>
+    Package maxqueue
+    <span class="text-muted"></span>
+  </h1>
+
+
+
+
+
+
+
+<div id="nav"></div>
+
+
+<!--
+	Copyright 2009 The Go Authors. All rights reserved.
+	Use of this source code is governed by a BSD-style
+	license that can be found in the LICENSE file.
+-->
+<!--
+	Note: Static (i.e., not template-generated) href and id
+	attributes start with "pkg-" to make it impossible for
+	them to conflict with generated attributes (some of which
+	correspond to Go identifiers).
+-->
+
+	<script>
+	document.ANALYSIS_DATA = null;
+	document.CALLGRAPH = null;
+	</script>
+
+	
+		
+		<div id="short-nav">
+			<dl>
+			<dd><code>import "hsecode.com/stdlib/maxqueue"</code></dd>
+			</dl>
+			<dl>
+			<dd><a href="index.html#pkg-overview" class="overviewLink">Overview</a></dd>
+			<dd><a href="index.html#pkg-index" class="indexLink">Index</a></dd>
+			
+			
+			</dl>
+		</div>
+		<!-- The package's Name is printed as title by the top-level template -->
+		<div id="pkg-overview" class="toggleVisible">
+			<div class="collapsed">
+				<h2 class="toggleButton" title="Click to show Overview section">Overview ▹</h2>
+			</div>
+			<div class="expanded">
+				<h2 class="toggleButton" title="Click to hide Overview section">Overview ▾</h2>
+				<p>Package maxqueue implements FIFO queue with fast queries for the maximal element.
+<p>Max() takes a guaranteed contant time. Push() and Pop() are allowed to run for amortised contant time.
+
+				
+			</div>
+		</div>
+
+		<div id="pkg-index" class="toggleVisible">
+		<div class="collapsed">
+			<h2 class="toggleButton" title="Click to show Index section">Index ▹</h2>
+		</div>
+		<div class="expanded">
+			<h2 class="toggleButton" title="Click to hide Index section">Index ▾</h2>
+
+		<!-- Table of contents for API; must be named manual-nav to turn off auto nav. -->
+			<div id="manual-nav">
+			<dl>
+			
+			
+			
+			
+				
+				<dd><a href="index.html#MaxQueue">type MaxQueue</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="index.html#New">func New[E constraints.Ordered]() *MaxQueue[E]</a></dd>
+				
+				
+					
+					<dd>&nbsp; &nbsp; <a href="index.html#MaxQueue.Max">func (q *MaxQueue[E]) Max() (E, error)</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="index.html#MaxQueue.Pop">func (q *MaxQueue[E]) Pop() (E, error)</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="index.html#MaxQueue.Push">func (q *MaxQueue[E]) Push(value E)</a></dd>
+				
+			
+			
+			</dl>
+			</div><!-- #manual-nav -->
+
+		
+
+		</div><!-- .expanded -->
+		</div><!-- #pkg-index -->
+
+		
+
+		
+		
+		
+		
+			
+			
+			<h2 id="MaxQueue">type MaxQueue
+				<a class="permalink" href="index.html#MaxQueue">&#xb6;</a>
+				
+				
+			</h2>
+			<p>MaxQueue is a FIFO queue that allows fast queries for the maximal element.
+
+			<pre>type MaxQueue[E constraints.Ordered] struct {
+    <span class="comment">// contains filtered or unexported fields</span>
+}
+</pre>
+
+			
+
+			
+
+			
+			
+			
+
+			
+				
+				<h3 id="New">func New
+					<a class="permalink" href="index.html#New">&#xb6;</a>
+					
+					
+				</h3>
+				<pre>func New[E constraints.Ordered]() *MaxQueue[E]</pre>
+				<p>New creates an instance of MaxQueue
+
+				
+				
+			
+
+			
+				
+				<h3 id="MaxQueue.Max">func (*MaxQueue[E]) Max
+					<a class="permalink" href="index.html#MaxQueue.Max">&#xb6;</a>
+					
+					
+				</h3>
+				<pre>func (q *MaxQueue[E]) Max() (E, error)</pre>
+				<p>Max returns the maximal element in constant time.
+Returns an error if the queue is empty.
+
+				
+				
+				
+			
+				
+				<h3 id="MaxQueue.Pop">func (*MaxQueue[E]) Pop
+					<a class="permalink" href="index.html#MaxQueue.Pop">&#xb6;</a>
+					
+					
+				</h3>
+				<pre>func (q *MaxQueue[E]) Pop() (E, error)</pre>
+				<p>Pop removes an element from the queue head in amortised constant time. Returns an error if the queue is empty.
+
+				
+				
+				
+			
+				
+				<h3 id="MaxQueue.Push">func (*MaxQueue[E]) Push
+					<a class="permalink" href="index.html#MaxQueue.Push">&#xb6;</a>
+					
+					
+				</h3>
+				<pre>func (q *MaxQueue[E]) Push(value E)</pre>
+				<p>Push inserts an element to the queue tail in amortised constant time.
+
+				
+				
+				
+			
+		
+	
+
+	
+
+
+
+
+
+
+
+<div id="footer"></div>
+
+</div><!-- .container -->
+</div><!-- #page -->
+</body>
+</html>

@@ -2,7 +2,7 @@
 
 set -e
 
-current_dir=$(pwd)
+repo_dir=$(pwd)
 
 cleanup() {
   echo "Cleaning up..."
@@ -21,6 +21,8 @@ godoc -http=:6060 -links=false -templates=../godocs/static &
 godoc_pid=$!
 
 url="http://127.0.0.1:6060"
+
+# Wait for godoc to start
 for i in {1..10}; do
   response=$(curl --write-out "%{http_code}" --silent --output /dev/null "$url") || true
   if [ "$response" -ne "302" ]; then
@@ -32,12 +34,10 @@ for i in {1..10}; do
   fi
 done
 
-#sleep 200
-
 docs_dir=$(mktemp -d)
 cd "$docs_dir"
-wget -r -np -N -nH --cut-dirs=3 -E -p -k -e robots=off http://127.0.0.1:6060/pkg/hsecode.com/stdlib/v2 || true
+wget -r -np -N -nH --cut-dirs=3 -E -p -k -e robots=off "${url}/pkg/hsecode.com/stdlib" || true
 
-cd "$current_dir"
+cd "$repo_dir"
 rm -rf docs
 mv "$docs_dir" docs

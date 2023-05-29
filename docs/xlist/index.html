@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#375EAB">
+
+  <title>xlist - Go Documentation Server</title>
+
+<link type="text/css" rel="stylesheet" href="../style.css">
+
+<script>window.initFuncs = [];</script>
+<script src="../jquery.js" defer></script>
+
+
+
+<script>var goVersion = "go1.19.3";</script>
+<script src="../godocs.js" defer></script>
+</head>
+<body>
+
+<div id='lowframe' style="position: fixed; bottom: 0; left: 0; height: 0; width: 100%; border-top: thin solid grey; background-color: white; overflow: auto;">
+...
+</div><!-- #lowframe -->
+
+<div id="topbar" class="wide"><div class="container">
+<div class="top-heading" id="heading-wide">Go Documentation Server</div>
+<div class="top-heading" id="heading-narrow">GoDoc</div>
+<a href="index.html#" id="menu-button"><span id="menu-button-arrow">&#9661;</span></a>
+
+</div></div>
+
+
+
+<div id="page" class="wide">
+<div class="container">
+
+
+  <h1>
+    Package xlist
+    <span class="text-muted"></span>
+  </h1>
+
+
+
+
+
+
+
+<div id="nav"></div>
+
+
+<!--
+	Copyright 2009 The Go Authors. All rights reserved.
+	Use of this source code is governed by a BSD-style
+	license that can be found in the LICENSE file.
+-->
+<!--
+	Note: Static (i.e., not template-generated) href and id
+	attributes start with "pkg-" to make it impossible for
+	them to conflict with generated attributes (some of which
+	correspond to Go identifiers).
+-->
+
+	<script>
+	document.ANALYSIS_DATA = null;
+	document.CALLGRAPH = null;
+	</script>
+
+	
+		
+		<div id="short-nav">
+			<dl>
+			<dd><code>import "hsecode.com/stdlib/xlist"</code></dd>
+			</dl>
+			<dl>
+			<dd><a href="index.html#pkg-overview" class="overviewLink">Overview</a></dd>
+			<dd><a href="index.html#pkg-index" class="indexLink">Index</a></dd>
+			
+				<dd><a href="index.html#pkg-examples" class="examplesLink">Examples</a></dd>
+			
+			
+			</dl>
+		</div>
+		<!-- The package's Name is printed as title by the top-level template -->
+		<div id="pkg-overview" class="toggleVisible">
+			<div class="collapsed">
+				<h2 class="toggleButton" title="Click to show Overview section">Overview ▹</h2>
+			</div>
+			<div class="expanded">
+				<h2 class="toggleButton" title="Click to hide Overview section">Overview ▾</h2>
+				<p>Package xlist is a collection of algorithms on container/list linked lists.
+<p>(The only purpose of the &quot;x&quot; prefix is to avoid conflicts with container/list imports.)
+
+				<div id="example__sort" class="toggle">
+	<div class="collapsed">
+		<p class="exampleHeading toggleButton">▹ <span class="text">Example (Sort)</span></p>
+	</div>
+	<div class="expanded">
+		<p class="exampleHeading toggleButton">▾ <span class="text">Example (Sort)</span></p>
+		
+		
+		
+			<p>Code:</p>
+			<pre class="code">package xlist_test
+
+import (
+    &#34;container/list&#34;
+    &#34;fmt&#34;
+    &#34;hsecode.com/stdlib/xlist&#34;
+)
+
+var xs = []int{13, 2, 29, 3, 7, 23, 31}
+
+func Example_sort() {
+    <span class="comment">// Create linked list from slice</span>
+    data := list.New()
+    for _, x := range xs {
+        data.PushBack(x)
+    }
+
+    xlist.Sort(data, func(a, b *list.Element) bool {
+        return a.Value.(int) &lt; b.Value.(int)
+    })
+
+    <span class="comment">// Iterate over sorted list</span>
+    for e := data.Front(); e != nil; e = e.Next() {
+        fmt.Printf(&#34;%v &#34;, e.Value)
+    }
+    <span class="comment">// Output:</span>
+    <span class="comment">// 2 3 7 13 23 29 31</span>
+}
+</pre>
+			
+		
+	</div>
+</div>
+
+			</div>
+		</div>
+
+		<div id="pkg-index" class="toggleVisible">
+		<div class="collapsed">
+			<h2 class="toggleButton" title="Click to show Index section">Index ▹</h2>
+		</div>
+		<div class="expanded">
+			<h2 class="toggleButton" title="Click to hide Index section">Index ▾</h2>
+
+		<!-- Table of contents for API; must be named manual-nav to turn off auto nav. -->
+			<div id="manual-nav">
+			<dl>
+			
+			
+			
+				
+				<dd><a href="index.html#Sort">func Sort(data *list.List, less func(a, b *list.Element) bool)</a></dd>
+			
+			
+			
+			</dl>
+			</div><!-- #manual-nav -->
+
+		
+		<div id="pkg-examples">
+			<h3>Examples</h3>
+			<div class="js-expandAll expandAll collapsed">(Expand All)</div>
+			<dl>
+			
+			<dd><a class="exampleLink" href="index.html#example__sort">Package (Sort)</a></dd>
+			
+			</dl>
+		</div>
+		
+
+		</div><!-- .expanded -->
+		</div><!-- #pkg-index -->
+
+		
+
+		
+		
+		
+			
+			
+			<h2 id="Sort">func Sort
+				<a class="permalink" href="index.html#Sort">&#xb6;</a>
+				
+				
+			</h2>
+			<pre>func Sort(data *list.List, less func(a, b *list.Element) bool)</pre>
+			<p>Sort performs in-place sorting of the given linked list according to the provided less function.
+&quot;In-place&quot; here means that the resulting list can only contain the originally allocated elements with their original values.
+<p>The reference implementation uses a non-recursive variant of merge-sort.
+
+			
+			
+
+		
+		
+	
+
+	
+
+
+
+
+
+
+
+<div id="footer"></div>
+
+</div><!-- .container -->
+</div><!-- #page -->
+</body>
+</html>

@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#375EAB">
+
+  <title>vector - Go Documentation Server</title>
+
+<link type="text/css" rel="stylesheet" href="../style.css">
+
+<script>window.initFuncs = [];</script>
+<script src="../jquery.js" defer></script>
+
+
+
+<script>var goVersion = "go1.19.3";</script>
+<script src="../godocs.js" defer></script>
+</head>
+<body>
+
+<div id='lowframe' style="position: fixed; bottom: 0; left: 0; height: 0; width: 100%; border-top: thin solid grey; background-color: white; overflow: auto;">
+...
+</div><!-- #lowframe -->
+
+<div id="topbar" class="wide"><div class="container">
+<div class="top-heading" id="heading-wide">Go Documentation Server</div>
+<div class="top-heading" id="heading-narrow">GoDoc</div>
+<a href="index.html#" id="menu-button"><span id="menu-button-arrow">&#9661;</span></a>
+
+</div></div>
+
+
+
+<div id="page" class="wide">
+<div class="container">
+
+
+  <h1>
+    Package vector
+    <span class="text-muted"></span>
+  </h1>
+
+
+
+
+
+
+
+<div id="nav"></div>
+
+
+<!--
+	Copyright 2009 The Go Authors. All rights reserved.
+	Use of this source code is governed by a BSD-style
+	license that can be found in the LICENSE file.
+-->
+<!--
+	Note: Static (i.e., not template-generated) href and id
+	attributes start with "pkg-" to make it impossible for
+	them to conflict with generated attributes (some of which
+	correspond to Go identifiers).
+-->
+
+	<script>
+	document.ANALYSIS_DATA = null;
+	document.CALLGRAPH = null;
+	</script>
+
+	
+		
+		<div id="short-nav">
+			<dl>
+			<dd><code>import "hsecode.com/stdlib/vector"</code></dd>
+			</dl>
+			<dl>
+			<dd><a href="index.html#pkg-overview" class="overviewLink">Overview</a></dd>
+			<dd><a href="index.html#pkg-index" class="indexLink">Index</a></dd>
+			
+				<dd><a href="index.html#pkg-examples" class="examplesLink">Examples</a></dd>
+			
+			
+			</dl>
+		</div>
+		<!-- The package's Name is printed as title by the top-level template -->
+		<div id="pkg-overview" class="toggleVisible">
+			<div class="collapsed">
+				<h2 class="toggleButton" title="Click to show Overview section">Overview ▹</h2>
+			</div>
+			<div class="expanded">
+				<h2 class="toggleButton" title="Click to hide Overview section">Overview ▾</h2>
+				<p>Package vector implements dynamic array.
+<h3 id="hdr-Memory_management">Memory management</h3>
+<p>On creation, an underlying slice of the given capacity is allocated.
+<p>On insertion (Push, Insert), new elements are put into unoccupied space of the underlying slice.
+If there is no room, the underlying slice must be expanded by a constant factor α&gt;1. (α=4/3 in the reference implementation.)
+<p>On deletion (Pop, Delete), the underlying slice must be shrinked if only β*capacity (β&lt;1) elements are occupied.
+Note that the threshold (β*capacity) must be strictly smaller than (capacity/α) to avoid repeated growing/shrinking on successive insertions/deletions.
+<p>The growing/shriking strategy must not allow memory leaks: vector with all elements deleted must always have an underlying slice of near-zero length.
+<h3 id="hdr-Restrictions">Restrictions</h3>
+<p>Built-in append() function is not permitted in this package.
+
+				
+			</div>
+		</div>
+
+		<div id="pkg-index" class="toggleVisible">
+		<div class="collapsed">
+			<h2 class="toggleButton" title="Click to show Index section">Index ▹</h2>
+		</div>
+		<div class="expanded">
+			<h2 class="toggleButton" title="Click to hide Index section">Index ▾</h2>
+
+		<!-- Table of contents for API; must be named manual-nav to turn off auto nav. -->
+			<div id="manual-nav">
+			<dl>
+			
+			
+			
+			
+				
+				<dd><a href="index.html#Vector">type Vector</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="index.html#New">func New[E any](cap int) *Vector[E]</a></dd>
+				
+				
+					
+					<dd>&nbsp; &nbsp; <a href="index.html#Vector.Delete">func (a *Vector[E]) Delete(idx int)</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="index.html#Vector.Get">func (a *Vector[E]) Get(idx int) E</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="index.html#Vector.Insert">func (a *Vector[E]) Insert(idx int, x E)</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="index.html#Vector.Pop">func (a *Vector[E]) Pop() E</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="index.html#Vector.Push">func (a *Vector[E]) Push(x E)</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="index.html#Vector.Set">func (a *Vector[E]) Set(idx int, x E)</a></dd>
+				
+			
+			
+			</dl>
+			</div><!-- #manual-nav -->
+
+		
+		<div id="pkg-examples">
+			<h3>Examples</h3>
+			<div class="js-expandAll expandAll collapsed">(Expand All)</div>
+			<dl>
+			
+			<dd><a class="exampleLink" href="index.html#example_Vector_Insert">Vector.Insert</a></dd>
+			
+			<dd><a class="exampleLink" href="index.html#example_Vector_Pop">Vector.Pop</a></dd>
+			
+			<dd><a class="exampleLink" href="index.html#example_Vector_Push">Vector.Push</a></dd>
+			
+			</dl>
+		</div>
+		
+
+		</div><!-- .expanded -->
+		</div><!-- #pkg-index -->
+
+		
+
+		
+		
+		
+		
+			
+			
+			<h2 id="Vector">type Vector
+				<a class="permalink" href="index.html#Vector">&#xb6;</a>
+				
+				
+			</h2>
+			<p>Vector is an implementation of dynamic array with fast insertion to and deletion from the end
+
+			<pre>type Vector[E any] struct {
+    Len int <span class="comment">// actual number of occupied elements in the underlying slice</span>
+    <span class="comment">// contains filtered or unexported fields</span>
+}
+</pre>
+
+			
+
+			
+
+			
+			
+			
+
+			
+				
+				<h3 id="New">func New
+					<a class="permalink" href="index.html#New">&#xb6;</a>
+					
+					
+				</h3>
+				<pre>func New[E any](cap int) *Vector[E]</pre>
+				<p>New creates a new empty Vector with a given capacity
+
+				
+				
+			
+
+			
+				
+				<h3 id="Vector.Delete">func (*Vector[E]) Delete
+					<a class="permalink" href="index.html#Vector.Delete">&#xb6;</a>
+					
+					
+				</h3>
+				<pre>func (a *Vector[E]) Delete(idx int)</pre>
+				<p>Delete removes an element at index idx
+
+				
+				
+				
+			
+				
+				<h3 id="Vector.Get">func (*Vector[E]) Get
+					<a class="permalink" href="index.html#Vector.Get">&#xb6;</a>
+					
+					
+				</h3>
+				<pre>func (a *Vector[E]) Get(idx int) E</pre>
+				<p>Get retrieves an element by index idx
+
+				
+				
+				
+			
+				
+				<h3 id="Vector.Insert">func (*Vector[E]) Insert
+					<a class="permalink" href="index.html#Vector.Insert">&#xb6;</a>
+					
+					
+				</h3>
+				<pre>func (a *Vector[E]) Insert(idx int, x E)</pre>
+				<p>Insert inserts new element before index idx
+
+				
+				<div id="example_Vector_Insert" class="toggle">
+	<div class="collapsed">
+		<p class="exampleHeading toggleButton">▹ <span class="text">Example</span></p>
+	</div>
+	<div class="expanded">
+		<p class="exampleHeading toggleButton">▾ <span class="text">Example</span></p>
+		
+		
+		
+			<p>Code:</p>
+			<pre class="code">vec := vector.New[int](0)
+vec.Push(42)
+vec.Insert(0, 41)
+fmt.Println(vec.Get(0), vec.Get(1))
+<span class="comment"></pre>
+			
+			<p>Output:</p>
+			<pre class="output">41 42
+</pre>
+			
+		
+	</div>
+</div>
+
+				
+			
+				
+				<h3 id="Vector.Pop">func (*Vector[E]) Pop
+					<a class="permalink" href="index.html#Vector.Pop">&#xb6;</a>
+					
+					
+				</h3>
+				<pre>func (a *Vector[E]) Pop() E</pre>
+				<p>Pop deletes and returns an element from the end of the vector
+
+				
+				<div id="example_Vector_Pop" class="toggle">
+	<div class="collapsed">
+		<p class="exampleHeading toggleButton">▹ <span class="text">Example</span></p>
+	</div>
+	<div class="expanded">
+		<p class="exampleHeading toggleButton">▾ <span class="text">Example</span></p>
+		
+		
+		
+			<p>Code:</p>
+			<pre class="code">vec := vector.New[int](0)
+vec.Push(10)
+vec.Push(11)
+fmt.Println(vec.Pop())
+<span class="comment"></pre>
+			
+			<p>Output:</p>
+			<pre class="output">11
+</pre>
+			
+		
+	</div>
+</div>
+
+				
+			
+				
+				<h3 id="Vector.Push">func (*Vector[E]) Push
+					<a class="permalink" href="index.html#Vector.Push">&#xb6;</a>
+					
+					
+				</h3>
+				<pre>func (a *Vector[E]) Push(x E)</pre>
+				<p>Push inserts the given element to the end of the vector
+
+				
+				<div id="example_Vector_Push" class="toggle">
+	<div class="collapsed">
+		<p class="exampleHeading toggleButton">▹ <span class="text">Example</span></p>
+	</div>
+	<div class="expanded">
+		<p class="exampleHeading toggleButton">▾ <span class="text">Example</span></p>
+		
+		
+		
+			<p>Code:</p>
+			<pre class="code">vec := vector.New[int](0)
+for _, p := range []int{2, 3, 5, 7, 11} {
+    vec.Push(p)
+}
+fmt.Println(vec.Get(2))
+<span class="comment"></pre>
+			
+			<p>Output:</p>
+			<pre class="output">5
+</pre>
+			
+		
+	</div>
+</div>
+
+				
+			
+				
+				<h3 id="Vector.Set">func (*Vector[E]) Set
+					<a class="permalink" href="index.html#Vector.Set">&#xb6;</a>
+					
+					
+				</h3>
+				<pre>func (a *Vector[E]) Set(idx int, x E)</pre>
+				<p>Set writes the given element to index idx
+
+				
+				
+				
+			
+		
+	
+
+	
+
+
+
+
+
+
+
+<div id="footer"></div>
+
+</div><!-- .container -->
+</div><!-- #page -->
+</body>
+</html>

@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#375EAB">
+
+  <title>strings - Go Documentation Server</title>
+
+<link type="text/css" rel="stylesheet" href="../style.css">
+
+<script>window.initFuncs = [];</script>
+<script src="../jquery.js" defer></script>
+
+
+
+<script>var goVersion = "go1.19.3";</script>
+<script src="../godocs.js" defer></script>
+</head>
+<body>
+
+<div id='lowframe' style="position: fixed; bottom: 0; left: 0; height: 0; width: 100%; border-top: thin solid grey; background-color: white; overflow: auto;">
+...
+</div><!-- #lowframe -->
+
+<div id="topbar" class="wide"><div class="container">
+<div class="top-heading" id="heading-wide">Go Documentation Server</div>
+<div class="top-heading" id="heading-narrow">GoDoc</div>
+<a href="index.html#" id="menu-button"><span id="menu-button-arrow">&#9661;</span></a>
+
+</div></div>
+
+
+
+<div id="page" class="wide">
+<div class="container">
+
+
+  <h1>
+    Package strings
+    <span class="text-muted"></span>
+  </h1>
+
+
+
+
+
+
+
+<div id="nav"></div>
+
+
+<!--
+	Copyright 2009 The Go Authors. All rights reserved.
+	Use of this source code is governed by a BSD-style
+	license that can be found in the LICENSE file.
+-->
+<!--
+	Note: Static (i.e., not template-generated) href and id
+	attributes start with "pkg-" to make it impossible for
+	them to conflict with generated attributes (some of which
+	correspond to Go identifiers).
+-->
+
+	<script>
+	document.ANALYSIS_DATA = null;
+	document.CALLGRAPH = null;
+	</script>
+
+	
+		
+		<div id="short-nav">
+			<dl>
+			<dd><code>import "hsecode.com/stdlib/strings"</code></dd>
+			</dl>
+			<dl>
+			<dd><a href="index.html#pkg-overview" class="overviewLink">Overview</a></dd>
+			<dd><a href="index.html#pkg-index" class="indexLink">Index</a></dd>
+			
+				<dd><a href="index.html#pkg-examples" class="examplesLink">Examples</a></dd>
+			
+			
+				<dd><a href="index.html#pkg-subdirectories">Subdirectories</a></dd>
+			
+			</dl>
+		</div>
+		<!-- The package's Name is printed as title by the top-level template -->
+		<div id="pkg-overview" class="toggleVisible">
+			<div class="collapsed">
+				<h2 class="toggleButton" title="Click to show Overview section">Overview ▹</h2>
+			</div>
+			<div class="expanded">
+				<h2 class="toggleButton" title="Click to hide Overview section">Overview ▾</h2>
+				<p>Package strings implements various string algorithms.
+
+				
+			</div>
+		</div>
+
+		<div id="pkg-index" class="toggleVisible">
+		<div class="collapsed">
+			<h2 class="toggleButton" title="Click to show Index section">Index ▹</h2>
+		</div>
+		<div class="expanded">
+			<h2 class="toggleButton" title="Click to hide Index section">Index ▾</h2>
+
+		<!-- Table of contents for API; must be named manual-nav to turn off auto nav. -->
+			<div id="manual-nav">
+			<dl>
+			
+			
+			
+				
+				<dd><a href="index.html#LCS">func LCS(s1, s2 string) string</a></dd>
+			
+				
+				<dd><a href="index.html#Segmentation">func Segmentation(s string, isWord func(w string) bool) ([]string, error)</a></dd>
+			
+			
+			
+			</dl>
+			</div><!-- #manual-nav -->
+
+		
+		<div id="pkg-examples">
+			<h3>Examples</h3>
+			<div class="js-expandAll expandAll collapsed">(Expand All)</div>
+			<dl>
+			
+			<dd><a class="exampleLink" href="index.html#example_LCS">LCS</a></dd>
+			
+			</dl>
+		</div>
+		
+
+		</div><!-- .expanded -->
+		</div><!-- #pkg-index -->
+
+		
+
+		
+		
+		
+			
+			
+			<h2 id="LCS">func LCS
+				<a class="permalink" href="index.html#LCS">&#xb6;</a>
+				
+				
+			</h2>
+			<pre>func LCS(s1, s2 string) string</pre>
+			<p>LCS returns the longest common subsequence of the given strings.
+
+			<div id="example_LCS" class="toggle">
+	<div class="collapsed">
+		<p class="exampleHeading toggleButton">▹ <span class="text">Example</span></p>
+	</div>
+	<div class="expanded">
+		<p class="exampleHeading toggleButton">▾ <span class="text">Example</span></p>
+		
+		
+		
+			<p>Code:</p>
+			<pre class="code">fmt.Println(strings.LCS(&#34;vintner&#34;, &#34;writers&#34;))
+fmt.Println(strings.LCS(&#34;ABCD&#34;, &#34;ACBAD&#34;))
+<span class="comment"></pre>
+			
+			<p>Output:</p>
+			<pre class="output">iter
+ABD
+</pre>
+			
+		
+	</div>
+</div>
+
+			
+
+		
+			
+			
+			<h2 id="Segmentation">func Segmentation
+				<a class="permalink" href="index.html#Segmentation">&#xb6;</a>
+				
+				
+			</h2>
+			<pre>func Segmentation(s string, isWord func(w string) bool) ([]string, error)</pre>
+			<p>Segmentation breaks the given string into words.
+A &apos;word&apos; is a non-empty string for which the given isWord function returns true.
+An error is returned if the segmentation is not possible.
+
+			
+			
+
+		
+		
+	
+
+	
+
+
+
+
+
+	
+	
+		<h2 id="pkg-subdirectories">Subdirectories</h2>
+	
+	<div class="pkg-dir">
+		<table>
+			<tr>
+				<th class="pkg-name">Name</th>
+				<th class="pkg-synopsis">Synopsis</th>
+			</tr>
+			
+				<tr>
+				
+					<td class="pkg-name" style="padding-left: 0px;">
+						<a href="fulltext/index.html">fulltext</a>
+					</td>
+				
+					<td class="pkg-synopsis">
+						Package fulltext implements a silly fulltext search.
+					</td>
+				</tr>
+			
+				<tr>
+				
+					<td class="pkg-name" style="padding-left: 0px;">
+						<a href="levenshtein/index.html">levenshtein</a>
+					</td>
+				
+					<td class="pkg-synopsis">
+						Package levenshtein implements functions to compute Levenshtein distance between strings.
+					</td>
+				</tr>
+			
+		</table>
+	</div>
+
+
+
+<div id="footer"></div>
+
+</div><!-- .container -->
+</div><!-- #page -->
+</body>
+</html>

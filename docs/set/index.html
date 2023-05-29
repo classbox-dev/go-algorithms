@@ -1,0 +1,810 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#375EAB">
+
+  <title>set - Go Documentation Server</title>
+
+<link type="text/css" rel="stylesheet" href="../style.css">
+
+<script>window.initFuncs = [];</script>
+<script src="../jquery.js" defer></script>
+
+
+
+<script>var goVersion = "go1.19.3";</script>
+<script src="../godocs.js" defer></script>
+</head>
+<body>
+
+<div id='lowframe' style="position: fixed; bottom: 0; left: 0; height: 0; width: 100%; border-top: thin solid grey; background-color: white; overflow: auto;">
+...
+</div><!-- #lowframe -->
+
+<div id="topbar" class="wide"><div class="container">
+<div class="top-heading" id="heading-wide">Go Documentation Server</div>
+<div class="top-heading" id="heading-narrow">GoDoc</div>
+<a href="index.html#" id="menu-button"><span id="menu-button-arrow">&#9661;</span></a>
+
+</div></div>
+
+
+
+<div id="page" class="wide">
+<div class="container">
+
+
+  <h1>
+    Package set
+    <span class="text-muted"></span>
+  </h1>
+
+
+
+
+
+
+
+<div id="nav"></div>
+
+
+<!--
+	Copyright 2009 The Go Authors. All rights reserved.
+	Use of this source code is governed by a BSD-style
+	license that can be found in the LICENSE file.
+-->
+<!--
+	Note: Static (i.e., not template-generated) href and id
+	attributes start with "pkg-" to make it impossible for
+	them to conflict with generated attributes (some of which
+	correspond to Go identifiers).
+-->
+
+	<script>
+	document.ANALYSIS_DATA = null;
+	document.CALLGRAPH = null;
+	</script>
+
+	
+		
+		<div id="short-nav">
+			<dl>
+			<dd><code>import "hsecode.com/stdlib/set"</code></dd>
+			</dl>
+			<dl>
+			<dd><a href="index.html#pkg-overview" class="overviewLink">Overview</a></dd>
+			<dd><a href="index.html#pkg-index" class="indexLink">Index</a></dd>
+			
+				<dd><a href="index.html#pkg-examples" class="examplesLink">Examples</a></dd>
+			
+			
+			</dl>
+		</div>
+		<!-- The package's Name is printed as title by the top-level template -->
+		<div id="pkg-overview" class="toggleVisible">
+			<div class="collapsed">
+				<h2 class="toggleButton" title="Click to show Overview section">Overview ▹</h2>
+			</div>
+			<div class="expanded">
+				<h2 class="toggleButton" title="Click to hide Overview section">Overview ▾</h2>
+				<p>Package set implements an ordered collection of unique elements with logarithmic operations.
+<p>Because of generic elements, the set can also be used as ordered dictionary with range lookups.
+<h3 id="hdr-Iterators">Iterators</h3>
+<p>The following diagram demonstrates the behaviour of an iterator that initially points to the value &quot;E&quot;:
+<pre>                           UpperBound(&quot;C&quot;)
+Begin()  LowerBound(&quot;C&quot;)   LowerBound(&quot;D&quot;)            End()
+     │             │       │                            │
+     ▼             ▼       ▼                            ▼
+   ┌───┐   ┌───┐   ┌───┐ ┌───┐    ┌───┐        ┌───┐  ┌ ─ ┐
+   │ A │   │ B │   │ C │ │ E │    │ F │    ... │ Z │
+   └───┘   └───┘   └───┘ └───┘    └───┘        └───┘  └ ─ ┘
+      ◀─────  ◀─────      │▲ ──────▶  ─────▶
+       Prev()  Prev()     └┘   Next() Next()
+                       Next()
+</pre>
+<p>The semantics is optimised for using Next() and Prev() as conditions in for-loops:
+<pre>it := s.Begin()
+for it.Next() {
+	it.Value() // in-order iteration through the whole set forward
+}
+
+it := s.End()
+for it.Prev() {
+	it.Value() // in-order iteration through the whole set backward
+}
+</pre>
+<h3 id="hdr-Implementation">Implementation</h3>
+<p>The reference implementation uses skip-list with the maximum number of pointer levels hard-coded to 26.
+Therefore the set can hold up to 33.6 million elements without losing its logarithmic expected running time for insertions, deletions, and lookups.
+
+				<div id="example_" class="toggle">
+	<div class="collapsed">
+		<p class="exampleHeading toggleButton">▹ <span class="text">Example</span></p>
+	</div>
+	<div class="expanded">
+		<p class="exampleHeading toggleButton">▾ <span class="text">Example</span></p>
+		
+		
+		
+			<p>Code:</p>
+			<pre class="code">s := set.New[int]()
+for _, p := range []int{5, 3, 2} {
+    s.Insert(p)
+}
+
+v, ok := s.Find(3) <span class="comment">// Exact lookup</span>
+fmt.Println(v, ok)
+
+it := s.LowerBound(3) <span class="comment">// Range lookup</span>
+for it.Next() {
+    fmt.Println(it.Value())
+}
+
+ok = s.Insert(7)
+fmt.Println(ok)
+
+ok = s.Delete(2)
+fmt.Println(ok)
+
+<span class="comment"></pre>
+			
+			<p>Output:</p>
+			<pre class="output">3 true
+3
+5
+true
+true
+</pre>
+			
+		
+	</div>
+</div>
+
+			</div>
+		</div>
+
+		<div id="pkg-index" class="toggleVisible">
+		<div class="collapsed">
+			<h2 class="toggleButton" title="Click to show Index section">Index ▹</h2>
+		</div>
+		<div class="expanded">
+			<h2 class="toggleButton" title="Click to hide Index section">Index ▾</h2>
+
+		<!-- Table of contents for API; must be named manual-nav to turn off auto nav. -->
+			<div id="manual-nav">
+			<dl>
+			
+			
+			
+			
+				
+				<dd><a href="index.html#Iterator">type Iterator</a></dd>
+				
+				
+					
+					<dd>&nbsp; &nbsp; <a href="index.html#Iterator.Next">func (it *Iterator[E]) Next() bool</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="index.html#Iterator.Prev">func (it *Iterator[E]) Prev() bool</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="index.html#Iterator.Value">func (it *Iterator[E]) Value() E</a></dd>
+				
+			
+				
+				<dd><a href="index.html#Set">type Set</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="index.html#New">func New[E constraints.Ordered]() *Set[E]</a></dd>
+				
+				
+					
+					<dd>&nbsp; &nbsp; <a href="index.html#Set.Begin">func (s *Set[E]) Begin() *Iterator[E]</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="index.html#Set.Delete">func (s *Set[E]) Delete(e E) bool</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="index.html#Set.End">func (s *Set[E]) End() *Iterator[E]</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="index.html#Set.Find">func (s *Set[E]) Find(e E) (E, bool)</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="index.html#Set.Insert">func (s *Set[E]) Insert(e E) bool</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="index.html#Set.Len">func (s *Set[E]) Len() int</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="index.html#Set.LowerBound">func (s *Set[E]) LowerBound(e E) *Iterator[E]</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="index.html#Set.UpperBound">func (s *Set[E]) UpperBound(e E) *Iterator[E]</a></dd>
+				
+			
+			
+			</dl>
+			</div><!-- #manual-nav -->
+
+		
+		<div id="pkg-examples">
+			<h3>Examples</h3>
+			<div class="js-expandAll expandAll collapsed">(Expand All)</div>
+			<dl>
+			
+			<dd><a class="exampleLink" href="index.html#example_">Package</a></dd>
+			
+			<dd><a class="exampleLink" href="index.html#example_Iterator_Value">Iterator.Value</a></dd>
+			
+			<dd><a class="exampleLink" href="index.html#example_Set_Begin">Set.Begin</a></dd>
+			
+			<dd><a class="exampleLink" href="index.html#example_Set_Delete">Set.Delete</a></dd>
+			
+			<dd><a class="exampleLink" href="index.html#example_Set_End">Set.End</a></dd>
+			
+			<dd><a class="exampleLink" href="index.html#example_Set_Find">Set.Find</a></dd>
+			
+			<dd><a class="exampleLink" href="index.html#example_Set_Insert">Set.Insert</a></dd>
+			
+			<dd><a class="exampleLink" href="index.html#example_Set_Len">Set.Len</a></dd>
+			
+			<dd><a class="exampleLink" href="index.html#example_Set_LowerBound_exact">Set.LowerBound (Exact)</a></dd>
+			
+			<dd><a class="exampleLink" href="index.html#example_Set_LowerBound_missing">Set.LowerBound (Missing)</a></dd>
+			
+			<dd><a class="exampleLink" href="index.html#example_Set_UpperBound">Set.UpperBound</a></dd>
+			
+			</dl>
+		</div>
+		
+
+		</div><!-- .expanded -->
+		</div><!-- #pkg-index -->
+
+		
+
+		
+		
+		
+		
+			
+			
+			<h2 id="Iterator">type Iterator
+				<a class="permalink" href="index.html#Iterator">&#xb6;</a>
+				
+				
+			</h2>
+			<p>Iterator is a stateful iterator pointing to a set element or an imaginary &quot;past-the-end&quot; element.
+<p>See the diagram visualising set iterators and iteration order: <a href="https://hsecode.com/.static/set-iterator.png">https://hsecode.com/.static/set-iterator.png</a>
+
+			<pre>type Iterator[E constraints.Ordered] struct {
+    <span class="comment">// contains filtered or unexported fields</span>
+}
+</pre>
+
+			
+
+			
+
+			
+			
+			
+
+			
+
+			
+				
+				<h3 id="Iterator.Next">func (*Iterator[E]) Next
+					<a class="permalink" href="index.html#Iterator.Next">&#xb6;</a>
+					
+					
+				</h3>
+				<pre>func (it *Iterator[E]) Next() bool</pre>
+				<p>Next advances the iterator to the next greater element or,
+if called for the first time, simply initialises the iterator without advancing it.
+Returns true on success, or false if the iteration is finished.
+
+				
+				
+				
+			
+				
+				<h3 id="Iterator.Prev">func (*Iterator[E]) Prev
+					<a class="permalink" href="index.html#Iterator.Prev">&#xb6;</a>
+					
+					
+				</h3>
+				<pre>func (it *Iterator[E]) Prev() bool</pre>
+				<p>Prev advances the iterator to the next smaller element.
+Returns true on success, or false if the iteration is finished.
+
+				
+				
+				
+			
+				
+				<h3 id="Iterator.Value">func (*Iterator[E]) Value
+					<a class="permalink" href="index.html#Iterator.Value">&#xb6;</a>
+					
+					
+				</h3>
+				<pre>func (it *Iterator[E]) Value() E</pre>
+				<p>Value returns an element the iterator is pointing to.
+Panics if neither Next() nor Prev() was called beforehand.
+The return value can only be trusted if the preceding Next() or Prev() returned true.
+
+				
+				<div id="example_Iterator_Value" class="toggle">
+	<div class="collapsed">
+		<p class="exampleHeading toggleButton">▹ <span class="text">Example</span></p>
+	</div>
+	<div class="expanded">
+		<p class="exampleHeading toggleButton">▾ <span class="text">Example</span></p>
+		
+		
+		
+			<p>Code:</p>
+			<pre class="code">s := set.New[int]()
+for _, p := range []int{7, 11, 2, 3, 13, 5} {
+    s.Insert(p)
+}
+it := s.Begin()
+
+<span class="comment">// it.Value() // would panic, iterator is not initialised</span>
+
+it.Next()
+fmt.Println(it.Value())
+<span class="comment"></pre>
+			
+			<p>Output:</p>
+			<pre class="output">2
+</pre>
+			
+		
+	</div>
+</div>
+
+				
+			
+		
+			
+			
+			<h2 id="Set">type Set
+				<a class="permalink" href="index.html#Set">&#xb6;</a>
+				
+				
+			</h2>
+			<p>Set represents an ordered collection of unique elements
+
+			<pre>type Set[E constraints.Ordered] struct {
+    <span class="comment">// contains filtered or unexported fields</span>
+}
+</pre>
+
+			
+
+			
+
+			
+			
+			
+
+			
+				
+				<h3 id="New">func New
+					<a class="permalink" href="index.html#New">&#xb6;</a>
+					
+					
+				</h3>
+				<pre>func New[E constraints.Ordered]() *Set[E]</pre>
+				<p>New creates an empty set
+
+				
+				
+			
+
+			
+				
+				<h3 id="Set.Begin">func (*Set[E]) Begin
+					<a class="permalink" href="index.html#Set.Begin">&#xb6;</a>
+					
+					
+				</h3>
+				<pre>func (s *Set[E]) Begin() *Iterator[E]</pre>
+				<p>Begin returns an iterator pointing to the first (minimum) element of the set.
+The running time is O(log N) for N elements.
+
+				
+				<div id="example_Set_Begin" class="toggle">
+	<div class="collapsed">
+		<p class="exampleHeading toggleButton">▹ <span class="text">Example</span></p>
+	</div>
+	<div class="expanded">
+		<p class="exampleHeading toggleButton">▾ <span class="text">Example</span></p>
+		
+		
+		
+			<p>Code:</p>
+			<pre class="code">s := set.New[int]()
+for _, p := range []int{7, 11, 2, 3, 13, 5} {
+    s.Insert(p)
+}
+it := s.Begin()
+for it.Next() {
+    fmt.Println(it.Value())
+}
+<span class="comment"></pre>
+			
+			<p>Output:</p>
+			<pre class="output">2
+3
+5
+7
+11
+13
+</pre>
+			
+		
+	</div>
+</div>
+
+				
+			
+				
+				<h3 id="Set.Delete">func (*Set[E]) Delete
+					<a class="permalink" href="index.html#Set.Delete">&#xb6;</a>
+					
+					
+				</h3>
+				<pre>func (s *Set[E]) Delete(e E) bool</pre>
+				<p>Delete removes an element equivalent to the given one from the set.
+Does nothing if there is no equivalent element in the set.
+Returns true if the actual deletion happens.
+The running time is O(log N) for N elements.
+
+				
+				<div id="example_Set_Delete" class="toggle">
+	<div class="collapsed">
+		<p class="exampleHeading toggleButton">▹ <span class="text">Example</span></p>
+	</div>
+	<div class="expanded">
+		<p class="exampleHeading toggleButton">▾ <span class="text">Example</span></p>
+		
+		
+		
+			<p>Code:</p>
+			<pre class="code">s := set.New[int]()
+for _, p := range []int{7, 11, 2, 3, 13, 5} {
+    s.Insert(p)
+}
+fmt.Println(s.Delete(7)) <span class="comment">// true, the element was deleted</span>
+fmt.Println(s.Delete(7)) <span class="comment">// false, no such element</span>
+
+it := s.Begin()
+for it.Next() {
+    fmt.Println(it.Value())
+}
+<span class="comment"></pre>
+			
+			<p>Output:</p>
+			<pre class="output">true
+false
+2
+3
+5
+11
+13
+</pre>
+			
+		
+	</div>
+</div>
+
+				
+			
+				
+				<h3 id="Set.End">func (*Set[E]) End
+					<a class="permalink" href="index.html#Set.End">&#xb6;</a>
+					
+					
+				</h3>
+				<pre>func (s *Set[E]) End() *Iterator[E]</pre>
+				<p>End returns an iterator pointing to the element following the last (maximum) element.
+The running time is O(log N) for N elements.
+
+				
+				<div id="example_Set_End" class="toggle">
+	<div class="collapsed">
+		<p class="exampleHeading toggleButton">▹ <span class="text">Example</span></p>
+	</div>
+	<div class="expanded">
+		<p class="exampleHeading toggleButton">▾ <span class="text">Example</span></p>
+		
+		
+		
+			<p>Code:</p>
+			<pre class="code">s := set.New[int]()
+for _, p := range []int{7, 11, 2, 3, 13, 5} {
+    s.Insert(p)
+}
+it := s.End()
+for it.Prev() {
+    fmt.Println(it.Value())
+}
+<span class="comment"></pre>
+			
+			<p>Output:</p>
+			<pre class="output">13
+11
+7
+5
+3
+2
+</pre>
+			
+		
+	</div>
+</div>
+
+				
+			
+				
+				<h3 id="Set.Find">func (*Set[E]) Find
+					<a class="permalink" href="index.html#Set.Find">&#xb6;</a>
+					
+					
+				</h3>
+				<pre>func (s *Set[E]) Find(e E) (E, bool)</pre>
+				<p>Find returns an element from the set that is equivalent to the given one, or nil if such element is not present.
+The boolean indicates whether the element was found.
+The running time is O(log N) for N elements.
+
+				
+				<div id="example_Set_Find" class="toggle">
+	<div class="collapsed">
+		<p class="exampleHeading toggleButton">▹ <span class="text">Example</span></p>
+	</div>
+	<div class="expanded">
+		<p class="exampleHeading toggleButton">▾ <span class="text">Example</span></p>
+		
+		
+		
+			<p>Code:</p>
+			<pre class="code">s := set.New[int]()
+for _, p := range []int{7, 11, 2, 3, 13, 5} {
+    s.Insert(p)
+}
+fmt.Println(s.Find(13))
+fmt.Println(s.Find(10))
+<span class="comment"></pre>
+			
+			<p>Output:</p>
+			<pre class="output">13 true
+0 false
+</pre>
+			
+		
+	</div>
+</div>
+
+				
+			
+				
+				<h3 id="Set.Insert">func (*Set[E]) Insert
+					<a class="permalink" href="index.html#Set.Insert">&#xb6;</a>
+					
+					
+				</h3>
+				<pre>func (s *Set[E]) Insert(e E) bool</pre>
+				<p>Insert adds a new element to the set.
+Does nothing if an equivalent element is already in the set.
+Returns true if the actual insertion happens.
+The running time is O(log N) for N elements.
+
+				
+				<div id="example_Set_Insert" class="toggle">
+	<div class="collapsed">
+		<p class="exampleHeading toggleButton">▹ <span class="text">Example</span></p>
+	</div>
+	<div class="expanded">
+		<p class="exampleHeading toggleButton">▾ <span class="text">Example</span></p>
+		
+		
+		
+			<p>Code:</p>
+			<pre class="code">s := set.New[int]()
+fmt.Println(s.Insert(7)) <span class="comment">// true, the element was inserted</span>
+fmt.Println(s.Insert(7)) <span class="comment">// false, duplicated element, do nothing</span>
+<span class="comment"></pre>
+			
+			<p>Output:</p>
+			<pre class="output">true
+false
+</pre>
+			
+		
+	</div>
+</div>
+
+				
+			
+				
+				<h3 id="Set.Len">func (*Set[E]) Len
+					<a class="permalink" href="index.html#Set.Len">&#xb6;</a>
+					
+					
+				</h3>
+				<pre>func (s *Set[E]) Len() int</pre>
+				<p>Len returns the number of elements in the set. The running time is O(1).
+
+				
+				<div id="example_Set_Len" class="toggle">
+	<div class="collapsed">
+		<p class="exampleHeading toggleButton">▹ <span class="text">Example</span></p>
+	</div>
+	<div class="expanded">
+		<p class="exampleHeading toggleButton">▾ <span class="text">Example</span></p>
+		
+		
+		
+			<p>Code:</p>
+			<pre class="code">s := set.New[int]()
+for _, p := range []int{7, 11, 2, 3, 13, 5} {
+    s.Insert(p)
+}
+
+fmt.Println(s.Len())
+
+s.Insert(5)
+s.Delete(100)
+
+fmt.Println(s.Len()) <span class="comment">// set is unchanged, length should be the same</span>
+
+<span class="comment"></pre>
+			
+			<p>Output:</p>
+			<pre class="output">6
+6
+</pre>
+			
+		
+	</div>
+</div>
+
+				
+			
+				
+				<h3 id="Set.LowerBound">func (*Set[E]) LowerBound
+					<a class="permalink" href="index.html#Set.LowerBound">&#xb6;</a>
+					
+					
+				</h3>
+				<pre>func (s *Set[E]) LowerBound(e E) *Iterator[E]</pre>
+				<p>LowerBound returns an iterator pointing to the first element not less than the given one.
+If no such element is found, past-the-end (see End()) iterator is returned.
+The running time is O(log N) for N elements.
+
+				
+				<div id="example_Set_LowerBound_exact" class="toggle">
+	<div class="collapsed">
+		<p class="exampleHeading toggleButton">▹ <span class="text">Example (Exact)</span></p>
+	</div>
+	<div class="expanded">
+		<p class="exampleHeading toggleButton">▾ <span class="text">Example (Exact)</span></p>
+		
+		
+		
+			<p>Code:</p>
+			<pre class="code">s := set.New[int]()
+for _, p := range []int{7, 11, 2, 3, 13, 5} {
+    s.Insert(p)
+}
+it := s.LowerBound(11) <span class="comment">// points to 11</span>
+for it.Next() {
+    fmt.Println(it.Value())
+}
+<span class="comment"></pre>
+			
+			<p>Output:</p>
+			<pre class="output">11
+13
+</pre>
+			
+		
+	</div>
+</div>
+<div id="example_Set_LowerBound_missing" class="toggle">
+	<div class="collapsed">
+		<p class="exampleHeading toggleButton">▹ <span class="text">Example (Missing)</span></p>
+	</div>
+	<div class="expanded">
+		<p class="exampleHeading toggleButton">▾ <span class="text">Example (Missing)</span></p>
+		
+		
+		
+			<p>Code:</p>
+			<pre class="code">s := set.New[int]()
+for _, p := range []int{7, 11, 2, 3, 13, 5} {
+    s.Insert(p)
+}
+it := s.LowerBound(4) <span class="comment">// 4 is missing, points to 5</span>
+for it.Prev() {
+    fmt.Println(it.Value())
+}
+<span class="comment"></pre>
+			
+			<p>Output:</p>
+			<pre class="output">3
+2
+</pre>
+			
+		
+	</div>
+</div>
+
+				
+			
+				
+				<h3 id="Set.UpperBound">func (*Set[E]) UpperBound
+					<a class="permalink" href="index.html#Set.UpperBound">&#xb6;</a>
+					
+					
+				</h3>
+				<pre>func (s *Set[E]) UpperBound(e E) *Iterator[E]</pre>
+				<p>UpperBound returns an iterator pointing to the first element greater than the given one.
+If no such element is found, past-the-end (see End()) iterator is returned.
+The running time is O(log N) for N elements.
+
+				
+				<div id="example_Set_UpperBound" class="toggle">
+	<div class="collapsed">
+		<p class="exampleHeading toggleButton">▹ <span class="text">Example</span></p>
+	</div>
+	<div class="expanded">
+		<p class="exampleHeading toggleButton">▾ <span class="text">Example</span></p>
+		
+		
+		
+			<p>Code:</p>
+			<pre class="code">s := set.New[int]()
+for _, p := range []int{7, 11, 2, 3, 13, 5} {
+    s.Insert(p)
+}
+it := s.UpperBound(5) <span class="comment">// points to 7 (first element greater than 5)</span>
+for it.Next() {
+    fmt.Println(it.Value())
+}
+<span class="comment"></pre>
+			
+			<p>Output:</p>
+			<pre class="output">7
+11
+13
+</pre>
+			
+		
+	</div>
+</div>
+
+				
+			
+		
+	
+
+	
+
+
+
+
+
+
+
+<div id="footer"></div>
+
+</div><!-- .container -->
+</div><!-- #page -->
+</body>
+</html>

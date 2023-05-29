@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#375EAB">
+
+  <title>dijkstra - Go Documentation Server</title>
+
+<link type="text/css" rel="stylesheet" href="../../style.css">
+
+<script>window.initFuncs = [];</script>
+<script src="../../jquery.js" defer></script>
+
+
+
+<script>var goVersion = "go1.19.3";</script>
+<script src="../../godocs.js" defer></script>
+</head>
+<body>
+
+<div id='lowframe' style="position: fixed; bottom: 0; left: 0; height: 0; width: 100%; border-top: thin solid grey; background-color: white; overflow: auto;">
+...
+</div><!-- #lowframe -->
+
+<div id="topbar" class="wide"><div class="container">
+<div class="top-heading" id="heading-wide">Go Documentation Server</div>
+<div class="top-heading" id="heading-narrow">GoDoc</div>
+<a href="index.html#" id="menu-button"><span id="menu-button-arrow">&#9661;</span></a>
+
+</div></div>
+
+
+
+<div id="page" class="wide">
+<div class="container">
+
+
+  <h1>
+    Package dijkstra
+    <span class="text-muted"></span>
+  </h1>
+
+
+
+
+
+
+
+<div id="nav"></div>
+
+
+<!--
+	Copyright 2009 The Go Authors. All rights reserved.
+	Use of this source code is governed by a BSD-style
+	license that can be found in the LICENSE file.
+-->
+<!--
+	Note: Static (i.e., not template-generated) href and id
+	attributes start with "pkg-" to make it impossible for
+	them to conflict with generated attributes (some of which
+	correspond to Go identifiers).
+-->
+
+	<script>
+	document.ANALYSIS_DATA = null;
+	document.CALLGRAPH = null;
+	</script>
+
+	
+		
+		<div id="short-nav">
+			<dl>
+			<dd><code>import "hsecode.com/stdlib/graph/dijkstra"</code></dd>
+			</dl>
+			<dl>
+			<dd><a href="index.html#pkg-overview" class="overviewLink">Overview</a></dd>
+			<dd><a href="index.html#pkg-index" class="indexLink">Index</a></dd>
+			
+				<dd><a href="index.html#pkg-examples" class="examplesLink">Examples</a></dd>
+			
+			
+			</dl>
+		</div>
+		<!-- The package's Name is printed as title by the top-level template -->
+		<div id="pkg-overview" class="toggleVisible">
+			<div class="collapsed">
+				<h2 class="toggleButton" title="Click to show Overview section">Overview ▹</h2>
+			</div>
+			<div class="expanded">
+				<h2 class="toggleButton" title="Click to hide Overview section">Overview ▾</h2>
+				<p>Package dijkstra implements Dijkstra&apos;s shortest path algorithm.
+<p>See <a href="https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm">https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm</a> for more details.
+
+				<div id="example__metro" class="toggle">
+	<div class="collapsed">
+		<p class="exampleHeading toggleButton">▹ <span class="text">Example (Metro)</span></p>
+	</div>
+	<div class="expanded">
+		<p class="exampleHeading toggleButton">▾ <span class="text">Example (Metro)</span></p>
+		
+		
+		
+			<p>Code:</p>
+			<pre class="code">package dijkstra_test
+
+import (
+    &#34;encoding/json&#34;
+    &#34;fmt&#34;
+    &#34;hsecode.com/stdlib/graph&#34;
+    &#34;hsecode.com/stdlib/graph/dijkstra&#34;
+    &#34;io/ioutil&#34;
+    &#34;net/http&#34;
+)
+
+<span class="comment">// Station is a graph node representing a Moscow Metro station</span>
+type Station struct {
+    Id   int    `json:&#34;id&#34;`
+    Name string `json:&#34;name&#34;`
+}
+
+func (st *Station) ID() int {
+    return st.Id
+}
+
+<span class="comment">// Link is either a train track or an interchange between two stations</span>
+type Link struct {
+    From int  `json:&#34;from&#34;`
+    To   int  `json:&#34;to&#34;`
+    Time uint `json:&#34;time&#34;`
+}
+
+func Example_metro() {
+    m := Metro()
+
+    const (
+        Frunzenskaya = 14
+        CSKA         = 241
+    )
+
+    path := dijkstra.New(m, Frunzenskaya, CSKA, func(e interface{}) uint { return e.(uint) })
+    if path == nil {
+        fmt.Println(&#34;no path&#34;)
+        return
+    }
+
+    fmt.Printf(&#34;Time: %v sec\n&#34;, path.Weight)
+    for _, p := range path.Nodes {
+        fmt.Println(p.(*Station).Name)
+    }
+
+    <span class="comment">// Output:</span>
+    <span class="comment">// Time: 1670 sec</span>
+    <span class="comment">// Frunzenskaya</span>
+    <span class="comment">// Park Kultury (Sokolnicheskaya)</span>
+    <span class="comment">// Park Kultury (Koltsevaya)</span>
+    <span class="comment">// Kievskaya (Koltsevaya)</span>
+    <span class="comment">// Krasnopresnenskaya</span>
+    <span class="comment">// Barrikadnaya</span>
+    <span class="comment">// Ulitsa 1905 Goda</span>
+    <span class="comment">// Begovaya (Tagansko-Krasnopresnenskaya)</span>
+    <span class="comment">// Polezhaevskaya</span>
+    <span class="comment">// Khoroshevskaya (Large Circle Line)</span>
+    <span class="comment">// CSKA (Large Circle Line)</span>
+}
+
+<span class="comment">// Metro returns a graph of stations</span>
+func Metro() *graph.Graph {
+    resp, err := http.Get(&#34;https://gist.githubusercontent.com/mkuznets/1f568e4846570c81a9294b2919b1b6ca/raw/f5867a3a8cd0c339f529d3d049f856169efe3d2a/moscow_metro_graph.json&#34;)
+    if err != nil {
+        panic(err)
+    }
+    data, err := ioutil.ReadAll(resp.Body)
+    if err != nil {
+        panic(err)
+    }
+    var metro struct {
+        Stations []*Station `json:&#34;stations&#34;`
+        Links    []*Link    `json:&#34;links&#34;`
+    }
+    if err := json.Unmarshal(data, &amp;metro); err != nil {
+        panic(err)
+    }
+
+    g := graph.New(graph.Undirected)
+    for _, station := range metro.Stations {
+        g.AddNode(station)
+    }
+
+    for _, link := range metro.Links {
+        g.AddEdge(link.From, link.To, link.Time)
+    }
+    return g
+}
+</pre>
+			
+		
+	</div>
+</div>
+
+			</div>
+		</div>
+
+		<div id="pkg-index" class="toggleVisible">
+		<div class="collapsed">
+			<h2 class="toggleButton" title="Click to show Index section">Index ▹</h2>
+		</div>
+		<div class="expanded">
+			<h2 class="toggleButton" title="Click to hide Index section">Index ▾</h2>
+
+		<!-- Table of contents for API; must be named manual-nav to turn off auto nav. -->
+			<div id="manual-nav">
+			<dl>
+			
+			
+			
+			
+				
+				<dd><a href="index.html#Path">type Path</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="index.html#New">func New(g *graph.Graph, uid, vid int, weight func(interface{}) uint) *Path</a></dd>
+				
+				
+			
+			
+			</dl>
+			</div><!-- #manual-nav -->
+
+		
+		<div id="pkg-examples">
+			<h3>Examples</h3>
+			<div class="js-expandAll expandAll collapsed">(Expand All)</div>
+			<dl>
+			
+			<dd><a class="exampleLink" href="index.html#example__metro">Package (Metro)</a></dd>
+			
+			</dl>
+		</div>
+		
+
+		</div><!-- .expanded -->
+		</div><!-- #pkg-index -->
+
+		
+
+		
+		
+		
+		
+			
+			
+			<h2 id="Path">type Path
+				<a class="permalink" href="index.html#Path">&#xb6;</a>
+				
+				
+			</h2>
+			<p>Path represents the shortest path between two nodes in edge-weighted graph
+
+			<pre>type Path struct {
+    <span class="comment">// Sequence of nodes on the path (including ends)</span>
+    Nodes []graph.Node
+    <span class="comment">// Sum of edge weights on the path</span>
+    Weight uint
+}
+</pre>
+
+			
+
+			
+
+			
+			
+			
+
+			
+				
+				<h3 id="New">func New
+					<a class="permalink" href="index.html#New">&#xb6;</a>
+					
+					
+				</h3>
+				<pre>func New(g *graph.Graph, uid, vid int, weight func(interface{}) uint) *Path</pre>
+				<p>New computes the shortest path between nodes u and v in the given edge-weighted graph.
+The given weight function turns edge data into an unsigned integer weight.
+Returns nil if the nodes are not in the graph or there is no path between them.
+
+				
+				
+			
+
+			
+		
+	
+
+	
+
+
+
+
+
+
+
+<div id="footer"></div>
+
+</div><!-- .container -->
+</div><!-- #page -->
+</body>
+</html>

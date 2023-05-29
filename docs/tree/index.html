@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#375EAB">
+
+  <title>tree - Go Documentation Server</title>
+
+<link type="text/css" rel="stylesheet" href="../style.css">
+
+<script>window.initFuncs = [];</script>
+<script src="../jquery.js" defer></script>
+
+
+
+<script>var goVersion = "go1.19.3";</script>
+<script src="../godocs.js" defer></script>
+</head>
+<body>
+
+<div id='lowframe' style="position: fixed; bottom: 0; left: 0; height: 0; width: 100%; border-top: thin solid grey; background-color: white; overflow: auto;">
+...
+</div><!-- #lowframe -->
+
+<div id="topbar" class="wide"><div class="container">
+<div class="top-heading" id="heading-wide">Go Documentation Server</div>
+<div class="top-heading" id="heading-narrow">GoDoc</div>
+<a href="index.html#" id="menu-button"><span id="menu-button-arrow">&#9661;</span></a>
+
+</div></div>
+
+
+
+<div id="page" class="wide">
+<div class="container">
+
+
+  <h1>
+    Package tree
+    <span class="text-muted"></span>
+  </h1>
+
+
+
+
+
+
+
+<div id="nav"></div>
+
+
+<!--
+	Copyright 2009 The Go Authors. All rights reserved.
+	Use of this source code is governed by a BSD-style
+	license that can be found in the LICENSE file.
+-->
+<!--
+	Note: Static (i.e., not template-generated) href and id
+	attributes start with "pkg-" to make it impossible for
+	them to conflict with generated attributes (some of which
+	correspond to Go identifiers).
+-->
+
+	<script>
+	document.ANALYSIS_DATA = null;
+	document.CALLGRAPH = null;
+	</script>
+
+	
+		
+		<div id="short-nav">
+			<dl>
+			<dd><code>import "hsecode.com/stdlib/tree"</code></dd>
+			</dl>
+			<dl>
+			<dd><a href="index.html#pkg-overview" class="overviewLink">Overview</a></dd>
+			<dd><a href="index.html#pkg-index" class="indexLink">Index</a></dd>
+			
+				<dd><a href="index.html#pkg-examples" class="examplesLink">Examples</a></dd>
+			
+			
+				<dd><a href="index.html#pkg-subdirectories">Subdirectories</a></dd>
+			
+			</dl>
+		</div>
+		<!-- The package's Name is printed as title by the top-level template -->
+		<div id="pkg-overview" class="toggleVisible">
+			<div class="collapsed">
+				<h2 class="toggleButton" title="Click to show Overview section">Overview ▹</h2>
+			</div>
+			<div class="expanded">
+				<h2 class="toggleButton" title="Click to hide Overview section">Overview ▾</h2>
+				<p>Package tree is a collection of algorithms on binary trees.
+<h3 id="hdr-Serialisation_Format">Serialisation Format</h3>
+<p>We define a serialised format of a binary tree is an array of strings constructed with level-order traversal of the tree.
+Numbers denote node values, and &quot;nil&quot; denotes an absence of node.
+<p>For example, an array [&quot;6&quot;, &quot;5&quot;, &quot;7&quot;, &quot;2&quot;, &quot;nil&quot;, &quot;nil&quot;, &quot;8&quot;] represents the following tree:
+<pre>    __6
+   /   \
+  5     7
+ /       \
+2         8
+</pre>
+<p>The representation must not contain trailing &quot;nil&quot;s at the end
+(even though [&quot;6&quot;, &quot;5&quot;, &quot;7&quot;, &quot;2&quot;, &quot;nil&quot;, &quot;nil&quot;, &quot;8&quot;, &quot;nil&quot;, &quot;nil&quot;, &quot;nil&quot;] technically denotes the same tree).
+<p>More examples can be found at <a href="https://support.leetcode.com/hc/en-us/articles/360011883654-What-does-1-null-2-3-mean-in-binary-tree-representation-">https://support.leetcode.com/hc/en-us/articles/360011883654-What-does-1-null-2-3-mean-in-binary-tree-representation-</a> (with a minor difference of using &quot;null&quot; instead of &quot;nil&quot;).
+<p>Function Encode and Decode from this package use this serialised format.
+Encode turns the given tree into an array of strings and Decode recreates a tree from the given array of strings.
+<h3 id="hdr-Restrictions">Restrictions</h3>
+<p>InOrder must be implemented non-recursively.
+
+				
+			</div>
+		</div>
+
+		<div id="pkg-index" class="toggleVisible">
+		<div class="collapsed">
+			<h2 class="toggleButton" title="Click to show Index section">Index ▹</h2>
+		</div>
+		<div class="expanded">
+			<h2 class="toggleButton" title="Click to hide Index section">Index ▾</h2>
+
+		<!-- Table of contents for API; must be named manual-nav to turn off auto nav. -->
+			<div id="manual-nav">
+			<dl>
+			
+			
+			
+			
+				
+				<dd><a href="index.html#Tree">type Tree</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="index.html#Decode">func Decode(data []string) (*Tree, error)</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="index.html#NewBST">func NewBST(elements []int) *Tree</a></dd>
+				
+				
+					
+					<dd>&nbsp; &nbsp; <a href="index.html#Tree.Encode">func (T *Tree) Encode() []string</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="index.html#Tree.InOrder">func (T *Tree) InOrder(visit func(node *Tree))</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="index.html#Tree.IsSym">func (T *Tree) IsSym() bool</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="index.html#Tree.NoLeft">func (T *Tree) NoLeft() *Tree</a></dd>
+				
+			
+			
+			</dl>
+			</div><!-- #manual-nav -->
+
+		
+		<div id="pkg-examples">
+			<h3>Examples</h3>
+			<div class="js-expandAll expandAll collapsed">(Expand All)</div>
+			<dl>
+			
+			<dd><a class="exampleLink" href="index.html#example_Decode">Decode</a></dd>
+			
+			<dd><a class="exampleLink" href="index.html#example_NewBST">NewBST</a></dd>
+			
+			<dd><a class="exampleLink" href="index.html#example_Tree_Encode">Tree.Encode</a></dd>
+			
+			<dd><a class="exampleLink" href="index.html#example_Tree_InOrder">Tree.InOrder</a></dd>
+			
+			<dd><a class="exampleLink" href="index.html#example_Tree_NoLeft">Tree.NoLeft</a></dd>
+			
+			</dl>
+		</div>
+		
+
+		</div><!-- .expanded -->
+		</div><!-- #pkg-index -->
+
+		
+
+		
+		
+		
+		
+			
+			
+			<h2 id="Tree">type Tree
+				<a class="permalink" href="index.html#Tree">&#xb6;</a>
+				
+				
+			</h2>
+			<p>Tree is a binary tree with int values.
+
+			<pre>type Tree struct {
+    Value int
+    Left  *Tree
+    Right *Tree
+}
+</pre>
+
+			
+
+			
+
+			
+			
+			
+
+			
+				
+				<h3 id="Decode">func Decode
+					<a class="permalink" href="index.html#Decode">&#xb6;</a>
+					
+					
+				</h3>
+				<pre>func Decode(data []string) (*Tree, error)</pre>
+				<p>Decode creates a binary tree from the given serialised representation.
+Return error if any of the array values are neither intergers or nils,
+or if the array describes an impossible tree structure (e.g. [&quot;nil&quot;, &quot;2&quot;, &quot;3&quot;]).
+<p>See Serialisation Format section in the package overview for more details on the format.
+
+				<div id="example_Decode" class="toggle">
+	<div class="collapsed">
+		<p class="exampleHeading toggleButton">▹ <span class="text">Example</span></p>
+	</div>
+	<div class="expanded">
+		<p class="exampleHeading toggleButton">▾ <span class="text">Example</span></p>
+		
+		
+		
+			<p>Code:</p>
+			<pre class="code">T, _ := tree.Decode([]string{&#34;2&#34;, &#34;1&#34;, &#34;3&#34;, &#34;nil&#34;, &#34;nil&#34;, &#34;nil&#34;, &#34;10&#34;})
+
+<span class="comment">// Resulting tree:</span>
+<span class="comment">//    2</span>
+<span class="comment">//   / \</span>
+<span class="comment">//  1    3</span>
+<span class="comment">//        \</span>
+<span class="comment">//         10</span>
+
+T.InOrder(func(node *tree.Tree) { fmt.Println(node.Value) })
+<span class="comment"></pre>
+			
+			<p>Output:</p>
+			<pre class="output">1
+2
+3
+10
+</pre>
+			
+		
+	</div>
+</div>
+
+				
+			
+				
+				<h3 id="NewBST">func NewBST
+					<a class="permalink" href="index.html#NewBST">&#xb6;</a>
+					
+					
+				</h3>
+				<pre>func NewBST(elements []int) *Tree</pre>
+				<p>NewBST constructs a balanced binary search tree from the elements of the given array in O(n log n) time.
+The tree can only contain unique elements even if the input array has duplicates.
+
+				<div id="example_NewBST" class="toggle">
+	<div class="collapsed">
+		<p class="exampleHeading toggleButton">▹ <span class="text">Example</span></p>
+	</div>
+	<div class="expanded">
+		<p class="exampleHeading toggleButton">▾ <span class="text">Example</span></p>
+		
+		
+		
+			<p>Code:</p>
+			<pre class="code"><span class="comment">// Create BST from slice:</span>
+elements := []int{11, 2, 5, 7, 3, 3, 5, 2}
+T := tree.NewBST(elements)
+<span class="comment">// Print all nodes in sorted order</span>
+T.InOrder(func(node *tree.Tree) { fmt.Println(node.Value) })
+<span class="comment"></pre>
+			
+			<p>Output:</p>
+			<pre class="output">2
+3
+5
+7
+11
+</pre>
+			
+		
+	</div>
+</div>
+
+				
+			
+
+			
+				
+				<h3 id="Tree.Encode">func (*Tree) Encode
+					<a class="permalink" href="index.html#Tree.Encode">&#xb6;</a>
+					
+					
+				</h3>
+				<pre>func (T *Tree) Encode() []string</pre>
+				<p>Encode returns a serialised representaion of the given tree.
+<p>See Serialisation Format section in the package overview for more details on the format.
+
+				
+				<div id="example_Tree_Encode" class="toggle">
+	<div class="collapsed">
+		<p class="exampleHeading toggleButton">▹ <span class="text">Example</span></p>
+	</div>
+	<div class="expanded">
+		<p class="exampleHeading toggleButton">▾ <span class="text">Example</span></p>
+		
+		
+		
+			<p>Code:</p>
+			<pre class="code"><span class="comment">// Create BST:</span>
+<span class="comment">//    2</span>
+<span class="comment">//   / \</span>
+<span class="comment">//  1    3</span>
+<span class="comment">//        \</span>
+<span class="comment">//         10</span>
+T := &amp;tree.Tree{
+    Value: 2,
+    Left:  &amp;tree.Tree{Value: 1},
+    Right: &amp;tree.Tree{Value: 3, Right: &amp;tree.Tree{Value: 10}},
+}
+<span class="comment">// Print serialised representation</span>
+fmt.Println(T.Encode())
+<span class="comment"></pre>
+			
+			<p>Output:</p>
+			<pre class="output">[2 1 3 nil nil nil 10]
+</pre>
+			
+		
+	</div>
+</div>
+
+				
+			
+				
+				<h3 id="Tree.InOrder">func (*Tree) InOrder
+					<a class="permalink" href="index.html#Tree.InOrder">&#xb6;</a>
+					
+					
+				</h3>
+				<pre>func (T *Tree) InOrder(visit func(node *Tree))</pre>
+				<p>InOrder performs in-order traversal of the tree
+and calls the provided visit function for each tree node.
+The function must be implemented non-recursively.
+
+				
+				<div id="example_Tree_InOrder" class="toggle">
+	<div class="collapsed">
+		<p class="exampleHeading toggleButton">▹ <span class="text">Example</span></p>
+	</div>
+	<div class="expanded">
+		<p class="exampleHeading toggleButton">▾ <span class="text">Example</span></p>
+		
+		
+		
+			<p>Code:</p>
+			<pre class="code"><span class="comment">// Create BST:</span>
+<span class="comment">//    2</span>
+<span class="comment">//   / \</span>
+<span class="comment">//  1    3</span>
+<span class="comment">//        \</span>
+<span class="comment">//         10</span>
+T := &amp;tree.Tree{
+    Value: 2,
+    Left:  &amp;tree.Tree{Value: 1},
+    Right: &amp;tree.Tree{Value: 3, Right: &amp;tree.Tree{Value: 10}},
+}
+<span class="comment">// Print all nodes in sorted order</span>
+T.InOrder(func(node *tree.Tree) { fmt.Println(node.Value) })
+<span class="comment"></pre>
+			
+			<p>Output:</p>
+			<pre class="output">1
+2
+3
+10
+</pre>
+			
+		
+	</div>
+</div>
+
+				
+			
+				
+				<h3 id="Tree.IsSym">func (*Tree) IsSym
+					<a class="permalink" href="index.html#Tree.IsSym">&#xb6;</a>
+					
+					
+				</h3>
+				<pre>func (T *Tree) IsSym() bool</pre>
+				<p>IsSym tests whether the tree is a mirror of itself (i.e. symmetric around its center).
+For example, this tree is symmetric:
+<pre>    1
+   / \
+  2   2
+ / \ / \
+3  4 4  3
+</pre>
+<p>And this one is not:
+<pre>  1
+ / \
+2   2
+ \   \
+ 3    3
+</pre>
+
+				
+				
+				
+			
+				
+				<h3 id="Tree.NoLeft">func (*Tree) NoLeft
+					<a class="permalink" href="index.html#Tree.NoLeft">&#xb6;</a>
+					
+					
+				</h3>
+				<pre>func (T *Tree) NoLeft() *Tree</pre>
+				<p>NoLeft transforms the binary search tree into an equivalent one that has no left subtrees.
+Returns a pointer to the new root.
+The tree must be transformed in-place i.e. the result can only contain the originally allocated nodes with their original values.
+The function assumes that T is already a valid binary search tree.
+
+				
+				<div id="example_Tree_NoLeft" class="toggle">
+	<div class="collapsed">
+		<p class="exampleHeading toggleButton">▹ <span class="text">Example</span></p>
+	</div>
+	<div class="expanded">
+		<p class="exampleHeading toggleButton">▾ <span class="text">Example</span></p>
+		
+		
+		
+			<p>Code:</p>
+			<pre class="code"><span class="comment">// Create BST:</span>
+<span class="comment">//     6</span>
+<span class="comment">//    / \</span>
+<span class="comment">//   2   8</span>
+<span class="comment">//  / \</span>
+<span class="comment">// 1   3</span>
+T := &amp;tree.Tree{
+    Value: 6,
+    Left:  &amp;tree.Tree{Value: 2, Left: &amp;tree.Tree{Value: 1}, Right: &amp;tree.Tree{Value: 3}},
+    Right: &amp;tree.Tree{Value: 8},
+}
+
+<span class="comment">// Equivalent BST without left subtrees</span>
+R := T.NoLeft()
+
+<span class="comment">// Print all nodes</span>
+for R != nil {
+    fmt.Println(R.Value)
+    R = R.Right
+}
+
+<span class="comment"></pre>
+			
+			<p>Output:</p>
+			<pre class="output">1
+2
+3
+6
+8
+</pre>
+			
+		
+	</div>
+</div>
+
+				
+			
+		
+	
+
+	
+
+
+
+
+
+	
+	
+		<h2 id="pkg-subdirectories">Subdirectories</h2>
+	
+	<div class="pkg-dir">
+		<table>
+			<tr>
+				<th class="pkg-name">Name</th>
+				<th class="pkg-synopsis">Synopsis</th>
+			</tr>
+			
+				<tr>
+				
+					<td class="pkg-name" style="padding-left: 0px;">
+						<a href="ancestry/index.html">ancestry</a>
+					</td>
+				
+					<td class="pkg-synopsis">
+						Package ancestry implements a data structure for fast ancestry enquiries in binary tree.
+					</td>
+				</tr>
+			
+		</table>
+	</div>
+
+
+
+<div id="footer"></div>
+
+</div><!-- .container -->
+</div><!-- #page -->
+</body>
+</html>

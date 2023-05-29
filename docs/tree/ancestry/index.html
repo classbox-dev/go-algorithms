@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#375EAB">
+
+  <title>ancestry - Go Documentation Server</title>
+
+<link type="text/css" rel="stylesheet" href="../../style.css">
+
+<script>window.initFuncs = [];</script>
+<script src="../../jquery.js" defer></script>
+
+
+
+<script>var goVersion = "go1.19.3";</script>
+<script src="../../godocs.js" defer></script>
+</head>
+<body>
+
+<div id='lowframe' style="position: fixed; bottom: 0; left: 0; height: 0; width: 100%; border-top: thin solid grey; background-color: white; overflow: auto;">
+...
+</div><!-- #lowframe -->
+
+<div id="topbar" class="wide"><div class="container">
+<div class="top-heading" id="heading-wide">Go Documentation Server</div>
+<div class="top-heading" id="heading-narrow">GoDoc</div>
+<a href="index.html#" id="menu-button"><span id="menu-button-arrow">&#9661;</span></a>
+
+</div></div>
+
+
+
+<div id="page" class="wide">
+<div class="container">
+
+
+  <h1>
+    Package ancestry
+    <span class="text-muted"></span>
+  </h1>
+
+
+
+
+
+
+
+<div id="nav"></div>
+
+
+<!--
+	Copyright 2009 The Go Authors. All rights reserved.
+	Use of this source code is governed by a BSD-style
+	license that can be found in the LICENSE file.
+-->
+<!--
+	Note: Static (i.e., not template-generated) href and id
+	attributes start with "pkg-" to make it impossible for
+	them to conflict with generated attributes (some of which
+	correspond to Go identifiers).
+-->
+
+	<script>
+	document.ANALYSIS_DATA = null;
+	document.CALLGRAPH = null;
+	</script>
+
+	
+		
+		<div id="short-nav">
+			<dl>
+			<dd><code>import "hsecode.com/stdlib/tree/ancestry"</code></dd>
+			</dl>
+			<dl>
+			<dd><a href="index.html#pkg-overview" class="overviewLink">Overview</a></dd>
+			<dd><a href="index.html#pkg-index" class="indexLink">Index</a></dd>
+			
+				<dd><a href="index.html#pkg-examples" class="examplesLink">Examples</a></dd>
+			
+			
+			</dl>
+		</div>
+		<!-- The package's Name is printed as title by the top-level template -->
+		<div id="pkg-overview" class="toggleVisible">
+			<div class="collapsed">
+				<h2 class="toggleButton" title="Click to show Overview section">Overview ▹</h2>
+			</div>
+			<div class="expanded">
+				<h2 class="toggleButton" title="Click to hide Overview section">Overview ▾</h2>
+				<p>Package ancestry implements a data structure for fast ancestry enquiries in binary tree.
+<h3 id="hdr-Definition">Definition</h3>
+<p>Consider nodes A and B of a rooted tree.
+B is called a proper descendant of A if there is a unique simple path from A to B and also A is not B.
+<h3 id="hdr-Hint">Hint</h3>
+<p>You should read about properties of depth-first search (CLRS 22.3) before implementing this package.
+
+				<div id="example_" class="toggle">
+	<div class="collapsed">
+		<p class="exampleHeading toggleButton">▹ <span class="text">Example</span></p>
+	</div>
+	<div class="expanded">
+		<p class="exampleHeading toggleButton">▾ <span class="text">Example</span></p>
+		
+		
+		
+			<p>Code:</p>
+			<pre class="code"><span class="comment">// Create BST:</span>
+<span class="comment">//     6</span>
+<span class="comment">//    / \</span>
+<span class="comment">//   2   8</span>
+<span class="comment">//  / \</span>
+<span class="comment">// 1   3</span>
+T := &amp;tree.Tree{
+    Value: 6,
+    Left:  &amp;tree.Tree{Value: 2, Left: &amp;tree.Tree{Value: 1}, Right: &amp;tree.Tree{Value: 3}},
+    Right: &amp;tree.Tree{Value: 8},
+}
+
+A := ancestry.New(T)
+
+fmt.Println(A.IsDescendant(2, 2)) <span class="comment">// false, not a _proper_ descentant</span>
+fmt.Println(A.IsDescendant(2, 3)) <span class="comment">// true</span>
+fmt.Println(A.IsDescendant(6, 3)) <span class="comment">// true</span>
+fmt.Println(A.IsDescendant(1, 8)) <span class="comment">// false</span>
+
+<span class="comment"></pre>
+			
+			<p>Output:</p>
+			<pre class="output">false
+true
+true
+false
+</pre>
+			
+		
+	</div>
+</div>
+
+			</div>
+		</div>
+
+		<div id="pkg-index" class="toggleVisible">
+		<div class="collapsed">
+			<h2 class="toggleButton" title="Click to show Index section">Index ▹</h2>
+		</div>
+		<div class="expanded">
+			<h2 class="toggleButton" title="Click to hide Index section">Index ▾</h2>
+
+		<!-- Table of contents for API; must be named manual-nav to turn off auto nav. -->
+			<div id="manual-nav">
+			<dl>
+			
+			
+			
+			
+				
+				<dd><a href="index.html#Ancestry">type Ancestry</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="index.html#New">func New(T *tree.Tree) *Ancestry</a></dd>
+				
+				
+					
+					<dd>&nbsp; &nbsp; <a href="index.html#Ancestry.IsDescendant">func (A *Ancestry) IsDescendant(a, b int) bool</a></dd>
+				
+			
+			
+			</dl>
+			</div><!-- #manual-nav -->
+
+		
+		<div id="pkg-examples">
+			<h3>Examples</h3>
+			<div class="js-expandAll expandAll collapsed">(Expand All)</div>
+			<dl>
+			
+			<dd><a class="exampleLink" href="index.html#example_">Package</a></dd>
+			
+			</dl>
+		</div>
+		
+
+		</div><!-- .expanded -->
+		</div><!-- #pkg-index -->
+
+		
+
+		
+		
+		
+		
+			
+			
+			<h2 id="Ancestry">type Ancestry
+				<a class="permalink" href="index.html#Ancestry">&#xb6;</a>
+				
+				
+			</h2>
+			<p>Ancestry is a data structure that can determine if a certain tree node is a proper descendant of another.
+
+			<pre>type Ancestry struct {
+    <span class="comment">// contains filtered or unexported fields</span>
+}
+</pre>
+
+			
+
+			
+
+			
+			
+			
+
+			
+				
+				<h3 id="New">func New
+					<a class="permalink" href="index.html#New">&#xb6;</a>
+					
+					
+				</h3>
+				<pre>func New(T *tree.Tree) *Ancestry</pre>
+				<p>New creates an instance of Ancestry for the given binary tree with unique integer nodes.
+The running time is O(N) for N nodes.
+
+				
+				
+			
+
+			
+				
+				<h3 id="Ancestry.IsDescendant">func (*Ancestry) IsDescendant
+					<a class="permalink" href="index.html#Ancestry.IsDescendant">&#xb6;</a>
+					
+					
+				</h3>
+				<pre>func (A *Ancestry) IsDescendant(a, b int) bool</pre>
+				<p>IsDescendant determines if node b is a proper descendant of node a.
+The running time is guaranteed to be Θ(1).
+Panics if the given nodes are not in the tree.
+
+				
+				
+				
+			
+		
+	
+
+	
+
+
+
+
+
+
+
+<div id="footer"></div>
+
+</div><!-- .container -->
+</div><!-- #page -->
+</body>
+</html>

@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#375EAB">
+
+  <title>matrix - Go Documentation Server</title>
+
+<link type="text/css" rel="stylesheet" href="../style.css">
+
+<script>window.initFuncs = [];</script>
+<script src="../jquery.js" defer></script>
+
+
+
+<script>var goVersion = "go1.19.3";</script>
+<script src="../godocs.js" defer></script>
+</head>
+<body>
+
+<div id='lowframe' style="position: fixed; bottom: 0; left: 0; height: 0; width: 100%; border-top: thin solid grey; background-color: white; overflow: auto;">
+...
+</div><!-- #lowframe -->
+
+<div id="topbar" class="wide"><div class="container">
+<div class="top-heading" id="heading-wide">Go Documentation Server</div>
+<div class="top-heading" id="heading-narrow">GoDoc</div>
+<a href="index.html#" id="menu-button"><span id="menu-button-arrow">&#9661;</span></a>
+
+</div></div>
+
+
+
+<div id="page" class="wide">
+<div class="container">
+
+
+  <h1>
+    Package matrix
+    <span class="text-muted"></span>
+  </h1>
+
+
+
+
+
+
+
+<div id="nav"></div>
+
+
+<!--
+	Copyright 2009 The Go Authors. All rights reserved.
+	Use of this source code is governed by a BSD-style
+	license that can be found in the LICENSE file.
+-->
+<!--
+	Note: Static (i.e., not template-generated) href and id
+	attributes start with "pkg-" to make it impossible for
+	them to conflict with generated attributes (some of which
+	correspond to Go identifiers).
+-->
+
+	<script>
+	document.ANALYSIS_DATA = null;
+	document.CALLGRAPH = null;
+	</script>
+
+	
+		
+		<div id="short-nav">
+			<dl>
+			<dd><code>import "hsecode.com/stdlib/matrix"</code></dd>
+			</dl>
+			<dl>
+			<dd><a href="index.html#pkg-overview" class="overviewLink">Overview</a></dd>
+			<dd><a href="index.html#pkg-index" class="indexLink">Index</a></dd>
+			
+			
+			</dl>
+		</div>
+		<!-- The package's Name is printed as title by the top-level template -->
+		<div id="pkg-overview" class="toggleVisible">
+			<div class="collapsed">
+				<h2 class="toggleButton" title="Click to show Overview section">Overview ▹</h2>
+			</div>
+			<div class="expanded">
+				<h2 class="toggleButton" title="Click to hide Overview section">Overview ▾</h2>
+				<p>Package matrix implements two-dimensional row-major array.
+<p>Note: the row-major requirement is essential.
+Otherwise, the implementation will fail performance tests due to cache misses.
+
+				
+			</div>
+		</div>
+
+		<div id="pkg-index" class="toggleVisible">
+		<div class="collapsed">
+			<h2 class="toggleButton" title="Click to show Index section">Index ▹</h2>
+		</div>
+		<div class="expanded">
+			<h2 class="toggleButton" title="Click to hide Index section">Index ▾</h2>
+
+		<!-- Table of contents for API; must be named manual-nav to turn off auto nav. -->
+			<div id="manual-nav">
+			<dl>
+			
+			
+			
+			
+				
+				<dd><a href="index.html#Matrix">type Matrix</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="index.html#New">func New[V any](n, m int) *Matrix[V]</a></dd>
+				
+				
+					
+					<dd>&nbsp; &nbsp; <a href="index.html#Matrix.Get">func (M *Matrix[V]) Get(i, j int) V</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="index.html#Matrix.Set">func (M *Matrix[V]) Set(i, j int, v V)</a></dd>
+				
+			
+			
+			</dl>
+			</div><!-- #manual-nav -->
+
+		
+
+		</div><!-- .expanded -->
+		</div><!-- #pkg-index -->
+
+		
+
+		
+		
+		
+		
+			
+			
+			<h2 id="Matrix">type Matrix
+				<a class="permalink" href="index.html#Matrix">&#xb6;</a>
+				
+				
+			</h2>
+			<p>Matrix implements row-major 2D array of values.
+
+			<pre>type Matrix[V any] struct {
+    Rows int <span class="comment">// number of rows</span>
+    Cols int <span class="comment">// number of columns</span>
+    <span class="comment">// contains filtered or unexported fields</span>
+}
+</pre>
+
+			
+
+			
+
+			
+			
+			
+
+			
+				
+				<h3 id="New">func New
+					<a class="permalink" href="index.html#New">&#xb6;</a>
+					
+					
+				</h3>
+				<pre>func New[V any](n, m int) *Matrix[V]</pre>
+				<p>New creates a new Matrix with n rows and m columns
+
+				
+				
+			
+
+			
+				
+				<h3 id="Matrix.Get">func (*Matrix[V]) Get
+					<a class="permalink" href="index.html#Matrix.Get">&#xb6;</a>
+					
+					
+				</h3>
+				<pre>func (M *Matrix[V]) Get(i, j int) V</pre>
+				<p>Get returns a matrix element by indices (i, j). Panics if the indices are out of range.
+
+				
+				
+				
+			
+				
+				<h3 id="Matrix.Set">func (*Matrix[V]) Set
+					<a class="permalink" href="index.html#Matrix.Set">&#xb6;</a>
+					
+					
+				</h3>
+				<pre>func (M *Matrix[V]) Set(i, j int, v V)</pre>
+				<p>Set assigns a value of matrix element by indices (i, j). Panics if the indices are out of range.
+
+				
+				
+				
+			
+		
+	
+
+	
+
+
+
+
+
+
+
+<div id="footer"></div>
+
+</div><!-- .container -->
+</div><!-- #page -->
+</body>
+</html>
