@@ -2,8 +2,8 @@ package primes_test
 
 import (
 	"fmt"
-	"hsecode.com/stdlib-tests/internal/utils"
-	"hsecode.com/stdlib/math"
+	"hsecode.com/stdlib-tests/v2/internal/utils"
+	"hsecode.com/stdlib/v2/math"
 	"math/big"
 	"testing"
 )

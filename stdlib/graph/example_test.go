@@ -3,7 +3,7 @@ package graph_test
 import (
 	"fmt"
 
-	"hsecode.com/stdlib/graph"
+	"hsecode.com/stdlib/v2/graph"
 )
 
 func ExampleGraph_Edges_undirected() {
@@ -18,7 +18,7 @@ func ExampleGraph_Edges_undirected() {
 	// Output: 2 3 single edge
 }
 
-func ExampleNode_Edge() {
+func ExampleGraph_Edge() {
 	g := graph.New(graph.Directed)
 	g.AddNode(Int(2))
 	g.AddNode(Int(3))

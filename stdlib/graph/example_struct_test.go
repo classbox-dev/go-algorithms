@@ -2,7 +2,7 @@ package graph_test
 
 import (
 	"fmt"
-	"hsecode.com/stdlib/graph"
+	"hsecode.com/stdlib/v2/graph"
 )
 
 type Person struct {

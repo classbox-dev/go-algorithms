@@ -2,8 +2,8 @@ package tsort_test
 
 import (
 	"fmt"
-	"hsecode.com/stdlib/graph"
-	"hsecode.com/stdlib/graph/tsort"
+	"hsecode.com/stdlib/v2/graph"
+	"hsecode.com/stdlib/v2/graph/tsort"
 )
 
 type Int int

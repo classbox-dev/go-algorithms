@@ -1,8 +1,8 @@
 package vector_test
 
 import (
-	"hsecode.com/stdlib-tests/internal/utils"
-	IntVector "hsecode.com/stdlib/vector/int"
+	"hsecode.com/stdlib-tests/v2/internal/utils"
+	"hsecode.com/stdlib/v2/vector"
 	"reflect"
 	"runtime"
 	"runtime/debug"
@@ -12,8 +12,8 @@ import (
 
 type Element = int
 
-func toSlice(arr *IntVector.Vector) []int {
-	sl := make([]Element, 0)
+func toSlice[E any](arr *vector.Vector[E]) []E {
+	sl := make([]E, 0)
 	for i := 0; i < arr.Len; i++ {
 		sl = append(sl, arr.Get(i))
 	}
@@ -21,7 +21,7 @@ func toSlice(arr *IntVector.Vector) []int {
 }
 
 func TestUnit__GetOutOfRange(t *testing.T) {
-	h := IntVector.New(3)
+	h := vector.New[int](3)
 	for _, idx := range []int{-1, 10} {
 		msg := "did not get panic on out-of-range Get"
 		utils.ExpectedPanic(t, msg, func() {
@@ -31,7 +31,7 @@ func TestUnit__GetOutOfRange(t *testing.T) {
 }
 
 func TestUnit__SetOutOfRange(t *testing.T) {
-	h := IntVector.New(3)
+	h := vector.New[int](3)
 	for _, idx := range []int{-1, 10} {
 		msg := "did not get panic on out-of-range Set"
 		utils.ExpectedPanic(t, msg, func() {
@@ -41,7 +41,7 @@ func TestUnit__SetOutOfRange(t *testing.T) {
 }
 
 func TestUnit__InsertOutOfRange(t *testing.T) {
-	h := IntVector.New(3)
+	h := vector.New[int](3)
 	for _, idx := range []int{-1, 10} {
 		msg := "did not get panic on out-of-range Insert"
 		utils.ExpectedPanic(t, msg, func() {
@@ -51,7 +51,7 @@ func TestUnit__InsertOutOfRange(t *testing.T) {
 }
 
 func TestUnit__DeleteOutOfRange(t *testing.T) {
-	h := IntVector.New(3)
+	h := vector.New[int](3)
 	for _, idx := range []int{-1, 10} {
 		msg := "did not get panic on out-of-range Delete"
 		utils.ExpectedPanic(t, msg, func() {
@@ -61,7 +61,7 @@ func TestUnit__DeleteOutOfRange(t *testing.T) {
 }
 
 func TestUnit__PopFromEmpty(t *testing.T) {
-	h := IntVector.New(0)
+	h := vector.New[int](0)
 	msg := "did not panic on Pop from empty vector"
 	utils.ExpectedPanic(t, msg, func() {
 		h.Pop()
@@ -69,7 +69,7 @@ func TestUnit__PopFromEmpty(t *testing.T) {
 }
 
 func TestUnit__Get(t *testing.T) {
-	h := IntVector.New(0)
+	h := vector.New[int](0)
 	for i := 0; i < 30; i++ {
 		e := Element(i * i)
 		h.Push(e)
@@ -82,7 +82,7 @@ func TestUnit__Get(t *testing.T) {
 }
 
 func TestUnit__Set(t *testing.T) {
-	h := IntVector.New(0)
+	h := vector.New[int](0)
 	for i := 0; i < 30; i++ {
 		e := Element(i * i)
 		h.Push(e)
@@ -98,7 +98,7 @@ func TestUnit__Set(t *testing.T) {
 
 func TestUnit__InsertMiddle(t *testing.T) {
 	expected := make([]Element, 0, 30)
-	h := IntVector.New(0)
+	h := vector.New[int](0)
 	for i := 0; i < 30; i++ {
 		e := Element(i * i)
 		h.Push(e)
@@ -117,7 +117,7 @@ func TestUnit__InsertMiddle(t *testing.T) {
 
 func TestUnit__Pop(t *testing.T) {
 	expected := make([]Element, 0, 30)
-	h := IntVector.New(0)
+	h := vector.New[int](0)
 	for i := 0; i < 30; i++ {
 		e := Element(i * i)
 		h.Push(e)
@@ -132,7 +132,7 @@ func TestUnit__Pop(t *testing.T) {
 
 func TestUnit__Push(t *testing.T) {
 	expected := make([]Element, 0, 30)
-	h := IntVector.New(0)
+	h := vector.New[int](0)
 	for i := 0; i < 30; i++ {
 		e := Element(i * i)
 		h.Push(e)
@@ -145,11 +145,11 @@ func TestUnit__Push(t *testing.T) {
 }
 
 func TestUnit__Len(t *testing.T) {
-	h := IntVector.New(0)
+	h := vector.New[int](0)
 	if h.Len != 0 {
 		t.Error("Len() of empty vector is not 0")
 	}
-	h = IntVector.New(10)
+	h = vector.New[int](10)
 	if h.Len != 0 {
 		t.Error("Len() of empty vector is not 0")
 	}
@@ -164,7 +164,7 @@ func TestUnit__Len(t *testing.T) {
 }
 
 func TestUnit__LenGrowing(t *testing.T) {
-	h := IntVector.New(0)
+	h := vector.New[int](0)
 	for i := 0; i < 1000; i++ {
 		l := h.Len
 		h.Push(Element(i * i))
@@ -175,7 +175,7 @@ func TestUnit__LenGrowing(t *testing.T) {
 }
 
 func TestUnit__LenShrinking(t *testing.T) {
-	h := IntVector.New(0)
+	h := vector.New[int](0)
 	for i := 0; i < 1000; i++ {
 		h.Push(Element(i * i))
 	}
@@ -189,7 +189,7 @@ func TestUnit__LenShrinking(t *testing.T) {
 }
 
 func TestUnit__DeleteLeft(t *testing.T) {
-	h := IntVector.New(0)
+	h := vector.New[int](0)
 	for i := 0; i < 10; i++ {
 		h.Push(Element(i * i))
 	}
@@ -205,7 +205,7 @@ func TestPerf__PushAllPopAll(t *testing.T) {
 	n := int((utils.Rand.Uint32() % 1000000) + 1000000)
 	leakMargin := int64(4096) // bytes
 
-	arr := IntVector.New(0)
+	arr := vector.New[int](0)
 
 	leak := utils.MemoryLeak(func() {
 		for i := 0; i < n; i++ {
@@ -229,7 +229,7 @@ func TestPerf__InsertAllDeleteAll(t *testing.T) {
 	n := int((utils.Rand.Uint32() % 10000) + 10000)
 	leakMargin := int64(4096) // bytes
 
-	arr := IntVector.New(0)
+	arr := vector.New[int](0)
 
 	leak := utils.MemoryLeak(func() {
 		for i := 0; i < n; i++ {
@@ -255,7 +255,7 @@ func TestPerf__InsertOnly(t *testing.T) {
 	elemSize := int64(unsafe.Sizeof(Element(0)))
 	leakMargin := int64(n) * elemSize * 4 // bytes
 
-	arr := IntVector.New(0)
+	arr := vector.New[int](0)
 
 	leak := utils.MemoryLeak(func() {
 		for i := 0; i < n; i++ {
@@ -276,7 +276,7 @@ func TestPerf__RandomPushPop(t *testing.T) {
 	debug.SetGCPercent(-1) // Disable GC
 	runtime.GC()
 
-	arr := IntVector.New(0)
+	arr := vector.New[int](0)
 
 	n := 1000000
 	for i := 0; i < n/2; i++ {
@@ -296,7 +296,7 @@ func TestPerf__RandomInsertDelete(t *testing.T) {
 	debug.SetGCPercent(-1) // Disable GC
 	runtime.GC()
 
-	arr := IntVector.New(0)
+	arr := vector.New[int](0)
 
 	n := 50000
 	for i := 0; i < n/2; i++ {

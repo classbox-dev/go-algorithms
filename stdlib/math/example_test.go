@@ -3,7 +3,7 @@ package math_test
 import (
 	// imported package is renamed to avoid conflict with type `int`
 	"fmt"
-	"hsecode.com/stdlib/math"
+	"hsecode.com/stdlib/v2/math"
 )
 
 func ExampleNthPrime() {

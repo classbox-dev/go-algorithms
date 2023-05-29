@@ -2,7 +2,7 @@ package radix_test
 
 import (
 	"fmt"
-	"hsecode.com/stdlib/radix"
+	"hsecode.com/stdlib/v2/radix"
 )
 
 func ExampleSort() {

@@ -2,8 +2,8 @@ package xgraph
 
 import (
 	"fmt"
-	"hsecode.com/stdlib-tests/internal/utils"
-	"hsecode.com/stdlib/graph"
+	"hsecode.com/stdlib-tests/v2/internal/utils"
+	"hsecode.com/stdlib/v2/graph"
 	"sort"
 	"strings"
 )

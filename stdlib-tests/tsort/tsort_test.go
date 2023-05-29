@@ -1,10 +1,10 @@
 package tsort_test
 
 import (
-	"hsecode.com/stdlib-tests/internal/utils"
-	"hsecode.com/stdlib-tests/internal/xgraph"
-	"hsecode.com/stdlib/graph"
-	"hsecode.com/stdlib/graph/tsort"
+	"hsecode.com/stdlib-tests/v2/internal/utils"
+	"hsecode.com/stdlib-tests/v2/internal/xgraph"
+	"hsecode.com/stdlib/v2/graph"
+	"hsecode.com/stdlib/v2/graph/tsort"
 	"runtime/debug"
 	"testing"
 )

@@ -1,6 +1,7 @@
 package set
 
 import (
+	"golang.org/x/exp/constraints"
 	"math/bits"
 	"math/rand"
 )
@@ -10,41 +11,41 @@ const (
 	levelsMask = ^((uint32(1) << maxLevel) - 1)
 )
 
-type fatNext [maxLevel + 1]*listElement
+type fatNext[E constraints.Ordered] [maxLevel + 1]*listElement[E]
 
-// Element interface has to be implemented by Set elements.
-type Element interface {
-	// Less returns true if the element is less than the other
-	Less(other Element) bool
-	// Equal returns true if the element is equivalent to the other
-	Equal(other Element) bool
-}
+//// Element interface has to be implemented by Set elements.
+//type Element interface {
+//	// Less returns true if the element is less than the other
+//	Less(other Element) bool
+//	// Equal returns true if the element is equivalent to the other
+//	Equal(other Element) bool
+//}
 
-type listElement struct {
-	prev  *listElement
-	next  fatNext
-	value Element
+type listElement[E constraints.Ordered] struct {
+	prev  *listElement[E]
+	next  fatNext[E]
+	value E
 }
 
 // Set represents an ordered collection of unique elements
-type Set struct {
-	head   *listElement
+type Set[E constraints.Ordered] struct {
+	head   *listElement[E]
 	length int
 }
 
 // Iterator is a stateful iterator pointing to a set element or an imaginary "past-the-end" element.
 //
 // See the diagram visualising set iterators and iteration order: https://hsecode.com/.static/set-iterator.png
-type Iterator struct {
-	head    *listElement
-	curr    *listElement
+type Iterator[E constraints.Ordered] struct {
+	head    *listElement[E]
+	curr    *listElement[E]
 	started bool
 }
 
 // Value returns an element the iterator is pointing to.
 // Panics if neither Next() nor Prev() was called beforehand.
 // The return value can only be trusted if the preceding Next() or Prev() returned true.
-func (it *Iterator) Value() Element {
+func (it *Iterator[E]) Value() E {
 	if !it.started {
 		panic("iterator is not initialised with Next() call")
 	}
@@ -54,7 +55,7 @@ func (it *Iterator) Value() Element {
 // Next advances the iterator to the next greater element or,
 // if called for the first time, simply initialises the iterator without advancing it.
 // Returns true on success, or false if the iteration is finished.
-func (it *Iterator) Next() bool {
+func (it *Iterator[E]) Next() bool {
 	if it.curr.next[0] == nil {
 		return false
 	}
@@ -65,7 +66,7 @@ func (it *Iterator) Next() bool {
 
 // Prev advances the iterator to the next smaller element.
 // Returns true on success, or false if the iteration is finished.
-func (it *Iterator) Prev() bool {
+func (it *Iterator[E]) Prev() bool {
 	if !it.started {
 		it.started = true
 		return it.curr != it.head
@@ -79,19 +80,19 @@ func (it *Iterator) Prev() bool {
 }
 
 // New creates an empty set
-func New() *Set {
-	s := new(Set)
-	s.head = new(listElement)
+func New[E constraints.Ordered]() *Set[E] {
+	s := new(Set[E])
+	s.head = new(listElement[E])
 	return s
 }
 
-func (s *Set) lookup(e Element, stack *fatNext, upper bool) (ok bool) {
+func (s *Set[E]) lookup(e E, stack *fatNext[E], upper bool) (ok bool) {
 	currElem := s.head
 	for i := maxLevel; i >= 0; i-- {
 		prev, curr := currElem, currElem.next[i]
 		for curr != nil {
-			isLess := curr.value.Less(e)
-			isEqual := !isLess && curr.value.Equal(e)
+			isLess := curr.value < e
+			isEqual := !isLess && curr.value == e
 			if (!upper && isLess) || (upper && (isLess || isEqual)) {
 				prev = curr
 				curr = curr.next[i]
@@ -112,14 +113,14 @@ func (s *Set) lookup(e Element, stack *fatNext, upper bool) (ok bool) {
 // Does nothing if an equivalent element is already in the set.
 // Returns true if the actual insertion happens.
 // The running time is O(log N) for N elements.
-func (s *Set) Insert(e Element) bool {
-	var stack fatNext
+func (s *Set[E]) Insert(e E) bool {
+	var stack fatNext[E]
 	if ok := s.lookup(e, &stack, false); ok {
 		return false
 	}
 	prev := stack[0]
 
-	le := new(listElement)
+	le := new(listElement[E])
 	le.value = e
 
 	le.prev = prev
@@ -146,8 +147,8 @@ func (s *Set) Insert(e Element) bool {
 // Does nothing if there is no equivalent element in the set.
 // Returns true if the actual deletion happens.
 // The running time is O(log N) for N elements.
-func (s *Set) Delete(e Element) bool {
-	var stack fatNext
+func (s *Set[E]) Delete(e E) bool {
+	var stack fatNext[E]
 	if ok := s.lookup(e, &stack, false); !ok {
 		return false
 	}
@@ -169,23 +170,24 @@ func (s *Set) Delete(e Element) bool {
 // Find returns an element from the set that is equivalent to the given one, or nil if such element is not present.
 // The boolean indicates whether the element was found.
 // The running time is O(log N) for N elements.
-func (s *Set) Find(e Element) (Element, bool) {
-	var stack fatNext
+func (s *Set[E]) Find(e E) (E, bool) {
+	var stack fatNext[E]
 	if ok := s.lookup(e, &stack, false); ok {
 		return stack[0].next[0].value, true
 	}
-	return nil, false
+	var zero E
+	return zero, false
 }
 
-// Begin() returns an iterator pointing to the first (minimum) element of the set.
+// Begin returns an iterator pointing to the first (minimum) element of the set.
 // The running time is O(log N) for N elements.
-func (s *Set) Begin() *Iterator {
-	return &Iterator{curr: s.head, head: s.head}
+func (s *Set[E]) Begin() *Iterator[E] {
+	return &Iterator[E]{curr: s.head, head: s.head}
 }
 
-// End() returns an iterator pointing to the element following the last (maximum) element.
+// End returns an iterator pointing to the element following the last (maximum) element.
 // The running time is O(log N) for N elements.
-func (s *Set) End() *Iterator {
+func (s *Set[E]) End() *Iterator[E] {
 	currElem := s.head
 	for i := maxLevel; i >= 0; i-- {
 		prev, curr := currElem, currElem.next[i]
@@ -195,28 +197,28 @@ func (s *Set) End() *Iterator {
 		}
 		currElem = prev
 	}
-	return &Iterator{curr: currElem, head: s.head}
+	return &Iterator[E]{curr: currElem, head: s.head}
 }
 
 // LowerBound returns an iterator pointing to the first element not less than the given one.
 // If no such element is found, past-the-end (see End()) iterator is returned.
 // The running time is O(log N) for N elements.
-func (s *Set) LowerBound(e Element) *Iterator {
-	var stack fatNext
+func (s *Set[E]) LowerBound(e E) *Iterator[E] {
+	var stack fatNext[E]
 	_ = s.lookup(e, &stack, false)
-	return &Iterator{curr: stack[0], head: s.head}
+	return &Iterator[E]{curr: stack[0], head: s.head}
 }
 
 // UpperBound returns an iterator pointing to the first element greater than the given one.
 // If no such element is found, past-the-end (see End()) iterator is returned.
 // The running time is O(log N) for N elements.
-func (s *Set) UpperBound(e Element) *Iterator {
-	var stack fatNext
+func (s *Set[E]) UpperBound(e E) *Iterator[E] {
+	var stack fatNext[E]
 	_ = s.lookup(e, &stack, true)
-	return &Iterator{curr: stack[0], head: s.head}
+	return &Iterator[E]{curr: stack[0], head: s.head}
 }
 
 // Len returns the number of elements in the set. The running time is O(1).
-func (s *Set) Len() int {
+func (s *Set[E]) Len() int {
 	return s.length
 }

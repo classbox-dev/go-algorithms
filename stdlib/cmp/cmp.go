@@ -1,23 +1,9 @@
 package cmp
 
-import (
-	"github.com/cheekybits/genny/generic"
-)
+import "golang.org/x/exp/constraints"
 
-//go:generate genny -in=$GOFILE -out=int/dont_edit.go gen "ValueType=int"
-
-// ValueType is a generic type for Min and Max (imported from github.com/cheekybits/genny/generic). Concrete types have to support comparison via operators < and >.
-//
-// The package contains subpackages where ValueType is automatically replaced with concrete types.
-//
-// The int subpackage is required for tests. Make sure to include the following comment in your source code:
-//
-//	//go:generate genny -in=$GOFILE -out=int/dont_edit.go gen "ValueType=int"
-//
-type ValueType generic.Number
-
-// Min returns the minimum of a variable number of ValueType arguments. Panics if called with no arguments.
-func Min(values ...ValueType) ValueType {
+// Min returns the minimum of a variable number of arguments. Panics if called with no arguments.
+func Min[T constraints.Ordered](values ...T) T {
 	if len(values) < 1 {
 		panic("Min requires at least one argument")
 	}
@@ -30,8 +16,8 @@ func Min(values ...ValueType) ValueType {
 	return m
 }
 
-// Max returns the maximum of a variable number of ValueType arguments. Panics if called with no arguments.
-func Max(values ...ValueType) ValueType {
+// Max returns the maximum of a variable number of arguments. Panics if called with no arguments.
+func Max[T constraints.Ordered](values ...T) T {
 	if len(values) < 1 {
 		panic("Min requires at least one argument")
 	}

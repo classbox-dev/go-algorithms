@@ -1,34 +1,18 @@
 package vector
 
-import (
-	"github.com/cheekybits/genny/generic"
-)
-
-//go:generate genny -in=$GOFILE -out=int/dont_edit.go gen "ValueType=int"
-
-// ValueType is a generic type of a vector element (imported from github.com/cheekybits/genny/generic).
-//
-// The package contains subpackages where ValueType is automatically replaced with concrete types.
-//
-// The int subpackage is required for tests. Make sure to include the following comment in your source code:
-//
-//	//go:generate genny -in=$GOFILE -out=int/dont_edit.go gen "ValueType=int"
-//
-type ValueType generic.Type
-
 // Vector is an implementation of dynamic array with fast insertion to and deletion from the end
-type Vector struct {
-	slice []ValueType
+type Vector[E any] struct {
+	slice []E
 	Len   int // actual number of occupied elements in the underlying slice
 }
 
-func (a *Vector) init(cap int) *Vector {
+func (a *Vector[E]) init(cap int) *Vector[E] {
 	a.resize(cap)
 	return a
 }
 
-func (a *Vector) resize(cap int) {
-	elems := make([]ValueType, cap, cap)
+func (a *Vector[E]) resize(cap int) {
+	elems := make([]E, cap)
 	for i := 0; i < a.Len; i++ {
 		elems[i] = a.slice[i]
 	}
@@ -36,10 +20,10 @@ func (a *Vector) resize(cap int) {
 }
 
 // New creates a new empty Vector with a given capacity
-func New(cap int) *Vector { return new(Vector).init(cap) }
+func New[E any](cap int) *Vector[E] { return new(Vector[E]).init(cap) }
 
 // Get retrieves an element by index idx
-func (a *Vector) Get(idx int) ValueType {
+func (a *Vector[E]) Get(idx int) E {
 	if idx < 0 || idx >= a.Len {
 		panic("index error")
 	}
@@ -47,7 +31,7 @@ func (a *Vector) Get(idx int) ValueType {
 }
 
 // Set writes the given element to index idx
-func (a *Vector) Set(idx int, x ValueType) {
+func (a *Vector[E]) Set(idx int, x E) {
 	if idx < 0 || idx >= a.Len {
 		panic("index error")
 	}
@@ -55,7 +39,7 @@ func (a *Vector) Set(idx int, x ValueType) {
 }
 
 // Insert inserts new element before index idx
-func (a *Vector) Insert(idx int, x ValueType) {
+func (a *Vector[E]) Insert(idx int, x E) {
 	if idx < 0 || idx > a.Len {
 		panic("insert index is out of range")
 	}
@@ -74,7 +58,7 @@ func (a *Vector) Insert(idx int, x ValueType) {
 }
 
 // Delete removes an element at index idx
-func (a *Vector) Delete(idx int) {
+func (a *Vector[E]) Delete(idx int) {
 	if idx < 0 || idx >= a.Len {
 		panic("insert index is out of range")
 	}
@@ -88,12 +72,12 @@ func (a *Vector) Delete(idx int) {
 }
 
 // Push inserts the given element to the end of the vector
-func (a *Vector) Push(x ValueType) {
+func (a *Vector[E]) Push(x E) {
 	a.Insert(a.Len, x)
 }
 
 // Pop deletes and returns an element from the end of the vector
-func (a *Vector) Pop() ValueType {
+func (a *Vector[E]) Pop() E {
 	v := a.Get(a.Len - 1)
 	a.Delete(a.Len - 1)
 	return v

@@ -1,8 +1,8 @@
 package firstn_test
 
 import (
-	"hsecode.com/stdlib-tests/internal/utils"
-	"hsecode.com/stdlib/pick"
+	"hsecode.com/stdlib-tests/v2/internal/utils"
+	"hsecode.com/stdlib/v2/pick"
 	"reflect"
 	"sort"
 	"testing"
@@ -33,7 +33,7 @@ func TestUnit_SmallN(t *testing.T) {
 	data := utils.Range(0, 100)
 	testData := make([]int, 100)
 	copy(testData, data)
-	idxs := pick.FirstN(ordered(testData), 105)
+	idxs := pick.FirstN(testData, 105)
 	sort.Ints(idxs)
 	if !reflect.DeepEqual(idxs, data) {
 		t.Fatal("FirstN() returned unexpected result when n >= data.Len()")
@@ -53,7 +53,7 @@ func TestUnit_FirstN(t *testing.T) {
 
 		for i := 1; i < size; i += max(size/5, 1) {
 			expected := sorted[:i]
-			idxs := pick.FirstN(ordered(testData), i)
+			idxs := pick.FirstN(testData, i)
 
 			if !reflect.DeepEqual(testData, data) {
 				t.Fatal("FirstN() cannot change the given data")
@@ -70,7 +70,7 @@ func TestUnit_FirstN(t *testing.T) {
 func TestPerf_BigData(t *testing.T) {
 	data := utils.RangeShuffled(0, 1024*1024)
 	for g := 1; g < 30; g++ {
-		x := pick.FirstN(ordered(data), g*2)
+		x := pick.FirstN(data, g*2)
 		utils.Use(x)
 	}
 }
@@ -80,7 +80,7 @@ func TestPerf_FirstN(t *testing.T) {
 		for size := 2; size <= 65536; size = size * 2 {
 			data := utils.SliceRandom(1024, size)
 			for i := 1; i < size; i += max(size/10, 1) {
-				x := pick.FirstN(ordered(data), i)
+				x := pick.FirstN(data, i)
 				utils.Use(x)
 			}
 		}

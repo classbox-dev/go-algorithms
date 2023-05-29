@@ -1,10 +1,10 @@
 package lcs_test
 
 import (
-	xlcs "hsecode.com/stdlib-tests/internal/lcs"
-	"hsecode.com/stdlib-tests/internal/rand"
-	"hsecode.com/stdlib-tests/internal/utils"
-	"hsecode.com/stdlib/strings"
+	xlcs "hsecode.com/stdlib-tests/v2/internal/lcs"
+	"hsecode.com/stdlib-tests/v2/internal/rand"
+	"hsecode.com/stdlib-tests/v2/internal/utils"
+	"hsecode.com/stdlib/v2/strings"
 	"runtime"
 	"testing"
 )

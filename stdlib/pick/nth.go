@@ -1,8 +1,8 @@
 package pick
 
 import (
+	"golang.org/x/exp/constraints"
 	"math/rand"
-	"sort"
 )
 
 var random = rand.New(rand.NewSource(0xDEADC0DE))
@@ -13,8 +13,8 @@ var random = rand.New(rand.NewSource(0xDEADC0DE))
 // Panics if nth is out of range.
 //
 // The behaviour is similar to that of std::nth_element in C++.
-func NthElement(data sort.Interface, nth int) {
-	n := data.Len()
+func NthElement[E constraints.Ordered](data []E, nth int) {
+	n := len(data)
 	if nth < 0 || nth >= n {
 		panic("nth is out of range")
 	}
@@ -32,17 +32,17 @@ func NthElement(data sort.Interface, nth int) {
 	}
 }
 
-func partition(data sort.Interface, lo, hi int) int {
+func partition[E constraints.Ordered](data []E, lo, hi int) int {
 	r := lo + random.Intn(hi-lo)
-	data.Swap(r, hi-1)
+	data[r], data[hi-1] = data[hi-1], data[r]
 	p := hi - 1
 	q := lo
 	for j := lo; j < p; j++ {
-		if data.Less(j, p) {
-			data.Swap(q, j)
+		if data[j] < data[p] {
+			data[q], data[j] = data[j], data[q]
 			q++
 		}
 	}
-	data.Swap(q, p)
+	data[q], data[p] = data[p], data[q]
 	return q
 }

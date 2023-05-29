@@ -2,28 +2,16 @@ package maxqueue
 
 import (
 	"errors"
-	"github.com/cheekybits/genny/generic"
+	"golang.org/x/exp/constraints"
 )
 
-//go:generate genny -in=$GOFILE -out=int/dont_edit.go gen "ValueType=int"
-
-// ValueType is a generic type for MaxQueue values (imported from github.com/cheekybits/genny/generic).
-//
-// The package contains subpackages where ValueType is automatically replaced with concrete types.
-//
-// The int subpackage is required for tests. Make sure to include the following comment in your source code:
-//
-//	//go:generate genny -in=$GOFILE -out=int/dont_edit.go gen "ValueType=int"
-//
-type ValueType generic.Number
-
-type maxStack struct {
-	elems []ValueType
-	maxs  []ValueType
+type maxStack[E constraints.Ordered] struct {
+	elems []E
+	maxs  []E
 }
 
-func (q *maxStack) Push(value ValueType) {
-	var newMax ValueType
+func (q *maxStack[E]) Push(value E) {
+	var newMax E
 
 	n := len(q.maxs)
 	if q.Empty() || value > q.maxs[n-1] {
@@ -35,9 +23,10 @@ func (q *maxStack) Push(value ValueType) {
 	q.elems = append(q.elems, value)
 }
 
-func (q *maxStack) Pop() (ValueType, error) {
+func (q *maxStack[E]) Pop() (E, error) {
 	if q.Empty() {
-		return 0, errors.New("stack is empty")
+		var zero E
+		return zero, errors.New("stack is empty")
 	}
 	n := len(q.elems)
 	r := q.elems[n-1]
@@ -46,36 +35,37 @@ func (q *maxStack) Pop() (ValueType, error) {
 	return r, nil
 }
 
-func (q *maxStack) Max() (ValueType, error) {
+func (q *maxStack[E]) Max() (E, error) {
 	if q.Empty() {
-		return 0, errors.New("stack is empty")
+		var zero E
+		return zero, errors.New("stack is empty")
 	}
 	n := len(q.maxs)
 	return q.maxs[n-1], nil
 }
 
-func (q *maxStack) Empty() bool {
+func (q *maxStack[E]) Empty() bool {
 	return len(q.elems) == 0
 }
 
 // MaxQueue is a FIFO queue that allows fast queries for the maximal element.
-type MaxQueue struct {
-	head maxStack
-	tail maxStack
+type MaxQueue[E constraints.Ordered] struct {
+	head maxStack[E]
+	tail maxStack[E]
 }
 
 // New creates an instance of MaxQueue
-func New() *MaxQueue {
-	return new(MaxQueue)
+func New[E constraints.Ordered]() *MaxQueue[E] {
+	return new(MaxQueue[E])
 }
 
 // Push inserts an element to the queue tail in amortised constant time.
-func (q *MaxQueue) Push(value ValueType) {
+func (q *MaxQueue[E]) Push(value E) {
 	q.tail.Push(value)
 }
 
 // Pop removes an element from the queue head in amortised constant time. Returns an error if the queue is empty.
-func (q *MaxQueue) Pop() (ValueType, error) {
+func (q *MaxQueue[E]) Pop() (E, error) {
 	if q.head.Empty() {
 		for !q.tail.Empty() {
 			v, _ := q.tail.Pop()
@@ -84,7 +74,8 @@ func (q *MaxQueue) Pop() (ValueType, error) {
 	}
 
 	if q.head.Empty() {
-		return 0, errors.New("queue is empty")
+		var zero E
+		return zero, errors.New("queue is empty")
 	}
 
 	return q.head.Pop()
@@ -92,8 +83,8 @@ func (q *MaxQueue) Pop() (ValueType, error) {
 
 // Max returns the maximal element in constant time.
 // Returns an error if the queue is empty.
-func (q *MaxQueue) Max() (ValueType, error) {
-	var m1, m2 ValueType
+func (q *MaxQueue[E]) Max() (E, error) {
+	var m1, m2 E
 
 	m1, err1 := q.head.Max()
 	m2, err2 := q.tail.Max()
@@ -109,5 +100,6 @@ func (q *MaxQueue) Max() (ValueType, error) {
 		return m2, nil
 	}
 
-	return 0, errors.New("queue is empty")
+	var zero E
+	return zero, errors.New("queue is empty")
 }

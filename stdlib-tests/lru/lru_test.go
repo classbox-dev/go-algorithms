@@ -2,7 +2,7 @@ package lru_test
 
 import (
 	"fmt"
-	"hsecode.com/stdlib/lru"
+	"hsecode.com/stdlib/v2/lru"
 	"reflect"
 	"strings"
 	"testing"
@@ -68,7 +68,7 @@ func reprCase(cs Case) (string, string) {
 }
 
 func runCase(cs Case) []int {
-	cache := lru.New(cs.cap)
+	cache := lru.New[int, int](cs.cap)
 	results := make([]int, 0)
 
 	for _, ac := range cs.actions {
@@ -168,7 +168,7 @@ func TestUnit__Cases(t *testing.T) {
 
 func TestUnit__LRUMany(t *testing.T) {
 	N := 100000
-	cache := lru.New(N)
+	cache := lru.New[int, int](N)
 	for i := 0; i < N; i++ {
 		cache.Put(i, i)
 		if i%10 == 0 {
@@ -190,7 +190,7 @@ func TestUnit__LRUMany(t *testing.T) {
 
 func TestPerf__Get(t *testing.T) {
 	N := 100000
-	cache := lru.New(N)
+	cache := lru.New[int, int](N)
 	for i := 0; i < N; i++ {
 		cache.Put(i, i)
 	}
@@ -207,7 +207,7 @@ func TestPerf__Get(t *testing.T) {
 func TestPerf__Put(t *testing.T) {
 	N := 100000
 	for try := 0; try < 10; try++ {
-		cache := lru.New(N)
+		cache := lru.New[int, int](N)
 		for i := 0; i < N; i++ {
 			cache.Put(i, i)
 		}

@@ -2,8 +2,8 @@ package tsort
 
 import (
 	"errors"
-	"hsecode.com/stdlib/graph"
-	"hsecode.com/stdlib/graph/internal/walks"
+	"hsecode.com/stdlib/v2/graph"
+	"hsecode.com/stdlib/v2/graph/internal/walks"
 	"sort"
 )
 

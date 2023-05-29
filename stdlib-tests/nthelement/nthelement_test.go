@@ -1,8 +1,8 @@
 package nthelement_test
 
 import (
-	"hsecode.com/stdlib-tests/internal/utils"
-	"hsecode.com/stdlib/pick"
+	"hsecode.com/stdlib-tests/v2/internal/utils"
+	"hsecode.com/stdlib/v2/pick"
 	"sort"
 	"testing"
 )
@@ -37,7 +37,7 @@ func TestUnit_Nth(t *testing.T) {
 		sort.Ints(sorted)
 
 		for i := 0; i < size; i += max(size/5, 1) {
-			pick.NthElement(sort.IntSlice(testData), i)
+			pick.NthElement(testData, i)
 			if testData[i] != sorted[i] {
 				t.Fatalf("NthElement() returned unexpected result (length=%d)", size)
 			}
@@ -50,7 +50,7 @@ func TestPerf_Nth(t *testing.T) {
 	test := func(size int, original, data []int) {
 		i := utils.Rand.Intn(size)
 		copy(data, original)
-		pick.NthElement(sort.IntSlice(data), i)
+		pick.NthElement(data, i)
 	}
 
 	for size := 10000; size < 60000; size += 10000 {

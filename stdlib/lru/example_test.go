@@ -2,11 +2,11 @@ package lru_test
 
 import (
 	"fmt"
-	"hsecode.com/stdlib/lru"
+	"hsecode.com/stdlib/v2/lru"
 )
 
 func ExampleCache_Get() {
-	c := lru.New(3) // cache of size 3
+	c := lru.New[int, int](3) // cache of size 3
 	c.Put(1, 100)
 	c.Put(2, 200)
 	c.Put(3, 300)
@@ -19,7 +19,7 @@ func ExampleCache_Get() {
 }
 
 func ExampleCache_Put() {
-	c := lru.New(2) // cache of size 3
+	c := lru.New[int, int](2) // cache of size 3
 
 	c.Put(1, 100)
 	c.Put(2, 200)

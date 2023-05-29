@@ -2,8 +2,8 @@ package radix_test
 
 import (
 	"fmt"
-	"hsecode.com/stdlib-tests/internal/utils"
-	"hsecode.com/stdlib/set"
+	"hsecode.com/stdlib-tests/v2/internal/utils"
+	"hsecode.com/stdlib/v2/set"
 	"reflect"
 	"runtime"
 	"sort"
@@ -21,33 +21,17 @@ const (
 	Backward
 )
 
-type I int
-
-func (v I) Less(other set.Element) bool {
-	return int(v) < int(other.(I))
-}
-func (v I) Equal(other set.Element) bool {
-	return int(v) == int(other.(I))
-}
-
-func consume(it *set.Iterator, dir Direction, f func(v int) (stop bool)) {
+func consume(it *set.Iterator[int], dir Direction, f func(v int) (stop bool)) {
 	var iter func() bool
-	iterFunc := ""
 	if dir == Forward {
 		iter = func() bool { return it.Next() }
-		iterFunc = "Next()"
 	} else {
 		iter = func() bool { return it.Prev() }
-		iterFunc = "Prev()"
 	}
 	i := 0
 	for iter() && i < hardLimit {
 		v := it.Value()
-		if v == nil {
-			e := fmt.Sprintf("Iterator.Value() returned <nil> after .%s==true", iterFunc)
-			panic(e)
-		}
-		if f(int(v.(I))) {
+		if f(v) {
 			break
 		}
 		i++
@@ -58,14 +42,14 @@ func consume(it *set.Iterator, dir Direction, f func(v int) (stop bool)) {
 }
 
 func TestUnit__Insert(t *testing.T) {
-	ss := set.New()
+	ss := set.New[int]()
 
 	a, b := 57, 1001
 	elems := utils.RangeShuffled(a, b)
 
 	n := 0
 	for _, e := range elems {
-		ss.Insert(I(e))
+		ss.Insert(e)
 
 		if n+1 != ss.Len() {
 			t.Fatal("Len() was not increased by 1 on inserting an element")
@@ -85,29 +69,29 @@ func TestUnit__Insert(t *testing.T) {
 			t.Fatal("Begin() did not yield an inserted element")
 		}
 
-		if v, ok := ss.Find(I(e)); !ok || int(v.(I)) != e {
+		if v, ok := ss.Find(e); !ok || v != e {
 			t.Fatal("Find() could not find an inserted element")
 		}
 	}
 }
 
 func TestUnit__Delete(t *testing.T) {
-	ss := set.New()
+	ss := set.New[int]()
 
 	a, b := 57, 1001
 	elems := utils.RangeShuffled(a, b)
 
 	for _, e := range elems {
-		ss.Insert(I(e))
+		ss.Insert(e)
 	}
 
 	n := ss.Len()
 	for _, e := range elems {
-		if ok := ss.Delete(I(e)); !ok {
+		if ok := ss.Delete(e); !ok {
 			t.Fatal("Delete() returned false for an existing element")
 		}
 
-		if _, ok := ss.Find(I(e)); ok {
+		if _, ok := ss.Find(e); ok {
 			t.Fatal("Find() returned a deleted element")
 		}
 		if ss.Len() != n-1 {
@@ -129,7 +113,7 @@ func TestUnit__Delete(t *testing.T) {
 			return
 		})
 
-		if ok := ss.Delete(I(e)); ok {
+		if ok := ss.Delete(e); ok {
 			t.Fatal("Delete() returned true for a missing element")
 		}
 		if n != ss.Len() {
@@ -139,36 +123,36 @@ func TestUnit__Delete(t *testing.T) {
 }
 
 func TestUnit__Find(t *testing.T) {
-	ss := set.New()
+	ss := set.New[int]()
 
 	a, b := 57, 1001
-	ss.Insert(I(b))
+	ss.Insert(b)
 	elems := utils.RangeReversed(a, b)
 
 	for _, e := range elems {
-		ss.Insert(I(e))
+		ss.Insert(e)
 		for needle := e; needle <= e+1; needle++ {
-			v, ok := ss.Find(I(needle))
+			v, ok := ss.Find(needle)
 			if !ok {
 				t.Fatal("Find() could not find an existing element")
 			}
-			if int(v.(I)) != needle {
+			if v != needle {
 				t.Fatal("Find() returned an invalid element")
 			}
 		}
-		if _, ok := ss.Find(I(e - 1)); ok {
+		if _, ok := ss.Find(e - 1); ok {
 			t.Fatal("Find() returned success for a missing element")
 		}
 	}
 }
 
 func TestUnit__IterateAll(t *testing.T) {
-	ss := set.New()
+	ss := set.New[int]()
 
 	a, b := 57, 1001
 	elems := utils.RangeShuffled(a, b)
 	for _, e := range elems {
-		ss.Insert(I(e))
+		ss.Insert(e)
 	}
 
 	sort.Ints(elems)
@@ -194,12 +178,12 @@ func TestUnit__IterateAll(t *testing.T) {
 }
 
 func TestUnit__EmptyIterators(t *testing.T) {
-	ss := set.New()
+	ss := set.New[int]()
 
 	a, b := 57, 1001
 	elems := utils.RangeShuffled(a, b)
 	for _, e := range elems {
-		ss.Insert(I(e))
+		ss.Insert(e)
 	}
 
 	result := make([]int, 0)
@@ -222,17 +206,17 @@ func TestUnit__EmptyIterators(t *testing.T) {
 }
 
 func TestUnit__DeleteSomeAndIterate(t *testing.T) {
-	ss := set.New()
+	ss := set.New[int]()
 
 	a, b := 57, 1001
 	elems := utils.RangeShuffled(a, b)
 
 	for _, e := range elems {
-		ss.Insert(I(e))
+		ss.Insert(e)
 	}
 	for _, e := range elems {
 		if e%2 == 0 {
-			ss.Delete(I(e))
+			ss.Delete(e)
 		}
 	}
 
@@ -271,14 +255,14 @@ func TestUnit__DeleteSomeAndIterate(t *testing.T) {
 }
 
 func TestUnit__InsertDuplicatesAndIterate(t *testing.T) {
-	ss := set.New()
+	ss := set.New[int]()
 
 	a, b := 57, 1001
 	elems := utils.RangeShuffled(a, b)
 
 	for i := 0; i < 6; i++ {
 		for _, e := range elems {
-			if ok := ss.Insert(I(e)); ok && i > 0 {
+			if ok := ss.Insert(e); ok && i > 0 {
 				t.Fatal("Insert() returned true for a duplicated element")
 			}
 		}
@@ -310,11 +294,11 @@ type testCase struct {
 }
 
 func TestUnit__UpperBound(t *testing.T) {
-	ss := set.New()
+	ss := set.New[int]()
 
 	elems := utils.RangeShuffled(1, 100)
 	for _, v := range elems {
-		ss.Insert(I(v * 10))
+		ss.Insert(v * 10)
 	}
 
 	cases := []testCase{
@@ -329,7 +313,7 @@ func TestUnit__UpperBound(t *testing.T) {
 	for _, cs := range cases {
 		i := 0
 		result := make([]int, 0)
-		consume(ss.UpperBound(I(cs.start)), cs.direction, func(v int) (stop bool) {
+		consume(ss.UpperBound(cs.start), cs.direction, func(v int) (stop bool) {
 			if i >= len(cs.expected) {
 				stop = true
 				return
@@ -345,11 +329,11 @@ func TestUnit__UpperBound(t *testing.T) {
 }
 
 func TestUnit__LowerBound(t *testing.T) {
-	ss := set.New()
+	ss := set.New[int]()
 
 	elems := utils.RangeShuffled(1, 100)
 	for _, v := range elems {
-		ss.Insert(I(v * 10))
+		ss.Insert(v * 10)
 	}
 
 	cases := []testCase{
@@ -364,7 +348,7 @@ func TestUnit__LowerBound(t *testing.T) {
 	for _, cs := range cases {
 		i := 0
 		result := make([]int, 0)
-		consume(ss.LowerBound(I(cs.start)), cs.direction, func(v int) (stop bool) {
+		consume(ss.LowerBound(cs.start), cs.direction, func(v int) (stop bool) {
 			if i >= len(cs.expected) {
 				stop = true
 				return
@@ -380,17 +364,17 @@ func TestUnit__LowerBound(t *testing.T) {
 }
 
 func TestUnit__UninitialisedIterator(t *testing.T) {
-	ss := set.New()
+	ss := set.New[int]()
 	elems := utils.RangeShuffled(1, 100)
 	for _, v := range elems {
-		ss.Insert(I(v * 10))
+		ss.Insert(v * 10)
 	}
 
-	its := []*set.Iterator{
+	its := []*set.Iterator[int]{
 		ss.Begin(),
 		ss.End(),
-		ss.LowerBound(I(100)),
-		ss.UpperBound(I(323)),
+		ss.LowerBound(100),
+		ss.UpperBound(323),
 	}
 	msg := "Expected panic when calling .Value() on an iterator before .Next() or .Prev()"
 	for _, it := range its {
@@ -419,7 +403,7 @@ func TestUnit__Random(t *testing.T) {
 
 	runtime.GC()
 
-	ss := set.New()
+	ss := set.New[int]()
 	magnituge := 30000
 
 	limits := [2]int{50000000, 50000100}
@@ -437,12 +421,12 @@ func TestUnit__Random(t *testing.T) {
 
 		values := rangeRandomUnique(a, b, magnituge)
 		for _, v := range values {
-			ss.Insert(I(v))
-			ss.Insert(I(v))
+			ss.Insert(v)
+			ss.Insert(v)
 		}
 
 		for j := 0; j < 100; j++ {
-			e := I(values[len(values)-1-j])
+			e := values[len(values)-1-j]
 			ss.Delete(e)
 			ss.Delete(e)
 		}
@@ -475,13 +459,13 @@ func TestUnit__Random(t *testing.T) {
 		for c := 0; c < 8; c++ {
 			idx := utils.Rand.Intn(len(values) - 100)
 
-			if _, ok := ss.Find(I(values[idx])); !ok {
+			if _, ok := ss.Find(values[idx]); !ok {
 				t.Fatal("Find() could not find an existing element")
 			}
 
 			cnt := 0
 			result := make([]int, 0)
-			consume(ss.LowerBound(I(values[idx])), Forward, func(v int) (stop bool) {
+			consume(ss.LowerBound(values[idx]), Forward, func(v int) (stop bool) {
 				if cnt >= runLength {
 					stop = true
 					return
@@ -499,7 +483,7 @@ func TestUnit__Random(t *testing.T) {
 			idx := utils.Rand.Intn(len(values) - 100)
 			cnt := 0
 			result := make([]int, 0)
-			consume(ss.UpperBound(I(values[idx])), Forward, func(v int) (stop bool) {
+			consume(ss.UpperBound(values[idx]), Forward, func(v int) (stop bool) {
 				if cnt >= runLength {
 					stop = true
 					return
@@ -523,7 +507,7 @@ func TestPerf__Random(t *testing.T) {
 
 	runtime.GC()
 
-	ss := set.New()
+	ss := set.New[int]()
 	magnituge := 30000
 
 	limits := [2]int{50000000, 50000100}
@@ -541,21 +525,21 @@ func TestPerf__Random(t *testing.T) {
 
 		values := rangeRandomUnique(a, b, magnituge)
 		for i, v := range values {
-			ss.Insert(I(v))
-			ss.Insert(I(v))
+			ss.Insert(v)
+			ss.Insert(v)
 			ss.End()
 			ss.Begin()
 
 			if i > 10 {
 				idx := utils.Rand.Intn(i)
-				ss.Find(I(values[idx]))
-				ss.LowerBound(I(values[idx]))
-				ss.UpperBound(I(values[idx]))
+				ss.Find(values[idx])
+				ss.LowerBound(values[idx])
+				ss.UpperBound(values[idx])
 			}
 		}
 
 		for j := 0; j < 100; j++ {
-			e := I(values[len(values)-1-j])
+			e := values[len(values)-1-j]
 			ss.Delete(e)
 			ss.Delete(e)
 			ss.End()

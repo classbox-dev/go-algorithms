@@ -1,10 +1,10 @@
 package islands
 
-import matrix "hsecode.com/stdlib/matrix/int"
+import "hsecode.com/stdlib/v2/matrix"
 
 // Count returns the number of islands (contiguous non-zero regions) on the given grid.
 // The function can (and probably should) mutate the grid. Reference solution uses depth-first search.
-func Count(grid *matrix.Matrix) int {
+func Count(grid *matrix.Matrix[int]) int {
 	m := grid.Rows
 	if m == 0 {
 		return 0
@@ -21,7 +21,7 @@ func Count(grid *matrix.Matrix) int {
 	return res
 }
 
-func dfs(grid *matrix.Matrix, i, j, m, n int) {
+func dfs(grid *matrix.Matrix[int], i, j, m, n int) {
 	grid.Set(i, j, 0)
 	if i-1 >= 0 && grid.Get(i-1, j) == 1 {
 		dfs(grid, i-1, j, m, n)

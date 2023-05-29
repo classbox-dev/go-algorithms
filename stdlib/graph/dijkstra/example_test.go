@@ -3,8 +3,8 @@ package dijkstra_test
 import (
 	"encoding/json"
 	"fmt"
-	"hsecode.com/stdlib/graph"
-	"hsecode.com/stdlib/graph/dijkstra"
+	"hsecode.com/stdlib/v2/graph"
+	"hsecode.com/stdlib/v2/graph/dijkstra"
 	"io/ioutil"
 	"net/http"
 )
@@ -62,7 +62,7 @@ func Example_metro() {
 
 // Metro returns a graph of stations
 func Metro() *graph.Graph {
-	resp, err := http.Get("https://hsecode.com/.static/metro.json")
+	resp, err := http.Get("https://gist.githubusercontent.com/mkuznets/1f568e4846570c81a9294b2919b1b6ca/raw/f5867a3a8cd0c339f529d3d049f856169efe3d2a/moscow_metro_graph.json")
 	if err != nil {
 		panic(err)
 	}

@@ -1,5 +1,5 @@
-module hsecode.com/stdlib
+module hsecode.com/stdlib/v2
 
-go 1.13
+go 1.18
 
-require github.com/cheekybits/genny v1.0.0
+require golang.org/x/exp v0.0.0-20230522175609-2e198f4a06a1

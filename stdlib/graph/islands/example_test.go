@@ -2,8 +2,8 @@ package islands_test
 
 import (
 	"fmt"
-	"hsecode.com/stdlib/graph/islands"
-	matrix "hsecode.com/stdlib/matrix/int"
+	"hsecode.com/stdlib/v2/graph/islands"
+	matrix "hsecode.com/stdlib/v2/matrix"
 )
 
 // Three islands
@@ -14,7 +14,7 @@ var rows = [][]int{
 }
 
 func Example() {
-	grid := matrix.New(3, 3)
+	grid := matrix.New[int](3, 3)
 
 	// Fill in the matrix
 	for i, row := range rows {

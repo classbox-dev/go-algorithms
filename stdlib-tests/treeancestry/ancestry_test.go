@@ -1,15 +1,15 @@
 package treeancestry_test
 
 import (
-	matrix "hsecode.com/stdlib-tests/internal/matrix/bool"
-	xtree "hsecode.com/stdlib-tests/internal/tree"
-	"hsecode.com/stdlib-tests/internal/utils"
-	"hsecode.com/stdlib/tree"
-	"hsecode.com/stdlib/tree/ancestry"
+	"hsecode.com/stdlib-tests/v2/internal/matrix"
+	xtree "hsecode.com/stdlib-tests/v2/internal/tree"
+	"hsecode.com/stdlib-tests/v2/internal/utils"
+	"hsecode.com/stdlib/v2/tree"
+	"hsecode.com/stdlib/v2/tree/ancestry"
 	"testing"
 )
 
-func insert(T **tree.Tree, elem int, ids map[int]int, mat *matrix.Matrix) bool {
+func insert(T **tree.Tree, elem int, ids map[int]int, mat *matrix.Matrix[bool]) bool {
 	node := *T
 	point := T
 	for node != nil {
@@ -37,7 +37,7 @@ func TestUnit__UnbalancedBST(t *testing.T) {
 		for i, r := range elems {
 			ids[r] = i
 		}
-		M := matrix.New(len(ids), len(ids))
+		M := matrix.New[bool](len(ids), len(ids))
 
 		var T *tree.Tree
 		for _, e := range elems {

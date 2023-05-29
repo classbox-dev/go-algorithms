@@ -1,13 +1,13 @@
 package maxqueue_test
 
 import (
-	"hsecode.com/stdlib-tests/internal/utils"
-	maxqueue "hsecode.com/stdlib/maxqueue/int"
+	"hsecode.com/stdlib-tests/v2/internal/utils"
+	"hsecode.com/stdlib/v2/maxqueue"
 	"testing"
 )
 
 func TestUnit__QueueOrder(t *testing.T) {
-	q := maxqueue.New()
+	q := maxqueue.New[int]()
 
 	n := 100
 	input := make([]int, 0, n)
@@ -31,7 +31,7 @@ func TestUnit__QueueOrder(t *testing.T) {
 }
 
 func TestUnit__PopEmpty(t *testing.T) {
-	q := maxqueue.New()
+	q := maxqueue.New[int]()
 	_, err := q.Pop()
 	if err == nil {
 		t.Fatal("expected an error when calling Pop() on an empty queue")
@@ -39,7 +39,7 @@ func TestUnit__PopEmpty(t *testing.T) {
 }
 
 func TestUnit__PopSingle(t *testing.T) {
-	q := maxqueue.New()
+	q := maxqueue.New[int]()
 	q.Push(100)
 
 	v, err := q.Pop()
@@ -49,7 +49,7 @@ func TestUnit__PopSingle(t *testing.T) {
 }
 
 func TestUnit__PushAndPop(t *testing.T) {
-	q := maxqueue.New()
+	q := maxqueue.New[int]()
 
 	n := 100
 	for i := 0; i < n; i++ {
@@ -69,7 +69,7 @@ func TestUnit__PushAndPop(t *testing.T) {
 }
 
 func TestUnit__MaxEmpty(t *testing.T) {
-	q := maxqueue.New()
+	q := maxqueue.New[int]()
 	_, err := q.Max()
 	if err == nil {
 		t.Fatal("expected an error when calling Max() on an empty queue")
@@ -77,7 +77,7 @@ func TestUnit__MaxEmpty(t *testing.T) {
 }
 
 func TestUnit__MaxSingle(t *testing.T) {
-	q := maxqueue.New()
+	q := maxqueue.New[int]()
 	q.Push(100)
 
 	v, err := q.Max()
@@ -87,7 +87,7 @@ func TestUnit__MaxSingle(t *testing.T) {
 }
 
 func TestUnit__Max(t *testing.T) {
-	q := maxqueue.New()
+	q := maxqueue.New[int]()
 
 	q.Push(100)
 	q.Push(10)
@@ -122,7 +122,7 @@ func TestUnit__Max(t *testing.T) {
 }
 
 func TestUnit__MaxAll(t *testing.T) {
-	q := maxqueue.New()
+	q := maxqueue.New[int]()
 	n := 100
 
 	for i := 0; i < n; i++ {
@@ -170,7 +170,7 @@ func TestUnit__MaxAll(t *testing.T) {
 }
 
 func TestPerf__RandomOperations(t *testing.T) {
-	q := maxqueue.New()
+	q := maxqueue.New[int]()
 	for i := 0; i < 2000000; i++ {
 		q.Push(utils.Rand.Int() % 10000)
 		_, err := q.Max()

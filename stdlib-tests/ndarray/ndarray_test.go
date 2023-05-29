@@ -2,9 +2,9 @@ package ndarray
 
 import (
 	"fmt"
-	ref "hsecode.com/stdlib-tests/internal/ndarray"
-	"hsecode.com/stdlib-tests/internal/utils"
-	"hsecode.com/stdlib/ndarray"
+	ref "hsecode.com/stdlib-tests/v2/internal/ndarray"
+	"hsecode.com/stdlib-tests/v2/internal/utils"
+	"hsecode.com/stdlib/v2/ndarray"
 	"strings"
 	"testing"
 )

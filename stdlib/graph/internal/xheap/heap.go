@@ -1,6 +1,6 @@
 package xheap
 
-import "hsecode.com/stdlib/graph"
+import "hsecode.com/stdlib/v2/graph"
 
 type Item struct {
 	Node, Parent graph.Node
@@ -18,9 +18,9 @@ func New() *Nodes {
 	return ns
 }
 
-func (h Nodes) Len() int           { return len(h.Items) }
-func (h Nodes) Less(i, j int) bool { return h.Items[i].Key < h.Items[j].Key }
-func (h Nodes) Swap(i, j int) {
+func (h *Nodes) Len() int           { return len(h.Items) }
+func (h *Nodes) Less(i, j int) bool { return h.Items[i].Key < h.Items[j].Key }
+func (h *Nodes) Swap(i, j int) {
 	h.Items[i].Idx, h.Items[j].Idx = j, i
 	h.Items[i], h.Items[j] = h.Items[j], h.Items[i]
 }

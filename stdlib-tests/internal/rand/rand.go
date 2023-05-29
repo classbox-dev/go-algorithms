@@ -1,7 +1,7 @@
 package rand
 
 import (
-	"hsecode.com/stdlib-tests/internal/utils"
+	"hsecode.com/stdlib-tests/v2/internal/utils"
 )
 
 type Rand struct {

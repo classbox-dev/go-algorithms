@@ -2,7 +2,7 @@ package strings_test
 
 import (
 	"fmt"
-	"hsecode.com/stdlib/strings"
+	"hsecode.com/stdlib/v2/strings"
 )
 
 func ExampleLCS() {

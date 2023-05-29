@@ -1,8 +1,8 @@
 package cmp_test
 
 import (
-	"hsecode.com/stdlib-tests/internal/utils"
-	cmp "hsecode.com/stdlib/cmp/int"
+	"hsecode.com/stdlib-tests/v2/internal/utils"
+	"hsecode.com/stdlib/v2/cmp"
 	"testing"
 )
 
@@ -57,7 +57,7 @@ func TestUnit__MinPanic(t *testing.T) {
 			panicked = true
 		}
 	}()
-	cmp.Min()
+	cmp.Min[int]()
 	if !panicked {
 		t.Fatal("Min() with no arguments did not panic")
 	}
@@ -70,7 +70,7 @@ func TestUnit__MaxPanic(t *testing.T) {
 			panicked = true
 		}
 	}()
-	cmp.Max()
+	cmp.Max[int]()
 	if !panicked {
 		t.Fatal("Max() with no arguments did not panic")
 	}

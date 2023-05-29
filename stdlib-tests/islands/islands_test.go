@@ -2,10 +2,10 @@ package islands_test
 
 import (
 	"fmt"
-	xislands "hsecode.com/stdlib-tests/internal/islands"
-	"hsecode.com/stdlib-tests/internal/utils"
-	"hsecode.com/stdlib/graph/islands"
-	matrix "hsecode.com/stdlib/matrix/int"
+	xislands "hsecode.com/stdlib-tests/v2/internal/islands"
+	"hsecode.com/stdlib-tests/v2/internal/utils"
+	"hsecode.com/stdlib/v2/graph/islands"
+	"hsecode.com/stdlib/v2/matrix"
 	"strings"
 	"testing"
 )
@@ -17,7 +17,7 @@ func min(a, b int) int {
 	return b
 }
 
-func gridRepr(grid *matrix.Matrix) string {
+func gridRepr(grid *matrix.Matrix[int]) string {
 	var repr strings.Builder
 	for i := 0; i < grid.Rows; i++ {
 		for j := 0; j < grid.Cols; j++ {
@@ -36,9 +36,9 @@ func TestUnit__Basic(t *testing.T) {
 	for i := 1; i < 128; i += 2 {
 		for j := 1; j < 128; j += 2 {
 			h, w := utils.Rand.Intn(i), utils.Rand.Intn(j)
-			grid := matrix.New(h, w)
-			gridRef := matrix.New(h, w)
-			gridRerp := matrix.New(h, w)
+			grid := matrix.New[int](h, w)
+			gridRef := matrix.New[int](h, w)
+			gridRerp := matrix.New[int](h, w)
 			for x := 0; x < h; x++ {
 				xw := w
 				for xw > 0 {
@@ -66,7 +66,7 @@ func TestUnit__Basic(t *testing.T) {
 func TestUnit__Perf(t *testing.T) {
 	for i := 1; i < 128; i += 1 {
 		for j := 1; j < 128; j += 1 {
-			grid := matrix.New(i, j)
+			grid := matrix.New[int](i, j)
 			for x := 0; x < i; x++ {
 				xw := j
 				for xw > 0 {

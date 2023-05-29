@@ -1,9 +1,9 @@
 package treebalanced_test
 
 import (
-	xtree "hsecode.com/stdlib-tests/internal/tree"
-	"hsecode.com/stdlib-tests/internal/utils"
-	"hsecode.com/stdlib/tree"
+	xtree "hsecode.com/stdlib-tests/v2/internal/tree"
+	"hsecode.com/stdlib-tests/v2/internal/utils"
+	"hsecode.com/stdlib/v2/tree"
 	"reflect"
 	"sort"
 	"testing"

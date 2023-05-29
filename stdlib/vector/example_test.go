@@ -3,11 +3,11 @@ package vector_test
 import (
 	// imported package is renamed to avoid conflict with type `int`
 	"fmt"
-	IntVector "hsecode.com/stdlib/vector/int"
+	"hsecode.com/stdlib/v2/vector"
 )
 
 func ExampleVector_Push() {
-	vec := IntVector.New(0)
+	vec := vector.New[int](0)
 	for _, p := range []int{2, 3, 5, 7, 11} {
 		vec.Push(p)
 	}
@@ -16,7 +16,7 @@ func ExampleVector_Push() {
 }
 
 func ExampleVector_Pop() {
-	vec := IntVector.New(0)
+	vec := vector.New[int](0)
 	vec.Push(10)
 	vec.Push(11)
 	fmt.Println(vec.Pop())
@@ -24,7 +24,7 @@ func ExampleVector_Pop() {
 }
 
 func ExampleVector_Insert() {
-	vec := IntVector.New(0)
+	vec := vector.New[int](0)
 	vec.Push(42)
 	vec.Insert(0, 41)
 	fmt.Println(vec.Get(0), vec.Get(1))

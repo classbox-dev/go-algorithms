@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"sort"
 
-	"hsecode.com/stdlib/graph"
+	"hsecode.com/stdlib/v2/graph"
 )
 
 type Int int

@@ -2,25 +2,25 @@ package set_test
 
 import (
 	"fmt"
-	"hsecode.com/stdlib/set"
+	"hsecode.com/stdlib/v2/set"
 )
 
 func ExampleSet_Insert() {
-	s := set.New()
-	fmt.Println(s.Insert(Int(7))) // true, the element was inserted
-	fmt.Println(s.Insert(Int(7))) // false, duplicated element, do nothing
+	s := set.New[int]()
+	fmt.Println(s.Insert(7)) // true, the element was inserted
+	fmt.Println(s.Insert(7)) // false, duplicated element, do nothing
 	// Output:
 	// true
 	// false
 }
 
 func ExampleSet_Delete() {
-	s := set.New()
+	s := set.New[int]()
 	for _, p := range []int{7, 11, 2, 3, 13, 5} {
-		s.Insert(Int(p))
+		s.Insert(p)
 	}
-	fmt.Println(s.Delete(Int(7))) // true, the element was deleted
-	fmt.Println(s.Delete(Int(7))) // false, no such element
+	fmt.Println(s.Delete(7)) // true, the element was deleted
+	fmt.Println(s.Delete(7)) // false, no such element
 
 	it := s.Begin()
 	for it.Next() {
@@ -37,21 +37,21 @@ func ExampleSet_Delete() {
 }
 
 func ExampleSet_Find() {
-	s := set.New()
+	s := set.New[int]()
 	for _, p := range []int{7, 11, 2, 3, 13, 5} {
-		s.Insert(Int(p))
+		s.Insert(p)
 	}
-	fmt.Println(s.Find(Int(13)))
-	fmt.Println(s.Find(Int(10)))
+	fmt.Println(s.Find(13))
+	fmt.Println(s.Find(10))
 	// Output:
 	// 13 true
-	// <nil> false
+	// 0 false
 }
 
 func ExampleSet_Begin() {
-	s := set.New()
+	s := set.New[int]()
 	for _, p := range []int{7, 11, 2, 3, 13, 5} {
-		s.Insert(Int(p))
+		s.Insert(p)
 	}
 	it := s.Begin()
 	for it.Next() {
@@ -67,9 +67,9 @@ func ExampleSet_Begin() {
 }
 
 func ExampleSet_End() {
-	s := set.New()
+	s := set.New[int]()
 	for _, p := range []int{7, 11, 2, 3, 13, 5} {
-		s.Insert(Int(p))
+		s.Insert(p)
 	}
 	it := s.End()
 	for it.Prev() {
@@ -85,9 +85,9 @@ func ExampleSet_End() {
 }
 
 func ExampleIterator_Value() {
-	s := set.New()
+	s := set.New[int]()
 	for _, p := range []int{7, 11, 2, 3, 13, 5} {
-		s.Insert(Int(p))
+		s.Insert(p)
 	}
 	it := s.Begin()
 
@@ -99,11 +99,11 @@ func ExampleIterator_Value() {
 }
 
 func ExampleSet_LowerBound_exact() {
-	s := set.New()
+	s := set.New[int]()
 	for _, p := range []int{7, 11, 2, 3, 13, 5} {
-		s.Insert(Int(p))
+		s.Insert(p)
 	}
-	it := s.LowerBound(Int(11)) // points to 11
+	it := s.LowerBound(11) // points to 11
 	for it.Next() {
 		fmt.Println(it.Value())
 	}
@@ -113,11 +113,11 @@ func ExampleSet_LowerBound_exact() {
 }
 
 func ExampleSet_LowerBound_missing() {
-	s := set.New()
+	s := set.New[int]()
 	for _, p := range []int{7, 11, 2, 3, 13, 5} {
-		s.Insert(Int(p))
+		s.Insert(p)
 	}
-	it := s.LowerBound(Int(4)) // 4 is missing, points to 5
+	it := s.LowerBound(4) // 4 is missing, points to 5
 	for it.Prev() {
 		fmt.Println(it.Value())
 	}
@@ -127,11 +127,11 @@ func ExampleSet_LowerBound_missing() {
 }
 
 func ExampleSet_UpperBound() {
-	s := set.New()
+	s := set.New[int]()
 	for _, p := range []int{7, 11, 2, 3, 13, 5} {
-		s.Insert(Int(p))
+		s.Insert(p)
 	}
-	it := s.UpperBound(Int(5)) // points to 7 (first element greater than 5)
+	it := s.UpperBound(5) // points to 7 (first element greater than 5)
 	for it.Next() {
 		fmt.Println(it.Value())
 	}
@@ -142,15 +142,15 @@ func ExampleSet_UpperBound() {
 }
 
 func ExampleSet_Len() {
-	s := set.New()
+	s := set.New[int]()
 	for _, p := range []int{7, 11, 2, 3, 13, 5} {
-		s.Insert(Int(p))
+		s.Insert(p)
 	}
 
 	fmt.Println(s.Len())
 
-	s.Insert(Int(5))
-	s.Delete(Int(100))
+	s.Insert(5)
+	s.Delete(100)
 
 	fmt.Println(s.Len()) // set is unchanged, length should be the same
 

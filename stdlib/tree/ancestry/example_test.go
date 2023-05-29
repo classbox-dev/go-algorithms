@@ -2,8 +2,8 @@ package ancestry_test
 
 import (
 	"fmt"
-	"hsecode.com/stdlib/tree"
-	"hsecode.com/stdlib/tree/ancestry"
+	"hsecode.com/stdlib/v2/tree"
+	"hsecode.com/stdlib/v2/tree/ancestry"
 )
 
 func Example() {

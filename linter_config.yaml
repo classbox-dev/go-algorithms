@@ -10,7 +10,6 @@ packages:
   - sort
   - container/heap
   - container/list
-  - github.com/cheekybits/genny/generic
 package_prefixes:
   - hsecode.com/stdlib
 banned_ids:

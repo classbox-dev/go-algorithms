@@ -1,10 +1,10 @@
 package levenshtein_test
 
 import (
-	ref "hsecode.com/stdlib-tests/internal/levenshtein"
-	"hsecode.com/stdlib-tests/internal/rand"
-	"hsecode.com/stdlib-tests/internal/utils"
-	"hsecode.com/stdlib/strings/levenshtein"
+	ref "hsecode.com/stdlib-tests/v2/internal/levenshtein"
+	"hsecode.com/stdlib-tests/v2/internal/rand"
+	"hsecode.com/stdlib-tests/v2/internal/utils"
+	"hsecode.com/stdlib/v2/strings/levenshtein"
 	"runtime"
 	"testing"
 )

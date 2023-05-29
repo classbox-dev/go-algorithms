@@ -4,13 +4,13 @@ import (
 	"reflect"
 	"testing"
 
-	"hsecode.com/stdlib-tests/internal/utils"
-	matrix "hsecode.com/stdlib/matrix/int"
+	"hsecode.com/stdlib-tests/v2/internal/utils"
+	"hsecode.com/stdlib/v2/matrix"
 )
 
 func TestUnit__RowsCols(t *testing.T) {
 	n, m := utils.Rand.Int()%256, utils.Rand.Int()%256
-	mat := matrix.New(n, m)
+	mat := matrix.New[int](n, m)
 	if mat.Rows != n {
 		t.Fatal("unexpected value of Rows")
 	}
@@ -20,7 +20,7 @@ func TestUnit__RowsCols(t *testing.T) {
 }
 
 func TestUnit__OutOfRange(t *testing.T) {
-	mat := matrix.New(64, 64)
+	mat := matrix.New[int](64, 64)
 	indices := []struct{ a, b int }{
 		{64, 63},
 		{64, 65},
@@ -44,7 +44,7 @@ func TestUnit__OutOfRange(t *testing.T) {
 
 func TestUnit__FillAndRead(t *testing.T) {
 	n, m := utils.Rand.Int()%256, utils.Rand.Int()%256
-	mat := matrix.New(n, m)
+	mat := matrix.New[int](n, m)
 	expected := make([]int, n*m)
 	result := make([]int, n*m)
 
@@ -67,7 +67,7 @@ func TestUnit__FillAndRead(t *testing.T) {
 
 func TestPerf__Iterate(t *testing.T) {
 	n, m := 2096000, 4
-	mat := matrix.New(n, m)
+	mat := matrix.New[int](n, m)
 
 	sum := 0
 	for c := 0; c < 30; c++ {
