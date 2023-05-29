@@ -1,8 +1,7 @@
 name: Update stdlib images
 on:
-  push:
-    branches:
-      - master
+  workflow_dispatch:
+
 env:
   perf_tag: docker.pkg.github.com/mkuznets/stdlib/perf:latest
   builder_tag: docker.pkg.github.com/mkuznets/stdlib/builder:latest
